@@ -119,7 +119,7 @@ const check = (name, pass, detail = '') => {
 
   /* ---- Resume download ---- */
   const p5 = await browser.newPage();
-  const resumeResp = await p5.request.get(BASE + '/assets/resume/Tamif-Dontman-Resume.pdf');
+  const resumeResp = await p5.request.get(BASE + '/assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf');
   const body = await resumeResp.body();
   check('resume PDF is reachable', resumeResp.status() === 200, String(resumeResp.status()));
   check('resume PDF is a real PDF',
