@@ -1,0 +1,32 @@
+User-agent: *
+# Portfolios should be discoverable. Everything here is public.
+Allow: /
+
+# Be explicit for the big crawlers so nobody defaults to "deny" for us.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# AI/agent crawlers: the whole point of this site is to be found and read.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Nothing here is private, so no crawl-delay games.
+Sitemap: https://tamif.is-a.dev/sitemap.xml

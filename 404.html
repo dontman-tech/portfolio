@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-palette="azure" data-glass="medium" data-bg="motion" class="no-js">
+<head>
+<!-- Set before stylesheets load so the reveal animations can be gated on it:
+     if JavaScript never runs, nothing is hidden behind an opacity:0 rule. -->
+<script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>404 — that page moved. | Tamif Dontman</title>
+<meta name="description" content="This page doesn't exist, but the portfolio does. Pick a chapter and carry on." />
+<meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#05070d" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236ea8ff'/%3E%3Cstop offset='1' stop-color='%237bf1d9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='sans-serif' font-size='38' font-weight='700' fill='%2308101c' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E" />
+<link rel="preload" href="assets/fonts/sora-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+
+<link rel="stylesheet" href="assets/css/fonts.css" />
+<link rel="stylesheet" href="assets/css/tokens.css" />
+<link rel="stylesheet" href="assets/css/base.css" />
+<link rel="stylesheet" href="assets/css/site.css" />
+
+<style>
+  /* Page-specific: the giant numeral gets a slow scrubbed drift and a soft
+     reflection, so even the error page feels like part of the same product. */
+  .notfound__code {
+    background: linear-gradient(150deg, var(--text-strong) 6%, var(--accent) 44%, var(--accent-3) 92%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 26px 60px rgb(var(--accent-rgb) / 0.28));
+  }
+
+  .notfound__ghost {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 40vh;
+    pointer-events: none;
+    background: radial-gradient(60% 100% at 20% 100%, rgb(var(--accent-rgb) / 0.14), transparent 70%);
+  }
+</style>
+</head>
+
+<body>
+<div class="progress" aria-hidden="true"></div>
+
+<div class="bg" aria-hidden="true">
+  <div class="bg__mesh"></div>
+  <div class="bg__blob bg__blob--1" data-parallax="0.05"></div>
+  <div class="bg__blob bg__blob--2" data-parallax="0.09"></div>
+  <div class="bg__blob bg__blob--3" data-parallax="0.07"></div>
+  <div class="bg__grain"></div>
+  <div class="bg__vignette"></div>
+</div>
+
+<div class="spotlight" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="/" aria-label="Tamif Dontman — home">
+      <span class="brand__mark" aria-hidden="true">T</span>
+      <span class="brand__text">
+        <span>Tamif Dontman</span>
+        <small>Full-stack &amp; AI</small>
+      </span>
+    </a>
+    <div class="nav__actions">
+      <a class="btn btn--primary btn--sm" href="/">
+        <span class="shift"><span class="shift__a">Back to the portfolio</span><span class="shift__b" aria-hidden="true">Back to the portfolio</span></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="notfound" id="main">
+  <div class="shell">
+    <p class="eyebrow" data-reveal>Error 404 · Nothing at this address</p>
+
+    <h1 class="notfound__code mt-5" data-reveal data-delay="80" data-scrub data-scrub-y="-26">
+      <span class="sr-only">Page not found — </span>404
+    </h1>
+
+    <p class="lead mt-5" data-reveal data-delay="160">
+      I build things that degrade instead of breaking — so here's a page that does the same.
+      The link you followed doesn't exist, but everything worth reading is one tap away.
+    </p>
+
+    <div class="notfound__routes" data-stagger="70" data-delay="240">
+      <a class="route" href="/#work">
+        <span>
+          <span class="route__path">/#work</span>
+          <span class="route__desc">Five projects, three stories</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+      <a class="route" href="/#about">
+        <span>
+          <span class="route__path">/#about</span>
+          <span class="route__desc">Who I am, where I'm going</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+      <a class="route" href="/#contact">
+        <span>
+          <span class="route__path">/#contact</span>
+          <span class="route__desc">Four taps to a real email</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+      <a class="route" href="assets/resume/Tamif-Dontman-Resume.pdf" download>
+        <span>
+          <span class="route__path">/resume.pdf</span>
+          <span class="route__desc">Two pages, straight to the point</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
+      </a>
+    </div>
+
+    <p class="mono faint mt-7" data-reveal data-delay="420">
+      If you got here from a link I wrote, tell me — I'd rather fix it than leave it broken.
+      <a class="ulink" href="mailto:tamif@dontman.tech">tamif@dontman.tech</a>
+    </p>
+  </div>
+
+  <div class="notfound__ghost" aria-hidden="true"></div>
+</main>
+
+<div class="toasts" aria-live="polite"></div>
+
+<script src="assets/js/motion.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
