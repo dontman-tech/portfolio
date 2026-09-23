@@ -1,0 +1,24 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "QA and asset tooling for the portfolio site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node verify.js && node design.js && node a11y.js && node focus.js && node resilience.js && node flow.js",
+    "verify": "node verify.js",
+    "design": "node design.js",
+    "a11y": "node a11y.js",
+    "focus": "node focus.js",
+    "resilience": "node resilience.js",
+    "flow": "node flow.js",
+    "audit": "node audit.js",
+    "shots": "node shots.js",
+    "resume": "python3 make_resume.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}

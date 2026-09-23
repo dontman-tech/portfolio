@@ -1,0 +1,21 @@
+{
+  "name": "Tamif Dontman — Full-Stack & Applied AI Engineer",
+  "short_name": "Tamif Dontman",
+  "description": "Portfolio of Tamif Dontman: voice-first AI assistants, two-sided marketplaces and cross-platform apps, shipped end to end.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#05070d",
+  "theme_color": "#05070d",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["portfolio", "developer", "technology"],
+  "icons": [
+    {
+      "src": "assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
