@@ -27,9 +27,27 @@ node tools/serve.js 12000     # preview (custom 404 enabled) — use this, not `
 cd tools && npm test          # all six QA suites
 cd tools && npm run design    # one suite: verify|design|a11y|focus|resilience|flow|audit|shots
 python3 tools/make_resume.py  # regenerate the PDF resume
+./tools/deploy.sh             # publish to GitHub Pages + open the is-a.dev PR
 ```
 
 Tests run against `http://127.0.0.1:12000`. Start the server first.
+
+## Deployment
+
+Hosted on GitHub Pages at `tamif.is-a.dev`. `CNAME` (the custom domain) and
+`.nojekyll` (skip Jekyll) are committed in the repo root — Pages requires the
+former and the site assumes the latter. `netlify.toml` and `vercel.json` are
+kept for alternative hosts; they are inert on Pages.
+
+`tools/deploy.sh` is idempotent: it creates the repo, pushes `master`, enables
+Pages, sets the custom domain, then forks `is-a-dev/register` and opens a PR
+adding `domains/tamif.json`. Re-running it skips completed steps.
+
+The token must carry `administration=write`, `repository_creation=write`,
+`pages=write`, `contents=write` and `pull_requests=write`. A GitHub App
+installation token generally has none of these — repo creation and Pages
+enablement both return `Resource not accessible by integration` without them.
+
 
 ## Conventions
 
