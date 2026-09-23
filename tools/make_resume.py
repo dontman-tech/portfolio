@@ -1,7 +1,7 @@
 """Generates the downloadable PDF resume for the portfolio site.
 
 Run:  python3 tools/make_resume.py
-Output: assets/resume/Tamif-Dontman-Resume.pdf
+Output: assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ OUT = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "assets",
     "resume",
-    "Tamif-Dontman-Resume.pdf",
+    "Tabe-Miracle-Fiagmenyi-Resume.pdf",
 )
 
 INK = colors.HexColor("#0E1420")
@@ -36,41 +36,32 @@ ACCENT = colors.HexColor("#3F6FE0")
 ACCENT_2 = colors.HexColor("#00C2A8")
 RULE = colors.HexColor("#D8DEE9")
 
-NAME = "Tamif Dontman"
+NAME = "TABE MIRACLE FIAGMENYI"
 ROLE = "Full-Stack & Applied AI Engineer"
 CONTACT = [
-    "Buea, Cameroon (WAT / UTC+1) \u00b7 open to remote",
+    "Buea, Cameroon",
+    "(+237) 680-553-744",
+    "tabe7143@gmail.com",
+    "linkedin.com/in/tabe-miracle-fiagmenyi",
     "github.com/dontman-tech",
-    "tamif@dontman.tech",
-    "dontman.tech",
 ]
 
 SUMMARY = (
-    "Full-stack and applied-AI engineer who ships complete products end to end \u2014 Python and "
-    "TypeScript services, React/Next.js and React Native front ends, and voice/vision pipelines "
-    "running on-device. I care about the unglamorous parts: graceful degradation, offline paths, "
-    "and interfaces that a first-time user understands without a manual."
+    "Computer engineering student and full-stack developer who ships complete products end to end "
+    "\u2014 Python and TypeScript services, React/Next.js and React Native front ends, and "
+    "voice/vision pipelines running on-device. Comfortable taking an idea from a blank repo to a "
+    "working MVP under hackathon deadlines, and I care about the unglamorous parts: graceful "
+    "degradation, offline paths, and interfaces a first-time user understands without a manual."
 )
 
 EXPERIENCE = [
     (
-        "Founder & Lead Engineer",
-        "Tamif Systems \u00b7 Independent product studio",
-        "2025 \u2014 Present \u00b7 Cameroon / Remote",
+        "Front-End Developer Intern",
+        "CIRCO Orange Internship (Ignite Circle) \u00b7 Buea, Cameroon",
+        "July 2026 \u00b7 Remote / Collaborative",
         [
-            "Shipped ARIA, a voice-controlled assistant with a modular skill router, persistent memory "
-            "and an Android bridge exposing device controls over an authenticated local socket.",
-            "Built Re-kollect, a two-sided waste-collection marketplace (Flutter + Firebase) taken from "
-            "PRD to working MVP with live Firestore sync, OSM routing and role-scoped auth.",
-            "Own the full delivery loop: product framing, architecture, implementation, release, and "
-            "post-release iteration.",
-        ],
-    ),
-    (
-        "Front-End Engineer (Team Project)",
-        "Ignite Circle \u00b7 Orange internship programme 2026",
-        "2026 \u00b7 Remote / Collaborative",
-        [
+            "Collaborated on front-end features using modern web frameworks, improving overall site "
+            "performance and UI responsiveness.",
             "Built the Next.js 16 / React 19 / Tailwind 4 client for a multi-contributor product, "
             "landing a green-theme design system with reusable components.",
             "Worked to a shared AGENTS.md and branching convention inside a distributed team; reviewed "
@@ -86,6 +77,27 @@ EXPERIENCE = [
             "explains the weakness in plain language, and suggests a stronger passphrase.",
             "Air Canvas \u2014 MediaPipe/OpenCV gesture drawing app with a five-gesture mode system "
             "and sub-frame latency tuning.",
+        ],
+    ),
+]
+
+AWARDS = [
+    (
+        "3rd Place \u2014 Orange Code for Change Hackathon",
+        "Buea, Cameroon",
+        [
+            "Co-developed Re-kollect, a functional MVP built within 12 hours alongside a team of 4.",
+            "Integrated frontend and backend workflows using JavaScript, React, Node.js and Python.",
+        ],
+    ),
+    (
+        "4th Place Finalist \u2014 Prometheus AI Hackathon",
+        "Buea, Cameroon",
+        [
+            "Architected and deployed Lumina, an AI-driven platform created in 15 hours with a "
+            "3-person team.",
+            "Connected Supabase and the DeepSeek API to process dynamic user requests under tight "
+            "time constraints.",
         ],
     ),
 ]
@@ -107,6 +119,13 @@ PROJECTS = [
         "real-time collector dashboard, FCM topic fan-out, and native dialer hand-off.",
     ),
     (
+        "Lumina \u2014 AI-Driven Platform",
+        "Supabase \u00b7 DeepSeek API \u00b7 JavaScript",
+        "AI-driven platform built for the Prometheus AI Hackathon in 15 hours with a three-person "
+        "team. Supabase and the DeepSeek API are wired together to process dynamic user requests "
+        "under tight time constraints.",
+    ),
+    (
         "Ignite Circle \u2014 Front End",
         "Next.js 16 \u00b7 React 19 \u00b7 Tailwind 4 \u00b7 Zustand",
         "Multi-contributor Next.js client built on a shared component library and Zustand state "
@@ -126,14 +145,37 @@ PROJECTS = [
         "palette / clear) driven purely by finger counts and pinch detection, tuned for real-time "
         "tracking on commodity webcams.",
     ),
+    (
+        "NESAC \u2014 Password Strength Checker",
+        "Python \u00b7 Flask \u00b7 JavaScript",
+        "Web application that helps users create strong passwords and test the strength of their "
+        "current ones, explaining each weakness in plain language and suggesting a stronger "
+        "passphrase.",
+    ),
 ]
 
 STACK = [
-    ("Languages", "Python, TypeScript, JavaScript, Dart, Kotlin, SQL"),
-    ("Front end", "React 19, Next.js 16, React Native, Expo, Tailwind 4, Zustand, Motion"),
-    ("Back end & data", "Flask, FastAPI, Node, Firebase (Auth/Firestore/FCM), SQLite, REST"),
-    ("AI & vision", "LLM APIs (DeepSeek, OpenAI, Claude), Ollama, MediaPipe, OpenCV, Whisper"),
-    ("Tooling", "Git, Docker, Linux, Vite, pytest, Playwright, CI via GitHub Actions"),
+    ("Languages", "Python, JavaScript, Kotlin, Node.js, Dart, SQL"),
+    ("Front end", "React 19, Next.js 16, React Native, Expo, Tailwind 4, HTML/CSS"),
+    ("Back end & data", "Flask, FastAPI, Node, Supabase, Firebase (Auth/Firestore/FCM), SQLite, REST"),
+    ("AI & vision", "DeepSeek API, OpenAI, Claude, Ollama, prompt engineering, MediaPipe, OpenCV"),
+    ("Tooling & cloud", "Git, Docker, Linux, Vercel, CI via GitHub Actions"),
+    ("Soft skills", "Public speaking, teamwork, problem solving, bilingual (English & French)"),
+]
+
+EDUCATION = [
+    "Bachelor of Engineering (B.Eng.) in Computer Engineering \u2014 University of Buea, Faculty of "
+    "Engineering and Technology (FET), Buea, Cameroon.",
+]
+
+COMMUNITY = [
+    "Active Member, Cybersecurity Club \u2014 University of Buea. Core digital security fundamentals, "
+    "vulnerability awareness and web protective practices.",
+    "Workshop Participant, Renewable Energy Summit 2026 \u2014 technical sessions organised by the "
+    "University of Buea Renewable Energy Club at FET.",
+    "Social Impact Volunteer, MIMIO NGO \u2014 local community outreach initiatives and event "
+    "organisation support.",
+    "Open-source and community builds published at github.com/dontman-tech.",
 ]
 
 
@@ -160,8 +202,8 @@ def build_styles():
     ss = getSampleStyleSheet()
     return {
         "name": ParagraphStyle(
-            "name", parent=ss["Title"], fontName="Helvetica-Bold", fontSize=25,
-            leading=27, textColor=INK, spaceAfter=0, alignment=TA_LEFT,
+            "name", parent=ss["Title"], fontName="Helvetica-Bold", fontSize=22,
+            leading=24, textColor=INK, spaceAfter=0, alignment=TA_LEFT,
         ),
         "role": ParagraphStyle(
             "role", fontName="Helvetica", fontSize=11.4, leading=15,
@@ -272,6 +314,15 @@ def main():
             story.append(Paragraph(b, st["bullet"], bulletText="\u2022"))
         story.append(Spacer(1, 6))
 
+    story += section("Hackathons & Awards", W, st)
+    for title, when, bullets in AWARDS:
+        story.append(Paragraph(title, st["jobtitle"]))
+        story.append(Paragraph(when, st["jobmeta"]))
+        story.append(Spacer(1, 3))
+        for b in bullets:
+            story.append(Paragraph(b, st["bullet"], bulletText="\u2022"))
+        story.append(Spacer(1, 6))
+
     story += section("Selected Projects", W, st)
     for title, stack, desc in PROJECTS:
         story.append(Paragraph(title, st["projtitle"]))
@@ -298,14 +349,12 @@ def main():
     )
     story.append(table)
 
-    story += section("Education & Community", W, st)
-    for b in [
-        "B.Sc. Computer Science (in progress) \u2014 coursework in algorithms, databases and "
-        "systems design alongside full-time product work.",
-        "Orange Ignite Circle 2026 \u2014 selected for a competitive internship programme; "
-        "contributed to a shared team codebase.",
-        "Open-source and community builds published at github.com/dontman-tech.",
-    ]:
+    story += section("Education", W, st)
+    for b in EDUCATION:
+        story.append(Paragraph(b, st["bullet"], bulletText="\u2022"))
+
+    story += section("Community & Leadership", W, st)
+    for b in COMMUNITY:
         story.append(Paragraph(b, st["bullet"], bulletText="\u2022"))
 
     doc.build(story)
