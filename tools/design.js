@@ -114,7 +114,15 @@ const ratio = (a, b) => {
     for (let i = 1; i < secs.length; i++) {
       gaps.push(Math.round(secs[i].getBoundingClientRect().top - secs[i - 1].getBoundingClientRect().bottom));
     }
-    const lines = Array.from(document.querySelectorAll('.lead, p')).slice(0, 20)
+    // Body copy only: display numerals and indices carry line-height: 1 on
+    // purpose, and judging them by paragraph rhythm would be meaningless.
+    const lines = Array.from(document.querySelectorAll('.lead, p'))
+      .filter((p) => {
+        const cs = getComputedStyle(p);
+        if (/num|index/.test(p.className)) return false;
+        return parseFloat(cs.fontSize) <= 24;
+      })
+      .slice(0, 20)
       .map((p) => parseFloat(getComputedStyle(p).lineHeight) / parseFloat(getComputedStyle(p).fontSize));
     return { pads, gaps, minLine: Math.min(...lines.filter((n) => !isNaN(n))) };
   });

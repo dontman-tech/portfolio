@@ -5,7 +5,7 @@
    and never thrash layout. Everything degrades gracefully:
      · prefers-reduced-motion  → static, fully readable page
      · no IntersectionObserver → reveals resolve immediately
-     · small viewports / touch → parallax and pin are skipped or simplified
+     · small viewports / touch → parallax is skipped or simplified
 
    Data-attribute contract (set in markup):
      data-reveal[="up|left|right|scale"]   fade + lift on enter
@@ -15,12 +15,9 @@
        data-scrub-y  px travel (negative = slower/background layer)
        data-scrub-s  scale delta across the range
        data-scrub-o  minimum opacity at the range edges (default 1 = no fade)
-     data-parallax="0.18"                  px-per-scroll parallax factor
+     data-parallax-fixed="0.08"            scroll drift for fixed backdrop layers
      data-tilt="7"                         max degrees of 3D tilt on pointer move
      data-magnetic="14"                    pointer-attracted offset in px
-     data-pin                              sticky narrative container
-       [data-pin-layer]                     stacked panels that swap in place
-       [data-pin-tick]                      progress ticks
      data-count="120"                      count-up number on first view
    ========================================================================== */
 
@@ -39,7 +36,7 @@
     return t * t * (3 - 2 * t);
   };
 
-  /** Multiplier so the studio panel can dial motion up or down. */
+  /** Global multiplier from --motion, so motion intensity stays one knob. */
   const motionScale = () => {
     const v = parseFloat(getComputedStyle(root).getPropertyValue('--motion'));
     return Number.isFinite(v) ? v : 1;
@@ -68,7 +65,12 @@
           }
         });
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.12 }
+      // threshold 0, not a ratio: a clip reveal starts fully clipped, and a
+      // clipped element reports an intersection ratio of 0 no matter how much
+      // of it is on screen — so any non-zero threshold would never fire and
+      // the element would stay invisible forever. The rootMargin does the
+      // "meaningfully in view" gating instead.
+      { rootMargin: '0px 0px -12% 0px', threshold: 0 }
     );
   }
 
@@ -83,7 +85,7 @@
   };
 
   const registerReveals = (scope = document) => {
-    scope.querySelectorAll('[data-reveal], [data-clip], [data-clip-x]').forEach((el) => {
+    scope.querySelectorAll('[data-reveal], [data-fade], [data-clip], [data-clip-x]').forEach((el) => {
       const kind = el.dataset.reveal;
       if (kind === 'left') el.style.setProperty('--reveal-x', '-34px');
       if (kind === 'right') el.style.setProperty('--reveal-x', '34px');
@@ -142,10 +144,10 @@
   };
 
   /* ---------------------------------------------------------------------
-     Scroll-driven layer: scrub, parallax, pin, progress.
+     Scroll-driven layer: scrub, parallax, progress.
      --------------------------------------------------------------------- */
   const scrubEls = [];
-  const parallaxEls = [];
+  const fixedParallaxEls = [];
   const pinEls = [];
 
   const registerScrollWork = (scope = document) => {
@@ -159,19 +161,19 @@
       });
     });
 
-    scope.querySelectorAll('[data-parallax]').forEach((el) => {
-      if (parallaxEls.some((r) => r.el === el)) return;
-      parallaxEls.push({ el, f: Number(el.dataset.parallax) || 0.15, cur: 0 });
-    });
-
+    // Pin + transform. The card is sticky, so its own rect stops moving once
+    // pinned and cannot be used to derive progress — the parent chapter is the
+    // thing still scrolling, so measure that instead.
     scope.querySelectorAll('[data-pin]').forEach((el) => {
       if (pinEls.some((r) => r.el === el)) return;
-      pinEls.push({
-        el,
-        layers: Array.from(el.querySelectorAll('[data-pin-layer]')),
-        ticks: Array.from(el.querySelectorAll('[data-pin-tick]')),
-        active: -1,
-      });
+      pinEls.push({ el, host: el.closest('.chapter') || el.parentElement });
+    });
+
+    // Layers inside a `position: fixed` backdrop never change their bounding
+    // rect, so their offset is derived from scroll position directly.
+    scope.querySelectorAll('[data-parallax-fixed]').forEach((el) => {
+      if (fixedParallaxEls.some((r) => r.el === el)) return;
+      fixedParallaxEls.push({ el, f: Number(el.dataset.parallaxFixed) || 0.06 });
     });
   };
 
@@ -180,6 +182,13 @@
     rec.top = r.top;
     rec.height = r.height;
     rec.center = r.top + r.height / 2;
+    rec.vh = vh;
+  };
+
+  const measurePin = (rec, vh) => {
+    const r = rec.host.getBoundingClientRect();
+    rec.top = r.top;
+    rec.height = r.height;
     rec.vh = vh;
   };
 
@@ -212,18 +221,13 @@
 
       if (needsMeasure) {
         scrubEls.forEach((r) => measure(r, vh));
-        parallaxEls.forEach((r) => measure(r, vh));
-        pinEls.forEach((r) => {
-          measure(r, vh);
-          r.span = Math.max(1, r.height - vh);
-        });
+        pinEls.forEach((r) => measurePin(r, vh));
         needsMeasure = false;
       } else {
         // Keep geometry fresh without re-reading every frame: cheap deltas.
         const dy = y - (tick._y ?? y);
         scrubEls.forEach((r) => { r.top -= dy; r.center -= dy; });
-        parallaxEls.forEach((r) => { r.top -= dy; r.center -= dy; });
-        pinEls.forEach((r) => { r.top -= dy; r.center -= dy; });
+        pinEls.forEach((r) => { r.top -= dy; });
       }
       tick._y = y;
 
@@ -238,27 +242,23 @@
         }
       });
 
-      parallaxEls.forEach((r) => {
-        const offset = (r.center - vh / 2) * -r.f * scale;
-        r.cur = lerp(r.cur, offset, 0.14);
-        r.el.style.setProperty('--par-y', `${r.cur.toFixed(2)}px`);
+      // Pin + transform: while the card is stuck, ease it in and out so it
+      // settles rather than snapping to the pin line. Progress is the host
+      // chapter's travel through the viewport.
+      pinEls.forEach((r) => {
+        const p = clamp((r.vh - r.top) / (r.vh + r.height));
+        // 0 at entry, 1 by mid-range — the card is "set" while it is pinned.
+        const settle = smoothstep(0, 0.42, p);
+        const exit = smoothstep(0.86, 1, p);
+        r.el.style.setProperty('--pin-s', (0.94 + 0.06 * settle - 0.03 * exit).toFixed(4));
+        r.el.style.setProperty('--pin-y', `${(14 * (1 - settle)).toFixed(2)}px`);
+        r.el.style.setProperty('--pin-ry', `${(-1.6 * (1 - settle)).toFixed(3)}deg`);
       });
 
-      pinEls.forEach((r) => {
-        const p = clamp((y - r.top) / r.span);
-        const n = r.layers.length;
-        if (!n) return;
-        const idx = Math.min(n - 1, Math.floor(p * n));
-        if (idx === r.active) return;
-        r.active = idx;
-        r.layers.forEach((layer, i) => {
-          layer.classList.toggle('is-active', i === idx);
-          layer.classList.toggle('is-past', i < idx);
-        });
-        r.ticks.forEach((tk, i) => {
-          tk.classList.toggle('is-active', i === idx);
-          tk.classList.toggle('is-past', i < idx);
-        });
+      // Fixed backdrop layers: a slow, scroll-proportional drift. Unsmoothed
+      // on purpose — they sit far enough back that a lerp would read as lag.
+      fixedParallaxEls.forEach((r) => {
+        r.el.style.transform = `translate3d(0, ${(-y * r.f * scale).toFixed(2)}px, 0)`;
       });
     }
 
@@ -475,6 +475,11 @@
           el.style.removeProperty('--scrub-y');
           el.style.removeProperty('--scrub-s');
           el.style.removeProperty('--scrub-o');
+        });
+        document.querySelectorAll('[data-pin]').forEach((el) => {
+          el.style.removeProperty('--pin-y');
+          el.style.removeProperty('--pin-s');
+          el.style.removeProperty('--pin-ry');
         });
       }
     });

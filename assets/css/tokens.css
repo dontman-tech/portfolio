@@ -116,7 +116,7 @@
   --dur-3: 480ms;
   --dur-4: 760ms;
 
-  /* Motion intensity multiplier, driven by the studio panel */
+  /* Motion intensity multiplier — one knob for every scroll-driven effect */
   --motion: 1;
 
   /* ---- Layout rails --------------------------------------------------- */

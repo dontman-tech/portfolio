@@ -15,17 +15,18 @@ netlify.toml vercel.json  deploy config (404 routing + cache headers)
 assets/css/tokens.css     design tokens: palette, glass, backgrounds, spacing, type
 assets/css/base.css       resets, primitives (reveal/clip/stagger/shift/press), a11y
 assets/css/site.css       component styles
-assets/js/motion.js       scroll engine: reveal, scrub, pin, tilt, magnetic, press
-assets/js/app.js          UI logic: nav, studio panel, contact flow, prefs
+assets/js/motion.js       scroll engine: reveal, scrub, fixed backdrop drift, tilt, magnetic, press
+assets/js/app.js          UI logic: nav, mobile sheet, contact flow, reveal fallback
 tools/                    QA suites, dev server, asset generators
+                          (verify, design, a11y, focus, resilience, responsive, flow)
 ```
 
 ## Commands
 
 ```bash
 node tools/serve.js 12000     # preview (custom 404 enabled) — use this, not `python3 -m http.server`
-cd tools && npm test          # all six QA suites
-cd tools && npm run design    # one suite: verify|design|a11y|focus|resilience|flow|audit|shots
+cd tools && npm test          # all seven QA suites
+cd tools && npm run design    # one suite: verify|design|a11y|focus|resilience|responsive|flow|audit|shots
 python3 tools/make_resume.py  # regenerate the PDF resume
 ./tools/deploy.sh             # publish to GitHub Pages + open the is-a.dev PR
 ```
@@ -69,11 +70,26 @@ scrub/tilt/magnetic and reveals everything immediately. Keep that branch working
 
 **Animation vocabulary** (all in `assets/css/base.css`, driven by `motion.js`):
 `data-reveal` fade+lift · `data-stagger` lists · `data-clip`/`data-clip-x` clip
-reveal · `data-pin` pin+transform · `data-scrub` parallax · `data-tilt` 3D hover ·
+reveal · `data-fade` opacity-only reveal · `data-scrub` scroll scrub ·
+`data-parallax-fixed` backdrop drift · `data-tilt` 3D hover ·
 `data-magnetic` cursor lean · `.shift__a/.shift__b` text shift · `.is-pressed`
 press+spring.
 
 **Tokens, not literals.** Colours, spacing (`--s-*`), radii and easing come from
-`tokens.css`. The studio panel switches `data-palette`, `data-glass` and
-`data-bg` on `<html>`; preferences persist to localStorage and must degrade
-silently if storage is blocked.
+`tokens.css`. The palette is swappable by setting `data-palette` on `<html>` —
+the tokens cascade from there, so a new theme is a token block, not a rewrite.
+
+**Layout must survive `overflow: hidden`.** `.hero` clips its overflow, so a
+child wider than the viewport is silently cropped instead of producing a
+scrollbar — the phone headline used to lose its right half this way. Grid items
+default to `min-width: auto`, so any grid/flex container that should shrink
+needs an explicit `min-width: 0`, and fixed `minmax()` floors (a `132px` stats
+track summed past a 320px screen) are the usual culprit. `tools/responsive.js`
+walks real device profiles, including short landscape viewports where a stacked
+hero used to run to four screens.
+
+**Clip reveals need `threshold: 0`.** A `clip-path`-hidden element reports an
+intersection ratio of 0 at every scroll position, so a non-zero
+IntersectionObserver threshold silently leaves `data-clip`/`data-clip-x` content
+invisible forever. The observer's `rootMargin` does the in-view gating instead.
+`tools/verify.js` guards this.

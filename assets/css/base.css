@@ -137,6 +137,11 @@ p { text-wrap: pretty; }
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--rail);
+  /* The shell is a grid item inside .hero. Without this it inherits
+     `min-width: auto` and refuses to shrink below its content's min-content
+     width, pushing the hero wider than the viewport — where .hero's
+     `overflow: hidden` silently crops the headline on phones. */
+  min-width: 0;
 }
 
 .section {
@@ -405,6 +410,16 @@ html.js [data-reveal].is-in {
   opacity: 1;
   transform: none;
 }
+
+/* Fade — opacity only, so it can share a node with the pointer-driven tilt
+   without two systems writing `transform` on the same element. */
+html.js [data-fade] {
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js [data-fade].is-in { opacity: 1; }
 
 /* Clip reveal — content unmasked from the bottom edge upward */
 html.js [data-clip] {

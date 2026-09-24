@@ -1,8 +1,7 @@
 /**
  * Accessibility and semantics checks that the visual harness does not cover:
  * images have alt text, the skip link works, landmarks exist, landmarks are
- * unique, the studio dialog traps focus and closes on Escape, and the contact
- * flow is operable by keyboard alone.
+ * unique, and the contact flow is operable by keyboard alone.
  *
  * Run:  node tools/a11y.js
  */
@@ -94,31 +93,6 @@ const check = (name, pass, detail = '') => {
     Array.from(document.querySelectorAll('.opt')).map((o) => o.tagName.toLowerCase()));
   check('flow options are native buttons', optTags.every((t) => t === 'button'),
     [...new Set(optTags)].join(','));
-
-  // Studio dialog semantics + Escape
-  const studioSem = await page.evaluate(() => {
-    const s = document.querySelector('.studio');
-    return {
-      role: s?.getAttribute('role'),
-      ariaModal: s?.getAttribute('aria-modal'),
-      labelled: !!document.getElementById(s?.getAttribute('aria-labelledby') || ''),
-    };
-  });
-  check('studio is an accessible modal dialog',
-    studioSem.role === 'dialog' && studioSem.ariaModal === 'true' && studioSem.labelled,
-    JSON.stringify(studioSem));
-
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(500);
-  const opened = await page.evaluate(() =>
-    document.querySelector('.studio').classList.contains('is-open'));
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(500);
-  const closed = await page.evaluate(() =>
-    !document.querySelector('.studio').classList.contains('is-open'));
-  const focusBack = await page.evaluate(() => document.activeElement?.hasAttribute('data-studio-open'));
-  check('studio opens, closes on Escape, restores focus',
-    opened && closed && focusBack, `opened=${opened} closed=${closed} focusRestored=${focusBack}`);
 
   // Progress bar is decorative
   const progressHidden = await page.evaluate(() =>

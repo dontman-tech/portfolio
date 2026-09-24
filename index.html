@@ -30,7 +30,7 @@
 <meta name="twitter:description" content="Voice-first AI assistants, two-sided marketplaces, cross-platform apps. Shipped end to end." />
 <meta name="twitter:image" content="https://tamif.is-a.dev/assets/img/og.jpg" />
 
-<!-- Icons: an inline SVG default, swapped at runtime by the studio panel -->
+<!-- Favicon: inline SVG so it renders before any asset request -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236ea8ff'/%3E%3Cstop offset='1' stop-color='%237bf1d9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='sans-serif' font-size='38' font-weight='700' fill='%2308101c' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
@@ -75,9 +75,13 @@
 <!-- Motion image background -->
 <div class="bg" aria-hidden="true">
   <div class="bg__mesh"></div>
-  <div class="bg__blob bg__blob--1" data-parallax="0.05"></div>
-  <div class="bg__blob bg__blob--2" data-parallax="0.09"></div>
-  <div class="bg__blob bg__blob--3" data-parallax="0.07"></div>
+  <!-- Each blob sits in its own inset wrapper: the wrapper takes the scroll
+       parallax transform, the blob keeps its own drift animation. One node
+       cannot carry both, because a running CSS animation wins over a static
+       transform declaration. -->
+  <div class="bg__layer" data-parallax-fixed="0.06"><div class="bg__blob bg__blob--1"></div></div>
+  <div class="bg__layer" data-parallax-fixed="0.11"><div class="bg__blob bg__blob--2"></div></div>
+  <div class="bg__layer" data-parallax-fixed="0.08"><div class="bg__blob bg__blob--3"></div></div>
   <div class="bg__grain"></div>
   <div class="bg__vignette"></div>
 </div>
@@ -106,13 +110,9 @@
     </nav>
 
     <div class="nav__actions">
-      <button class="icon-btn" type="button" data-studio-open aria-expanded="false" aria-label="Open the design studio">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z" /><path d="M14.5 5.5 18.5 9.5" />
-        </svg>
-      </button>
-      <a class="btn btn--primary btn--sm" href="#contact">
-        <span class="shift"><span class="shift__a">Let's talk</span><span class="shift__b" aria-hidden="true">Let's talk</span></span>
+      <a class="btn btn--primary btn--sm nav__cta" href="#contact" aria-label="Talk — get in touch">
+        <span class="shift nav__cta-full"><span class="shift__a">Let's talk</span><span class="shift__b" aria-hidden="true">Let's talk</span></span>
+        <span class="nav__cta-short" aria-hidden="true">Talk</span>
       </a>
       <button class="icon-btn nav__toggle" type="button" data-sheet-open aria-expanded="false" aria-label="Open chapter menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
@@ -136,107 +136,6 @@
   <a class="sheet__link" href="#about">About</a>
   <a class="sheet__link" href="#contact">Talk</a>
 </div>
-
-<!-- =====================================================================
-     Customisation studio
-     ===================================================================== -->
-<aside class="studio" role="dialog" aria-modal="true" aria-labelledby="studio-title" aria-hidden="true" inert>
-  <div class="row" style="justify-content: space-between">
-    <div>
-      <p class="eyebrow eyebrow--plain" id="studio-title">Design studio</p>
-      <p class="muted" style="font-size: var(--fs-small); margin-top: var(--s-2)">
-        Every surface here is token-driven. Change it, and the page keeps up.
-      </p>
-    </div>
-    <button class="icon-btn" type="button" data-studio-close aria-label="Close the design studio">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-        <path d="M6 6l12 12M18 6 6 18" />
-      </svg>
-    </button>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Palette</span>
-    <div class="swatches" role="group" aria-label="Colour palette">
-      <button class="swatch" type="button" data-palette-btn="azure" data-palette-name="Azure Glass" aria-pressed="true" aria-label="Azure Glass palette"
-        style="background: linear-gradient(140deg,#6ea8ff,#7bf1d9)"></button>
-      <button class="swatch" type="button" data-palette-btn="aurora" data-palette-name="Aurora" aria-pressed="false" aria-label="Aurora palette"
-        style="background: linear-gradient(140deg,#4fd1b5,#a6f5a0)"></button>
-      <button class="swatch" type="button" data-palette-btn="dusk" data-palette-name="Dusk" aria-pressed="false" aria-label="Dusk palette"
-        style="background: linear-gradient(140deg,#a98bff,#7bd8ff)"></button>
-      <button class="swatch" type="button" data-palette-btn="ember" data-palette-name="Ember" aria-pressed="false" aria-label="Ember palette"
-        style="background: linear-gradient(140deg,#ff9a62,#ffd166)"></button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Glass density</span>
-    <div class="seg" role="group" aria-label="Glass density">
-      <button class="seg__btn" type="button" data-glass-btn="low" aria-pressed="false">Low</button>
-      <button class="seg__btn" type="button" data-glass-btn="medium" aria-pressed="true">Medium</button>
-      <button class="seg__btn" type="button" data-glass-btn="high" aria-pressed="false">High</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Background</span>
-    <div class="seg" role="group" aria-label="Background mode">
-      <button class="seg__btn" type="button" data-bg-btn="motion" aria-pressed="true">Motion</button>
-      <button class="seg__btn" type="button" data-bg-btn="mesh" aria-pressed="false">Mesh</button>
-      <button class="seg__btn" type="button" data-bg-btn="still" aria-pressed="false">Still</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Motion intensity</span>
-    <div class="field">
-      <input type="range" min="0" max="1.6" step="0.1" value="1" data-motion-range aria-label="Motion intensity" />
-      <div class="row" style="justify-content: space-between">
-        <span class="mono faint">scroll + parallax</span>
-        <span class="mono" data-motion-out style="color: var(--accent-2)">100%</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Accent hue</span>
-    <div class="field">
-      <input type="range" min="-120" max="120" step="5" value="0" data-hue-range aria-label="Accent hue rotation" />
-      <div class="row" style="justify-content: space-between">
-        <span class="mono faint">background tint</span>
-        <span class="mono" data-hue-out style="color: var(--accent-2)">0°</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Site title</span>
-    <div class="field">
-      <input type="text" data-title-input value="Tamif Dontman — Full-Stack &amp; Applied AI Engineer" aria-label="Site title" />
-      <span class="mono faint">tab title: <span data-title-out>Tamif Dontman — Full-Stack &amp; Applied AI Engineer</span></span>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Favicon</span>
-    <div class="seg" role="group" aria-label="Favicon style">
-      <button class="seg__btn" type="button" data-favicon-btn="monogram" aria-pressed="true">Mono</button>
-      <button class="seg__btn" type="button" data-favicon-btn="glass" aria-pressed="false">Glass</button>
-      <button class="seg__btn" type="button" data-favicon-btn="orbit" aria-pressed="false">Orbit</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <label class="toggle">
-      <span>Cursor spotlight</span>
-      <input type="checkbox" data-spotlight-toggle checked />
-      <span class="toggle__track" aria-hidden="true"></span>
-    </label>
-    <button class="btn btn--ghost btn--sm" type="button" data-reset>
-      <span class="shift"><span class="shift__a">Reset to defaults</span><span class="shift__b" aria-hidden="true">Reset to defaults</span></span>
-    </button>
-  </div>
-</aside>
 
 <main id="main">
 
@@ -304,17 +203,21 @@
       </div>
 
       <div class="hero__art">
-        <div class="portrait glass glass--pad" data-tilt="8" data-scrub data-scrub-y="40" data-scrub-s="0.05" data-reveal data-delay="200">
-          <div class="portrait__frame">
-            <span class="portrait__initials" aria-hidden="true">TD</span>
-            <span class="portrait__scan" aria-hidden="true"></span>
-            <span class="portrait__badge">Buea · CM</span>
-            <div class="portrait__meta">
-              <span class="eyebrow eyebrow--plain">Currently</span>
-              <span style="font-size: var(--fs-small)">
-                Building an AI assistant that lives on your phone and an app that gets waste
-                collected in Cameroonian cities.
-              </span>
+        <div class="portrait glass glass--pad" data-fade data-delay="200">
+          <div class="portrait__scrub" data-scrub data-scrub-y="34" data-scrub-s="0.04">
+            <div class="portrait__tilt" data-tilt="8">
+              <div class="portrait__frame">
+                <span class="portrait__initials" aria-hidden="true">TD</span>
+                <span class="portrait__scan" aria-hidden="true"></span>
+                <span class="portrait__badge">Buea · CM</span>
+                <div class="portrait__meta">
+                  <span class="eyebrow eyebrow--plain">Currently</span>
+                  <span style="font-size: var(--fs-small)">
+                    Building an AI assistant that lives on your phone and an app that gets waste
+                    collected in Cameroonian cities.
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -353,61 +256,90 @@
 </div>
 
 <!-- =====================================================================
-     How I work — pin + transform narrative
+     How I work — three steps, each its own part
      ===================================================================== -->
 <section class="section" id="method">
   <div class="shell">
     <div class="section__head" data-reveal>
-      <p class="eyebrow">The method</p>
+      <p class="eyebrow">How I work</p>
       <h2 class="h1">Anyone can get something working once.</h2>
       <p class="lead">
-        The engineering I care about happens after the happy path. Three rules run through
-        everything below.
+        The engineering I care about happens after the happy path. Three rules — each one earned
+        from a project above.
       </p>
     </div>
   </div>
 
-  <div class="pin" data-pin>
-    <div class="pin__viewport">
-      <div class="shell">
-        <div class="pin__layers">
-
-          <article class="pin__layer glass glass--pad is-active" data-pin-layer>
-            <p class="pin__index">01 / 03</p>
-            <h3 class="h2">Degrade, don't break.</h3>
-            <p class="lead" style="max-width: 46ch">
-              No microphone? ARIA falls back to text. No API key? It falls back to a deterministic
-              offline mode. No HealthKit module? Pulse Fit shows simulated data. A user should never
-              meet a dead end because one dependency was missing.
-            </p>
-          </article>
-
-          <article class="pin__layer glass glass--pad" data-pin-layer>
-            <p class="pin__index">02 / 03</p>
-            <h3 class="h2">Route before you generate.</h3>
-            <p class="lead" style="max-width: 46ch">
-              "Turn on the flashlight" is a command, not a prompt. ARIA scores skills by regex and
-              keyword confidence first and only reaches for a model when nothing matches — faster,
-              cheaper, and it works with the network off.
-            </p>
-          </article>
-
-          <article class="pin__layer glass glass--pad" data-pin-layer>
-            <p class="pin__index">03 / 03</p>
-            <h3 class="h2">Ship to the device.</h3>
-            <p class="lead" style="max-width: 46ch">
-              A repo is not a product. Every project here runs on hardware a normal person owns —
-              an Android phone, a webcam, a browser tab — and I keep tuning until the first-run
-              experience explains itself.
-            </p>
-          </article>
-
+  <!-- ---------- Step 01 ---------- -->
+  <div class="step">
+    <div class="shell">
+      <div class="step__inner">
+        <div class="step__copy" data-reveal>
+          <p class="step__num"><span data-clip-x>01</span><span class="step__of">/ 03</span></p>
+          <h3 class="h2">Degrade, don't break.</h3>
+          <p class="lead">
+            A user should never meet a dead end because one dependency was missing. Every project
+            here has a second path for the case where the first one isn't available.
+          </p>
         </div>
 
-        <div class="pin__rail" aria-hidden="true">
-          <span class="pin__tick is-active" data-pin-tick></span>
-          <span class="pin__tick" data-pin-tick></span>
-          <span class="pin__tick" data-pin-tick></span>
+        <div class="step__art glass glass--pad" data-reveal data-delay="120">
+          <p class="eyebrow eyebrow--plain">The fallback chain</p>
+          <ul class="step__list">
+            <li><span class="step__when">No microphone</span><span class="step__then">text input</span></li>
+            <li><span class="step__when">No API key</span><span class="step__then">offline mode</span></li>
+            <li><span class="step__when">No HealthKit module</span><span class="step__then">simulated data</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- Step 02 ---------- -->
+  <div class="step step--flip">
+    <div class="shell">
+      <div class="step__inner">
+        <div class="step__copy" data-reveal>
+          <p class="step__num"><span data-clip-x>02</span><span class="step__of">/ 03</span></p>
+          <h3 class="h2">Route before you generate.</h3>
+          <p class="lead">
+            "Turn on the flashlight" is a command, not a prompt. ARIA scores skills by regex and
+            keyword confidence first and only reaches for a model when nothing matches — faster,
+            cheaper, and it works with the network off.
+          </p>
+        </div>
+
+        <div class="step__art glass glass--pad" data-reveal data-delay="120">
+          <p class="eyebrow eyebrow--plain">Route first, model last</p>
+          <ul class="step__list">
+            <li><span class="step__when">"turn on the flashlight"</span><span class="step__then">skill match · instant</span></li>
+            <li><span class="step__when">"summarise this email"</span><span class="step__then">LLM · routed</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- Step 03 ---------- -->
+  <div class="step">
+    <div class="shell">
+      <div class="step__inner">
+        <div class="step__copy" data-reveal>
+          <p class="step__num"><span data-clip-x>03</span><span class="step__of">/ 03</span></p>
+          <h3 class="h2">Ship to the device.</h3>
+          <p class="lead">
+            A repo is not a product. Every project here runs on hardware a normal person owns, and
+            I keep tuning until the first-run experience explains itself.
+          </p>
+        </div>
+
+        <div class="step__art glass glass--pad" data-reveal data-delay="120">
+          <p class="eyebrow eyebrow--plain">Where it actually runs</p>
+          <ul class="step__list">
+            <li><span class="step__when">Android phone</span><span class="step__then">ARIA</span></li>
+            <li><span class="step__when">Webcam</span><span class="step__then">Air Canvas</span></li>
+            <li><span class="step__when">Browser tab</span><span class="step__then">Re-kollect dashboard</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -433,7 +365,8 @@
   <article class="chapter">
     <div class="shell">
       <div class="chapter__inner">
-        <div class="chapter__media glass glass--pad" data-tilt="6" data-reveal data-clip-x>
+        <div class="chapter__media glass glass--pad" data-fade data-clip-x data-pin>
+          <div class="chapter__tilt" data-tilt="6">
           <span class="chapter__tag">Technically hard</span>
           <div class="chapter__shot">
             <picture>
@@ -441,6 +374,7 @@
               <img src="assets/img/proj-aria-ai.jpg" width="1600" height="1000" loading="lazy" decoding="async"
                 alt="ARIA interface showing the skill router scoring phone control, system control and calculator, next to a wake-word ring." />
             </picture>
+          </div>
           </div>
         </div>
 
@@ -487,7 +421,8 @@
   <article class="chapter">
     <div class="shell">
       <div class="chapter__inner">
-        <div class="chapter__media glass glass--pad" data-tilt="6" data-reveal data-clip-x>
+        <div class="chapter__media glass glass--pad" data-fade data-clip-x data-pin>
+          <div class="chapter__tilt" data-tilt="6">
           <span class="chapter__tag">Real problem</span>
           <div class="chapter__shot">
             <picture>
@@ -495,6 +430,7 @@
               <img src="assets/img/proj-rekollect.jpg" width="1600" height="1000" loading="lazy" decoding="async"
                 alt="Re-kollect interface showing pickup requests with distances beside a map with collector pins." />
             </picture>
+          </div>
           </div>
         </div>
 
@@ -541,7 +477,8 @@
   <article class="chapter">
     <div class="shell">
       <div class="chapter__inner">
-        <div class="chapter__media glass glass--pad" data-tilt="6" data-reveal data-clip-x>
+        <div class="chapter__media glass glass--pad" data-fade data-clip-x data-pin>
+          <div class="chapter__tilt" data-tilt="6">
           <span class="chapter__tag">Built with a team</span>
           <div class="chapter__shot">
             <picture>
@@ -549,6 +486,7 @@
               <img src="assets/img/proj-circo.jpg" width="1600" height="1000" loading="lazy" decoding="async"
                 alt="Ignite Circle interface showing shared component layers and a branching commit graph." />
             </picture>
+          </div>
           </div>
         </div>
 
@@ -594,7 +532,8 @@
   <article class="chapter">
     <div class="shell">
       <div class="chapter__inner">
-        <div class="chapter__media glass glass--pad" data-tilt="6" data-reveal data-clip-x>
+        <div class="chapter__media glass glass--pad" data-fade data-clip-x data-pin>
+          <div class="chapter__tilt" data-tilt="6">
           <span class="chapter__tag">Product craft</span>
           <div class="chapter__shot">
             <picture>
@@ -602,6 +541,7 @@
               <img src="assets/img/proj-pulse-fit.jpg" width="1600" height="1000" loading="lazy" decoding="async"
                 alt="Pulse Fit interface showing a weekly activity bar chart beside animated progress rings." />
             </picture>
+          </div>
           </div>
         </div>
 
@@ -647,7 +587,8 @@
   <article class="chapter">
     <div class="shell">
       <div class="chapter__inner">
-        <div class="chapter__media glass glass--pad" data-tilt="6" data-reveal data-clip-x>
+        <div class="chapter__media glass glass--pad" data-fade data-clip-x data-pin>
+          <div class="chapter__tilt" data-tilt="6">
           <span class="chapter__tag">Where it started</span>
           <div class="chapter__shot">
             <picture>
@@ -655,6 +596,7 @@
               <img src="assets/img/proj-air-canvas.jpg" width="1600" height="1000" loading="lazy" decoding="async"
                 alt="Air Canvas interface mapping one to five finger gestures onto draw, hover, erase and palette modes, beside a drawn gesture path." />
             </picture>
+          </div>
           </div>
         </div>
 

@@ -3,8 +3,8 @@
  *
  * The classic bug this guards against: a panel hidden with aria-hidden="true"
  * still contains tabbable controls, so keyboard users land on invisible
- * widgets. Also checks the studio's focus trap and that dialogs do not leave
- * focus behind them when closed.
+ * widgets. Also checks that the mobile sheet does not leave focus behind it
+ * when closed.
  *
  * Run:  node tools/focus.js
  */
@@ -60,13 +60,6 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
   check('no tabbable controls inside aria-hidden subtrees',
     trapped.length === 0, trapped.slice(0, 6).join(' | '));
 
-  // The closed studio must be genuinely inert
-  const studioInert = await page.evaluate(() => {
-    const s = document.querySelector('.studio');
-    return { inert: s.hasAttribute('inert'), ariaHidden: s.getAttribute('aria-hidden') };
-  });
-  check('closed studio is inert', studioInert.inert === true, JSON.stringify(studioInert));
-
   // Tab through the whole page and confirm nothing invisible receives focus
   const focusTrail = [];
   for (let i = 0; i < 45; i++) {
@@ -96,21 +89,6 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
   check('tab order reaches a healthy number of controls',
     focusTrail.length >= 12, `${focusTrail.length} stops`);
 
-  // Studio focus trap: tabbing inside the open studio should stay inside it
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(500);
-  let escaped = false;
-  for (let i = 0; i < 40; i++) {
-    await page.keyboard.press('Tab');
-    const inside = await page.evaluate(() =>
-      !!document.activeElement?.closest('.studio'));
-    if (!inside) { escaped = true; break; }
-  }
-  check('studio traps focus while open (or closes cleanly)', escaped === false,
-    escaped ? 'focus left the dialog' : 'stayed inside');
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(500);
-
   /* ---- Mobile sheet ---- */
   const m = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await m.goto(BASE + '/', { waitUntil: 'load' });
@@ -132,10 +110,8 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
 
   const mobileInert = await m.evaluate(() => ({
     sheet: document.querySelector('.sheet').hasAttribute('inert'),
-    studio: document.querySelector('.studio').hasAttribute('inert'),
   }));
-  check('mobile sheet and studio start inert', mobileInert.sheet && mobileInert.studio,
-    JSON.stringify(mobileInert));
+  check('mobile sheet starts inert', mobileInert.sheet, JSON.stringify(mobileInert));
 
   await browser.close();
   const bad = results.filter((r) => !r.pass);

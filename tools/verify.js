@@ -2,9 +2,9 @@
  * Verification harness.
  *
  * Drives the real page in headless Chromium and asserts the behaviours the
- * design brief depends on: no console errors, reveals actually fire, the pin
- * narrative advances, the contact flow reaches its handoff slide, the studio
- * panel re-themes the document, and reduced-motion renders a static page.
+ * design brief depends on: no console errors, reveals actually fire, the
+ * contact flow reaches its handoff slide, and reduced-motion renders a static
+ * page.
  *
  * Run:  node tools/verify.js
  */
@@ -83,19 +83,52 @@ async function main() {
     getComputedStyle(document.documentElement).getPropertyValue('--page-progress').trim());
   check('page progress rail advances', parseFloat(prog) > 0, prog);
 
-  // Pin narrative: scroll into it and confirm the active layer changes
-  const pinTop = await page.evaluate(() => {
-    const el = document.querySelector('[data-pin]');
-    return el.getBoundingClientRect().top + window.scrollY;
-  });
-  const layer0 = await page.evaluate(() =>
-    document.querySelectorAll('[data-pin-layer]')[0].classList.contains('is-active'));
-  await page.evaluate((y) => window.scrollTo(0, y + 900), pinTop);
+  // Method section: three rules, each revealed as its own band
+  const stepCount = await page.evaluate(() => document.querySelectorAll('#method .step').length);
+  check('method section renders three steps', stepCount === 3, `${stepCount} steps`);
+  // Walk the section band by band: each step is taller than the viewport, so
+  // one scroll to the top only ever reveals the first.
+  for (const el of await page.$$('#method .step')) {
+    await el.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(700);
+  }
+  await page.waitForTimeout(900);
+  const stepsIn = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#method .step [data-reveal]')).every((e) =>
+      e.classList.contains('is-in')));
+  const total = await page.evaluate(() =>
+    document.querySelectorAll('#method .step [data-reveal]').length);
+  check('method steps reveal on scroll', stepsIn, `allRevealed=${stepsIn} of ${total}`);
+
+  // Regression: clip-revealed elements must actually reveal. A clipped element
+  // reports intersectionRatio 0, so a non-zero observer threshold silently
+  // leaves every project image invisible.
+  for (const el of await page.$$('.chapter__media')) {
+    await el.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(450);
+  }
   await page.waitForTimeout(700);
-  const activeIdx = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('[data-pin-layer]')).findIndex((l) =>
-      l.classList.contains('is-active')));
-  check('pin narrative advances past layer 0', layer0 && activeIdx > 0, `active=${activeIdx}`);
+  const clips = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('.chapter__media, .step__num [data-clip-x]')).map((e) => ({
+      isIn: e.classList.contains('is-in'),
+      op: getComputedStyle(e).opacity,
+    })));
+  const clipsOk = clips.length > 0 && clips.every((c) => c.isIn && Number(c.op) > 0.9);
+  check('clip-revealed media becomes visible', clipsOk,
+    `${clips.filter((c) => c.isIn).length}/${clips.length} revealed`);
+
+  // Fixed backdrop parallax: the layer must actually translate with scroll.
+  const parStart = await page.evaluate(() => {
+    window.scrollTo(0, 0);
+    return getComputedStyle(document.querySelector('[data-parallax-fixed]')).transform;
+  });
+  await page.evaluate(() => window.scrollTo(0, 2000));
+  await page.waitForTimeout(500);
+  const parEnd = await page.evaluate(() =>
+    getComputedStyle(document.querySelector('[data-parallax-fixed]')).transform);
+  check('backdrop layers parallax on scroll', parStart !== parEnd, `${parStart} → ${parEnd}`);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(400);
 
   // Stagger group resolves (children carry .is-in, since each is observed)
   await page.evaluate(() => document.querySelector('#about').scrollIntoView());
@@ -159,44 +192,6 @@ async function main() {
     Array.from(document.querySelectorAll('[data-flow-slide]')).findIndex((s) =>
       s.classList.contains('is-active')));
   check('flow back button steps backwards', afterBack === 2, `active=${afterBack}`);
-
-  // Studio: palette switch retints tokens
-  const before = await page.evaluate(() =>
-    getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(500);
-  await page.click('[data-palette-btn="ember"]');
-  await page.waitForTimeout(400);
-  const after = await page.evaluate(() =>
-    getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
-  check('studio palette switch retints the theme', before !== after, `${before} → ${after}`);
-
-  // Title customisation
-  await page.fill('[data-title-input]', 'Custom Title Test');
-  await page.waitForTimeout(300);
-  const title = await page.title();
-  check('studio edits the document title', title === 'Custom Title Test', title);
-
-  // Favicon customisation
-  await page.click('[data-favicon-btn="orbit"]');
-  await page.waitForTimeout(300);
-  const fav = await page.getAttribute('link[rel="icon"][type="image/svg+xml"]', 'href');
-  check('studio swaps the favicon', /image\/svg\+xml/.test(fav || '') && /ellipse/.test(decodeURIComponent(fav || '')));
-
-  // Prefs persist across a reload
-  await page.reload({ waitUntil: 'load' });
-  await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
-  await page.waitForTimeout(900);
-  const persisted = await page.evaluate(() => document.documentElement.dataset.palette);
-  check('studio preferences persist', persisted === 'ember', persisted);
-
-  // Reset clears
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(400);
-  await page.click('[data-reset]');
-  await page.waitForTimeout(500);
-  const resetPal = await page.evaluate(() => document.documentElement.dataset.palette || '');
-  check('studio reset returns to defaults', resetPal === '', resetPal || '(none)');
 
   // Screenshots for eyeballing
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -266,8 +261,98 @@ async function main() {
   const rmScrub = await rmPage.evaluate(() =>
     document.querySelector('[data-scrub]').style.getPropertyValue('--scrub-y'));
   check('reduced motion disables scrub transforms', !rmScrub, rmScrub || '(none)');
+  const rmPin = await rmPage.evaluate(() => {
+    const m = document.querySelector('[data-pin]');
+    return {
+      position: getComputedStyle(m).position,
+      pin: m.style.getPropertyValue('--pin-s'),
+    };
+  });
+  check('reduced motion disables the pin transform',
+    rmPin.position === 'static' && !rmPin.pin,
+    `position=${rmPin.position} --pin-s=${rmPin.pin || '(none)'}`);
   await rmPage.screenshot({ path: path.join(OUT, 'reduced-motion.png') });
   await rm.close();
+
+  /* ---------- Pin + transform ---------- */
+  // The brief calls for "pin + transform": the project card should hold still
+  // while its (taller) copy column scrolls past, with the scroll range mapped
+  // onto a settle transform. A regression here is silent — the page still
+  // works, it just quietly loses the effect.
+  {
+    const pinPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await pinPage.goto(BASE + '/', { waitUntil: 'load' });
+    await pinPage.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    await pinPage.waitForTimeout(1200);
+
+    const geo = await pinPage.evaluate(() => {
+      const ch = document.querySelector('.chapter');
+      const media = ch.querySelector('.chapter__media');
+      const copy = ch.querySelector('.chapter__copy');
+      return {
+        chapterTop: Math.round(ch.getBoundingClientRect().top + window.scrollY),
+        mediaH: Math.round(media.getBoundingClientRect().height),
+        copyH: Math.round(copy.getBoundingClientRect().height),
+        position: getComputedStyle(media).position,
+      };
+    });
+
+    check('chapter card is a sticky pin target', geo.position === 'sticky',
+      `position: ${geo.position}`);
+    // Pinning only reads as an effect if there is room to scroll while stuck.
+    check('copy column is taller than the pinned card',
+      geo.copyH > geo.mediaH + 80,
+      `copy ${geo.copyH}px vs card ${geo.mediaH}px`);
+
+    const tops = [];
+    for (let i = 0; i < 7; i += 1) {
+      await pinPage.evaluate((yy) => window.scrollTo(0, yy), geo.chapterTop - 200 + i * 140);
+      await pinPage.waitForTimeout(240);
+      tops.push(await pinPage.evaluate(() =>
+        Math.round(document.querySelector('.chapter__media').getBoundingClientRect().top)));
+    }
+
+    // Once pinned the card must hold the same viewport offset for consecutive
+    // steps, then release as the chapter leaves.
+    const held = tops.slice(1, -1).some((t, i) => Math.abs(t - tops[i + 2]) <= 2);
+    check('card stays pinned while the copy scrolls', held, `tops: ${tops.join(', ')}`);
+
+    const pinT = await pinPage.evaluate(() => {
+      const cs = getComputedStyle(document.querySelector('.chapter__media'));
+      return { transform: cs.transform, pinS: cs.getPropertyValue('--pin-s').trim() };
+    });
+    check('pin drives a scroll-mapped transform',
+      pinT.transform !== 'none' && pinT.pinS !== '',
+      `transform=${pinT.transform} --pin-s=${pinT.pinS}`);
+    await pinPage.close();
+  }
+
+  /* ---------- Fast-scroll resilience ---------- */
+  // Reveals are scroll-triggered, so a reader who flings the page (or jumps via
+  // an anchor) must never land on content that is on screen but still at
+  // opacity 0. Anything visible in the viewport has to have resolved.
+  {
+    const fling = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await fling.goto(BASE + '/', { waitUntil: 'load' });
+    await fling.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    await fling.waitForTimeout(1200);
+    await fling.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await fling.waitForTimeout(2000);
+
+    const stranded = await fling.evaluate(() => {
+      const vh = window.innerHeight;
+      const els = [...document.querySelectorAll(
+        '[data-reveal],[data-fade],[data-clip],[data-clip-x],[data-stagger]>*')];
+      return els.filter((e) => {
+        const r = e.getBoundingClientRect();
+        const onScreen = r.top < vh && r.bottom > 0 && r.height > 0;
+        return onScreen && parseFloat(getComputedStyle(e).opacity) < 0.9;
+      }).map((e) => String(e.className).split(' ')[0]);
+    });
+    check('fast scroll never strands visible content', stranded.length === 0,
+      stranded.slice(0, 4).join(', '));
+    await fling.close();
+  }
 
   await browser.close();
 
