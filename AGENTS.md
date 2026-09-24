@@ -2,92 +2,50 @@
 
 Portfolio site for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer.
 
-React 19 + TypeScript + Tailwind 3 + Framer Motion + Lucide React, bundled by Vite.
-Single page, dark theme (`#0C0C0C`), Kanit from Google Fonts. The audience is a
-hiring manager who should understand "who / what / why talk to me" in 30–90 seconds.
-
-The previous static-HTML build (authoring studio, matrix rain, loader, theme
-switcher, `tools/` QA suites) was replaced wholesale. Do not reintroduce it.
+**Zero-build static site.** One `index.html` holds the markup, the styles and the scripts.
+Tailwind arrives from `cdn.tailwindcss.com`, Lucide from `unpkg.com/lucide@latest`, Kanit from
+Google Fonts. There is no npm, no bundler, no React, and no build step. The prior
+React + Vite + Framer Motion build (and the static-HTML authoring studio before it) was removed
+wholesale. Do not reintroduce either.
 
 ## Layout
 
 ```
-index.html                    document shell, Kanit font, page title, favicon link
-src/main.tsx                  React entry
-src/index.css                 global reset, #0C0C0C, .hero-heading gradient
-src/App.tsx                   section order + MotionConfig(reducedMotion="user")
-src/sections/                 Hero, Marquee, About, Services, Projects, Contact
-src/components/
-  ContactButton.tsx           gradient pill CTA
-  LiveProjectButton.tsx       ghost outline link to GitHub
-  Magnet.tsx                  cursor-following magnetic hover
-  AnimatedText.tsx            scroll-driven character-by-character reveal
-  CornerGraphics.tsx          inline SVG corner decorations for About
-public/                       favicon.svg, robots.txt, sitemap.xml, CNAME, .nojekyll
-.github/workflows/deploy.yml  build dist/ and publish to GitHub Pages
+index.html                    the entire site
+favicon.svg                   favicon referenced by index.html
+CNAME                         tamif.is-a.dev
+robots.txt, sitemap.xml       crawler metadata
+.nojekyll                     skips Jekyll on GitHub Pages
+.github/workflows/deploy.yml  uploads the repo root as the Pages artifact
 ```
 
-## Commands
+## Preview
 
 ```bash
-npm install
-npm run dev        # dev server on http://localhost:12000
-npm run build      # tsc --noEmit && vite build
-npm run preview    # serve the built bundle on port 12000
+python3 -m http.server 12000   # then open http://localhost:12000
 ```
 
 ## Conventions
 
-**Transform ownership — the one that bites.** Framer Motion writes an inline
-`transform` for any entrance/`whileInView` animation, and that overrides
-Tailwind's `translate-*` classes on the *same* element. Never put both on one
-node. The hero portrait is the worked example: an absolutely-positioned wrapper
-carries `left-1/2 -translate-x-1/2`, and the `motion.div` entrance animation sits
-on a child inside it. Collapsing them shifts the portrait right by half its width
-and `overflow-x: clip` hides the evidence instead of failing loudly. Tailwind's
-`sm:-translate-y-0` and `sm:translate-y-0` also collide in this file — the latter
-wins the emitted CSS, so the mobile `-translate-y-1/2` centring is intentionally
-dropped at `sm` where the portrait is bottom-anchored instead.
+**Deploy path.** The workflow runs `actions/upload-pages-artifact` with `path: .`, so the repo
+root *is* the artifact and root-relative URLs like `favicon.svg` resolve. `.nojekyll` and `CNAME`
+sit at the root for the same reason — moving them into a subdirectory silently drops the custom
+domain.
 
-**Full-bleed headings.** `.hero-heading` consumers are sized in `vw` units, so
-their container must carry no horizontal padding — padding shears the outermost
-glyphs. The `overflow-hidden` wrapper that clips the entrance animation masks it.
+**Marquee.** Both rows are built in JS from the `STACK` and `TOOLING` arrays, each rendered
+twice. The `@keyframes` translate exactly `-50%`, which is one full set, so the loop wraps with
+no blank space. Row 1 moves right, row 2 moves left. Every tile is `420px x 270px`, `#141414`,
+`rounded-2xl`.
 
-**Scroll-driven work.** The marquee offset is `(scrollY - sectionTop +
-innerHeight) * 0.3`. Row 1 advances with `translateX(offset - 200)`, row 2 with
-`translateX(-(offset - 200))`, so they drift in opposite directions. Each row is
-rendered three times and shifted by `-33.333%` — exactly one full set, because
-percentage translates resolve against the *node's* own width, not the viewport.
-Without that shift the loop exposes blank space in the sideways direction.
+**Animation is opt-in.** Marquee keyframes and the magnetic portrait are both gated behind
+`prefers-reduced-motion: no-preference`, and the bio/stack effects are plain scroll listeners
+with a per-word opacity floor of `0.2`, so no copy is ever fully invisible.
 
-**Tokens vs literals.** There is no `tokens.css` any more; the palette is the
-literal `#0C0C0C` (surface), `#141414` (raised card), `#D7E2EA` (body text on
-dark), and the `#646973 → #BBCCD7` gradient. Body copy over dark surfaces uses
-`#D7E2EA`, which clears WCAG AA. Keep new small labels at or above that.
+**Palette.** Literal `#0C0C0C` (surface), `#141414` (raised card), `#D7E2EA` (body text on dark),
+and the `#646973 → #BBCCD7` gradient in `.hero-heading`. Services is the only white surface;
+Projects overlaps it with `-mt-12` and a `rounded-t-[50px]` top so the sections read as a stack.
 
-**Sections that stack.** Services is the only white surface and its wrapper has
-no `overflow-hidden`; Projects pulls itself up (`-mt-10 sm:-mt-12 md:-mt-14`,
-`z-10`) so the Services rounded top corners read as a stack. That negative margin
-is why `#projects` needs its own `overflowX: clip`: `#projects` is a containing
-block for the sticky cards, so it is the element that would otherwise grow a
-horizontal scrollbar from the marquee-width rows.
-
-**Content truthfulness.** Project copy must match the repository it links to.
-Verify a claim against the README before writing it. Lumina appears as
-participation in the Prometheus AI Hackathon; a "4th place" ranking was
-deliberately removed — do not reinstate it. All project links currently point at
-the GitHub profile `https://github.com/dontman-tech`; swap in per-repo URLs only
-once the repo actually exists.
-
-**Accessibility.** `MotionConfig reducedMotion="user"` honours
-`prefers-reduced-motion` for all Framer animations. Decorative SVGs are
-`aria-hidden`. The character reveal animates opacity only, and every glyph holds
-0.2 as its floor, so no copy is ever fully invisible.
-
-## Deployment
-
-GitHub Pages at `tamif.is-a.dev`, via `.github/workflows/deploy.yml`, which
-builds `dist/` and publishes it. `public/CNAME` pins the custom domain and
-`public/.nojekyll` skips Jekyll. Because the workflow uploads `dist/` (not the
-repo root), both files must live in `public/` to be copied into the artifact —
-putting them in the repo root silently drops the custom domain.
+**Content truthfulness.** Project copy must match the repository it links to; verify a claim
+against the README before writing it. Lumina appears as participation in the Prometheus AI
+Hackathon — a "4th place" ranking was deliberately removed, do not reinstate it. All project links
+point at `https://github.com/dontman-tech`; swap in per-repo URLs only once the repo exists.

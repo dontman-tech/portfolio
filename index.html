@@ -4,21 +4,659 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0C0C0C" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta
       name="description"
       content="Tabe Miracle Fiagmenyi (TAMIF) — full-stack and applied AI engineer shipping complete products end to end."
     />
     <title>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { kanit: ['Kanit', 'sans-serif'] },
+            colors: {
+              surface: '#0C0C0C',
+              raised: '#141414',
+              body: '#D7E2EA',
+            },
+          },
+        },
+      };
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        background-color: #0c0c0c;
+      }
+
+      body {
+        font-family: 'Kanit', sans-serif;
+        color: #d7e2ea;
+        overflow-x: clip;
+      }
+
+      .hero-heading {
+        background: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+
+      .cta-gradient {
+        background: linear-gradient(
+          123deg,
+          #18011f 7%,
+          #b600a8 37%,
+          #7621b0 72%,
+          #be4c00 100%
+        );
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35),
+          inset 0 -8px 18px rgba(0, 0, 0, 0.35), 0 14px 34px rgba(182, 0, 168, 0.28);
+      }
+
+      /* Marquee ------------------------------------------------------------ */
+      .marquee-row {
+        display: flex;
+        gap: 1rem;
+        width: max-content;
+        will-change: transform;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .marquee-row--right {
+          animation: marquee-right 46s linear infinite;
+        }
+        .marquee-row--left {
+          animation: marquee-left 46s linear infinite;
+        }
+      }
+
+      @keyframes marquee-right {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes marquee-left {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-row {
+          transform: translateX(0);
+        }
+      }
+
+      /* Corner graphics ---------------------------------------------------- */
+      @keyframes float-slow {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-14px) rotate(4deg);
+        }
+      }
+
+      .float-icon {
+        animation: float-slow 7s ease-in-out infinite;
+      }
+
+      /* Bio word reveal ---------------------------------------------------- */
+      .bio-word {
+        opacity: 0.2;
+        transition: opacity 180ms linear;
+      }
+
+      /* Project stacking --------------------------------------------------- */
+      .stack-card {
+        transition: transform 120ms linear, opacity 120ms linear;
+      }
+
+      .magnetic-inner {
+        will-change: transform;
+        transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    </style>
   </head>
+
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="top" class="relative w-full min-h-screen bg-[#0C0C0C]" style="overflow-x: clip">
+      <!-- ============================== HERO ============================== -->
+      <section
+        id="hero"
+        class="relative flex min-h-screen w-full flex-col justify-between bg-[#0C0C0C] px-6 pt-8 sm:px-10"
+      >
+        <!-- Navbar -->
+        <nav
+          class="relative z-20 flex w-full items-center justify-between text-[0.7rem] sm:text-sm"
+        >
+          <a href="#about" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">About</a>
+          <a href="#services" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Services</a>
+          <a href="#projects" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Projects</a>
+          <a href="#contact" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Contact</a>
+        </nav>
+
+        <!-- Heading -->
+        <div class="relative z-0 mt-10 w-full overflow-hidden">
+          <h1
+            class="hero-heading font-black uppercase leading-none tracking-tight whitespace-nowrap text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]"
+          >
+            Hi, i'm tamif
+          </h1>
+        </div>
+
+        <!-- Portrait -->
+        <div class="pointer-events-none absolute bottom-0 left-1/2 z-10 w-[280px] -translate-x-1/2 sm:w-[360px] md:w-[440px] lg:w-[520px]">
+          <div id="portrait-magnet" class="magnetic-inner pointer-events-auto">
+            <img
+              src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
+              alt="Portrait of Tabe Miracle Fiagmenyi"
+              class="block h-auto w-full select-none"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="relative z-20 flex w-full items-end justify-between gap-6 pb-8">
+          <p
+            class="max-w-[260px] font-light uppercase tracking-wide text-[#D7E2EA]"
+            style="font-size: clamp(0.75rem, 1.4vw, 1.5rem)"
+          >
+            a full-stack &amp; applied ai engineer shipping complete products end to end
+          </p>
+
+          <a
+            href="#contact"
+            class="nav-link cta-gradient inline-flex shrink-0 items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white transition-transform duration-200 hover:scale-105 sm:text-base"
+          >
+            Contact Me
+            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============================ MARQUEE ============================ -->
+      <section class="w-full bg-[#0C0C0C] pt-24 pb-10">
+        <div class="w-full overflow-hidden">
+          <div class="marquee-row marquee-row--right" data-marquee="right"></div>
+        </div>
+        <div class="mt-6 w-full overflow-hidden">
+          <div class="marquee-row marquee-row--left" data-marquee="left"></div>
+        </div>
+      </section>
+
+      <!-- ============================= ABOUT ============================= -->
+      <section
+        id="about"
+        class="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0C0C0C] px-6 py-24 sm:px-10"
+      >
+        <!-- Corner graphics -->
+        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+          <span class="float-icon absolute left-8 top-16 text-[#D7E2EA]/25 sm:left-16 sm:top-24">
+            <i data-lucide="box" class="h-12 w-12 sm:h-20 sm:w-20"></i>
+          </span>
+          <span class="float-icon absolute right-8 top-24 text-[#D7E2EA]/25 sm:right-20" style="animation-delay: 1.4s">
+            <i data-lucide="pyramid" class="h-12 w-12 sm:h-20 sm:w-20"></i>
+          </span>
+          <span class="float-icon absolute bottom-24 left-10 text-[#D7E2EA]/25 sm:left-24" style="animation-delay: 2.6s">
+            <i data-lucide="orbit" class="h-12 w-12 sm:h-20 sm:w-20"></i>
+          </span>
+          <span class="float-icon absolute bottom-16 right-10 text-[#D7E2EA]/25 sm:right-24" style="animation-delay: 3.6s">
+            <i data-lucide="diamond" class="h-12 w-12 sm:h-20 sm:w-20"></i>
+          </span>
+        </div>
+
+        <div class="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center">
+          <h2
+            class="hero-heading text-center font-black uppercase leading-none tracking-tight"
+            style="font-size: clamp(3rem, 12vw, 160px)"
+          >
+            About me
+          </h2>
+          <p
+            id="bio"
+            class="mt-10 max-w-3xl text-center text-base font-light leading-relaxed text-[#D7E2EA] sm:text-xl md:text-2xl"
+          >
+            I am a Computer Engineering student at the University of Buea and a full-stack &amp;
+            applied AI engineer who ships complete products end to end. With experience spanning
+            Python, TypeScript, React, Next.js, Flutter, and on-device voice/vision pipelines, I
+            specialise in turning ideas into production-ready MVPs under tight deadlines. I care
+            deeply about graceful degradation, offline-first paths, and interfaces a first-time user
+            understands without a manual. Let's build something incredible together!
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================ SERVICES =========================== -->
+      <section
+        id="services"
+        class="relative w-full rounded-t-[50px] bg-[#FFFFFF] px-8 py-24 text-[#0C0C0C]"
+      >
+        <h2
+          class="text-center font-black uppercase leading-none tracking-tight"
+          style="font-size: clamp(3rem, 12vw, 160px)"
+        >
+          Services
+        </h2>
+
+        <ul class="mx-auto mt-16 max-w-5xl divide-y divide-[#0C0C0C]/15 border-y border-[#0C0C0C]/15">
+          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
+            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">01</span>
+            <div>
+              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                Full-Stack Web &amp; Mobile Development
+              </h3>
+              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
+                Building responsive frontends with React 19, Next.js 16, and Tailwind 4, alongside
+                cross-platform mobile applications using React Native, Expo, and Flutter.
+              </p>
+            </div>
+          </li>
+          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
+            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">02</span>
+            <div>
+              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                Applied AI &amp; Computer Vision Integration
+              </h3>
+              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
+                Architecting voice/vision pipelines, prompt engineering, and integrating DeepSeek
+                API, OpenAI, Claude, MediaPipe, and OpenCV into production systems.
+              </p>
+            </div>
+          </li>
+          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
+            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">03</span>
+            <div>
+              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                Backend &amp; API Engineering
+              </h3>
+              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
+                Designing robust server-side logic, custom APIs, and microservices using Python
+                (Flask, FastAPI), Node.js, Supabase, and Firebase (Auth/Firestore/FCM).
+              </p>
+            </div>
+          </li>
+          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
+            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">04</span>
+            <div>
+              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                Resilient &amp; Offline-First System Design
+              </h3>
+              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
+                Engineering applications with graceful degradation, offline-first fallback modes,
+                and native Android bridges for hardware interaction.
+              </p>
+            </div>
+          </li>
+          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
+            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">05</span>
+            <div>
+              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                Rapid MVP Development &amp; Prototyping
+              </h3>
+              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
+                Taking ideas from a blank repository to fully functional MVPs under tight timelines,
+                backed by hackathon award-winning execution.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================ PROJECTS =========================== -->
+      <section
+        id="projects"
+        class="relative z-10 -mt-12 w-full rounded-t-[50px] bg-[#0C0C0C] px-6 pb-40 pt-24 sm:px-10"
+        style="overflow-x: clip"
+      >
+        <h2
+          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
+          style="font-size: clamp(3rem, 12vw, 160px)"
+        >
+          Projects
+        </h2>
+
+        <div class="mx-auto mt-20 max-w-4xl" data-stack>
+          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Applied AI / Voice Assistant</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">ARIA Voice AI Assistant</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              Voice-first assistant featuring a modular skill router, long-term memory, offline
+              deterministic fallbacks, and an Android bridge server controlling device Wi-Fi,
+              flashlight, alarms, and screenshots.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Kotlin</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flask</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">PWA</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+
+          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Mobile App / Marketplace</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              Two-sided marketplace connecting waste generators to independent collectors with
+              role-based auth, Firestore lifecycle, map pinning with Nominatim geocoding, and FCM
+              fan-out.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flutter</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Dart</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Firebase</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">OSM</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+
+          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Applied AI Platform</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Lumina AI-Driven Platform</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              AI-driven platform connecting Supabase and DeepSeek API to process dynamic user
+              requests under tight 15-hour hackathon constraints.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">JavaScript</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Supabase</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">DeepSeek API</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+
+          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Computer Vision / Gesture Control</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Air Canvas Gesture Drawing</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              Air-drawing application with a five-gesture mode machine (draw, hover, erase, palette,
+              clear) tuned for real-time webcam finger and pinch tracking.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">MediaPipe</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">OpenCV</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+
+          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Web Security / Utility</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">NESAC Password Strength Checker</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              Security tool that scores password resilience, explains vulnerabilities in plain
+              language, and generates secure passphrases.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flask</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">JavaScript</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+
+          <article class="stack-card sticky top-24 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Mobile App / Health</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+              Fitness application with custom workout plans, animated progress rings, bidirectional
+              Apple HealthKit/Google Fit sync, and simulated data fallbacks.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">React Native</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Expo</span>
+              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">HealthKit</span>
+            </div>
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================ CONTACT ============================ -->
+      <section id="contact" class="relative w-full bg-[#0C0C0C] px-8 py-20">
+        <h2
+          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
+          style="font-size: clamp(2.5rem, 10vw, 140px)"
+        >
+          Let's Work Together
+        </h2>
+
+        <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
+          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="map-pin" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+            <span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Location</span>
+              <span class="block text-base text-[#D7E2EA]">Buea, Cameroon</span>
+            </span>
+          </a>
+
+          <a href="mailto:tabe7143@gmail.com" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="mail" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+            <span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Email</span>
+              <span class="block text-base text-[#D7E2EA]">tabe7143@gmail.com</span>
+            </span>
+          </a>
+
+          <a href="tel:+237680553744" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="phone" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+            <span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Phone / WhatsApp</span>
+              <span class="block text-base text-[#D7E2EA]">(+237) 680-553-744</span>
+            </span>
+          </a>
+
+          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="github" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+            <span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">GitHub</span>
+              <span class="block text-base text-[#D7E2EA]">github.com/dontman-tech</span>
+            </span>
+          </a>
+
+          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80 sm:col-span-2">
+            <i data-lucide="linkedin" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+            <span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">LinkedIn</span>
+              <span class="block text-base text-[#D7E2EA]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
+            </span>
+          </a>
+        </div>
+
+        <p class="mt-16 text-center text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/40">
+          &copy; <span id="year">2026</span> Tabe Miracle Fiagmenyi — TAMIF
+        </p>
+      </section>
+    </div>
+
+    <script>
+      const STACK = [
+        { title: 'Python', tag: 'Language' },
+        { title: 'JavaScript', tag: 'Language' },
+        { title: 'React 19', tag: 'Frontend' },
+        { title: 'Next.js 16', tag: 'Framework' },
+        { title: 'React Native', tag: 'Mobile' },
+        { title: 'Expo', tag: 'Mobile' },
+        { title: 'Tailwind 4', tag: 'Styling' },
+        { title: 'Node.js', tag: 'Backend' },
+        { title: 'Flask', tag: 'Backend' },
+        { title: 'FastAPI', tag: 'Backend' },
+        { title: 'Supabase', tag: 'Backend as a Service' },
+      ];
+
+      const TOOLING = [
+        { title: 'Firebase', tag: 'Backend as a Service' },
+        { title: 'Flutter', tag: 'Mobile' },
+        { title: 'Dart', tag: 'Language' },
+        { title: 'OpenCV', tag: 'Computer Vision' },
+        { title: 'MediaPipe', tag: 'Computer Vision' },
+        { title: 'DeepSeek API', tag: 'Applied AI' },
+        { title: 'Docker', tag: 'DevOps' },
+        { title: 'Git', tag: 'Version Control' },
+        { title: 'REST APIs', tag: 'Backend' },
+        { title: 'SQLite', tag: 'Database' },
+        { title: 'HealthKit', tag: 'Health' },
+      ];
+
+      function marqueeTile(item) {
+        const tile = document.createElement('div');
+        tile.className =
+          'flex h-[270px] w-[420px] shrink-0 flex-col justify-between rounded-2xl border border-[#D7E2EA]/20 bg-[#141414] p-8 shadow-[inset_0_1px_0_rgba(215,226,234,0.06),0_0_40px_rgba(215,226,234,0.04)]';
+        tile.innerHTML =
+          '<span class="text-xs font-medium uppercase tracking-[0.25em] text-[#D7E2EA]/50"></span>' +
+          '<span class="text-3xl font-semibold text-[#D7E2EA] sm:text-4xl"></span>';
+        const [tag, title] = tile.children;
+        tag.textContent = item.tag;
+        title.textContent = item.title;
+        return tile;
+      }
+
+      function fillMarquee(selector, items) {
+        const row = document.querySelector(selector);
+        if (!row) return;
+        // Two identical sets: the CSS keyframe translates exactly -50%, which is
+        // one full set, so the loop wraps seamlessly.
+        for (let set = 0; set < 2; set++) {
+          items.forEach((item) => row.appendChild(marqueeTile(item)));
+        }
+      }
+
+      fillMarquee('[data-marquee="right"]', STACK);
+      fillMarquee('[data-marquee="left"]', TOOLING);
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      /* Smooth scroll from nav links (also covers the CTA buttons). */
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const target = document.querySelector(link.getAttribute('href'));
+          if (!target) return;
+          event.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', link.getAttribute('href'));
+        });
+      });
+
+      /* Magnetic cursor on the hero portrait. */
+      const portrait = document.getElementById('portrait-magnet');
+      const magneticEnabled = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+      if (portrait && magneticEnabled) {
+        const strength = 0.18;
+        window.addEventListener('mousemove', (event) => {
+          const rect = portrait.getBoundingClientRect();
+          const dx = event.clientX - (rect.left + rect.width / 2);
+          const dy = event.clientY - (rect.top + rect.height / 2);
+          portrait.style.transform =
+            'translate3d(' + dx * strength + 'px,' + dy * strength + 'px,0)';
+        });
+      }
+
+      /* Scroll-driven bio reveal, word by word. */
+      const bio = document.getElementById('bio');
+      if (bio) {
+        const words = bio.textContent.trim().split(/\s+/);
+        bio.textContent = '';
+        const spans = words.map((word, index) => {
+          const span = document.createElement('span');
+          span.className = 'bio-word';
+          span.textContent = word;
+          bio.appendChild(span);
+          if (index < words.length - 1) bio.appendChild(document.createTextNode(' '));
+          return span;
+        });
+
+        const reveal = () => {
+          const rect = bio.getBoundingClientRect();
+          const start = window.innerHeight * 0.9;
+          const end = window.innerHeight * 0.35;
+          const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1);
+          const filled = progress * spans.length;
+          spans.forEach((span, index) => {
+            // Floor of 0.2 keeps every glyph legible; the reveal only adds contrast.
+            const local = Math.min(Math.max(filled - index, 0), 1);
+            span.style.opacity = (0.2 + local * 0.8).toFixed(3);
+          });
+        };
+
+        window.addEventListener('scroll', reveal, { passive: true });
+        window.addEventListener('resize', reveal);
+        reveal();
+      }
+
+      /* Project cards stack as they scroll past the sticky anchor. */
+      const stackCards = Array.from(document.querySelectorAll('.stack-card'));
+      const updateStack = () => {
+        stackCards.forEach((card, index) => {
+          const next = stackCards[index + 1];
+          if (!next) {
+            card.style.transform = 'scale(1)';
+            card.style.opacity = '1';
+            return;
+          }
+          const nextTop = next.getBoundingClientRect().top;
+          const travel = next.offsetHeight + 40;
+          const progress = Math.min(Math.max((travel - (nextTop - 96)) / travel, 0), 1);
+          card.style.transform = 'scale(' + (1 - progress * 0.05).toFixed(4) + ')';
+          card.style.opacity = (1 - progress * 0.35).toFixed(3);
+        });
+      };
+
+      window.addEventListener('scroll', updateStack, { passive: true });
+      window.addEventListener('resize', updateStack);
+      updateStack();
+    </script>
   </body>
 </html>
