@@ -47,6 +47,11 @@
 
       html {
         scroll-behavior: smooth;
+        /* Mobile engines (notably iOS Safari) otherwise inflate font sizes on
+           wide/landscape viewports, which would reflow copy relative to desktop.
+           Pinning the adjustment keeps every device profile on the same metrics. */
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
       }
 
       html,
@@ -320,7 +325,7 @@
         </nav>
 
         <!-- Heading -->
-        <div class="relative z-20 mt-10 w-full overflow-hidden">
+        <div class="relative z-0 mt-10 w-full overflow-hidden">
           <h1
             class="hero-heading font-black uppercase leading-none tracking-tight whitespace-nowrap text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]"
           >

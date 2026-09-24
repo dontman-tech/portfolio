@@ -81,16 +81,29 @@ The `[hidden] { display: none !important }` rule is required — `.portrait-fall
 `display: flex` and the `img` carries Tailwind's `block`, both of which would otherwise beat the
 `hidden` attribute and leave both visible at once.
 
-**Hero heading sits over the portrait.** The `h1` wrapper carries `z-20` and the absolutely
-positioned portrait wrapper carries `z-10`, so the glyphs paint on top of the image where the two
-overlap. Keep the heading's own wrapper above the portrait; swapping them lets the image cover the
-text and the `overflow-x: clip` on the layout wrapper hides the regression instead of failing
-loudly. The heading wrapper must also stay free of horizontal padding — `.hero-heading` is sized
-in `vw`, so padding shears the outermost glyphs.
+**Hero heading sits behind the portrait.** The `h1` wrapper carries `z-0` and the absolutely
+positioned portrait wrapper carries `z-10`, so the image paints *over* the heading where the two
+overlap and the top of the portrait reads as a cut-out against the glyphs. This is deliberate:
+raising the heading to `z-20` was tried and reverted, because it buried the portrait behind the
+text. Keep the heading's own wrapper below the portrait, and keep that wrapper free of horizontal
+padding — `.hero-heading` is sized in `vw`, so padding shears the outermost glyphs. Note
+`overflow-x: clip` on both the layout wrapper and `body` hides this class of regression instead of
+failing loudly, so verify the stacking with a pixel probe rather than by eye.
 
 **About CTA.** "More about me" is an `<a>` to the GitHub profile with
 `rel="noopener noreferrer"`, alongside the other outbound links. It is styled as a bordered pill
 rather than the gradient `.card` CTA so it reads as secondary to "Contact me".
+
+**Cross-engine text metrics differ by design, not by bug.** Chromium quantises every Kanit glyph
+advance to whole pixels, while Firefox and WebKit keep subpixel advances and agree with each other
+to under 0.02px. Chromium therefore measures the same string up to ~2% wider, which can tip a
+tight paragraph onto one extra line at a given width (the Services descriptions at 430px are the
+worked example). This is rasteriser behaviour and no CSS property can reconcile it. Layout boxes,
+section heights at 390/768/1024/1440/1920, sticky offsets, and gradient text all match exactly
+across the three engines — verify with a geometry probe, and treat a lone pixel diff in a text
+block as expected. Do not "fix" it by shrinking copy or padding: it only moves which width wraps.
+`-webkit-text-size-adjust: 100%` is pinned on `html` so iOS Safari cannot inflate text on wide
+viewports and diverge from the desktop metrics.
 
 **Content truthfulness.** Project copy must match the repository it links to; verify a claim
 against the README before writing it. Lumina appears as participation in the Prometheus AI
