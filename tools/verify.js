@@ -141,7 +141,7 @@ async function main() {
 
   const mailHref = await page.getAttribute('[data-flow-mail]', 'href');
   check('handoff builds a real mailto with subject+body',
-    /^mailto:tamif@dontman\.tech\?subject=/.test(mailHref || '') && /body=/.test(mailHref || ''),
+    /^mailto:tabe7143@gmail.com\?subject=/.test(mailHref || '') && /body=/.test(mailHref || ''),
     (mailHref || '').slice(0, 70));
 
   const recapRows = await page.evaluate(() =>

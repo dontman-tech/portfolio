@@ -61,7 +61,7 @@ step "1. Repository ${OWNER}/${REPO}"
 if [ "$(status "/repos/${OWNER}/${REPO}")" = "200" ]; then
   skip "already exists"
 else
-  RESP=$(api POST /user/repos "{\"name\":\"${REPO}\",\"description\":\"Developer portfolio for Tamif Dontman — full-stack & applied AI engineer. Static site, no build step.\",\"homepage\":\"https://${DOMAIN}\",\"private\":false,\"has_wiki\":false,\"has_projects\":false}")
+  RESP=$(api POST /user/repos "{\"name\":\"${REPO}\",\"description\":\"Developer portfolio for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer. Static site, no build step.\",\"homepage\":\"https://${DOMAIN}\",\"private\":false,\"has_wiki\":false,\"has_projects\":false}")
   if [ -n "$(jget message <<<"$RESP")" ] && [ "$(jget message <<<"$RESP")" != "" ]; then
     fail "could not create repo: $(jget message <<<"$RESP")"
     fail "the token needs repository_creation=write"
@@ -123,11 +123,11 @@ mkdir -p "$WORK/register/domains"
 cp "$SITE_DIR/tools/is-a-dev/tamif.json" "$WORK/register/domains/tamif.json"
 cd "$WORK/register" || exit 1
 git checkout -b add-tamif 2>/dev/null || git checkout add-tamif
-git -c user.name="Tamif Dontman" -c user.email="tamif@dontman.tech" add domains/tamif.json
-git -c user.name="Tamif Dontman" -c user.email="tamif@dontman.tech" commit -q -m "Add tamif.is-a.dev" || skip "nothing new to commit"
+git -c user.name="Tabe Miracle Fiagmenyi" -c user.email="tabe7143@gmail.com" add domains/tamif.json
+git -c user.name="Tabe Miracle Fiagmenyi" -c user.email="tabe7143@gmail.com" commit -q -m "Add tamif.is-a.dev" || skip "nothing new to commit"
 git push -u "https://x-access-token:${GITHUB_TOKEN}@github.com/${FORK_OWNER}/register.git" add-tamif --force 2>&1 | tail -2
 
-PR=$(api POST "/repos/is-a-dev/register/pulls" "{\"title\":\"Add tamif.is-a.dev\",\"head\":\"${FORK_OWNER}:add-tamif\",\"base\":\"main\",\"body\":\"## Subdomain\\n\\n\`${DOMAIN}\`\\n\\n## Domain file\\n\\n\`domains/tamif.json\`\\n\\n## Owner\\n\\n- GitHub: [@${OWNER}](https://github.com/${OWNER})\\n- Email: tamif@dontman.tech\\n\\n## Site\\n\\nPersonal developer portfolio, served from GitHub Pages at \`${PAGES_HOST}/${REPO}\`. The CNAME points at the organisation's Pages host so \`${DOMAIN}\` resolves to it.\\n\\nThe site is static HTML/CSS/JS with no build step; \`CNAME\` and \`.nojekyll\` are committed in the repo.\\n\\n---\\nThis pull request was created by an AI agent (OpenHands) on behalf of @${OWNER}.\"}")
+PR=$(api POST "/repos/is-a-dev/register/pulls" "{\"title\":\"Add tamif.is-a.dev\",\"head\":\"${FORK_OWNER}:add-tamif\",\"base\":\"main\",\"body\":\"## Subdomain\\n\\n\`${DOMAIN}\`\\n\\n## Domain file\\n\\n\`domains/tamif.json\`\\n\\n## Owner\\n\\n- GitHub: [@${OWNER}](https://github.com/${OWNER})\\n- Email: tabe7143@gmail.com\\n\\n## Site\\n\\nPersonal developer portfolio, served from GitHub Pages at \`${PAGES_HOST}/${REPO}\`. The CNAME points at the organisation's Pages host so \`${DOMAIN}\` resolves to it.\\n\\nThe site is static HTML/CSS/JS with no build step; \`CNAME\` and \`.nojekyll\` are committed in the repo.\\n\\n---\\nThis pull request was created by an AI agent (OpenHands) on behalf of @${OWNER}.\"}")
 PRURL=$(jget html_url <<<"$PR")
 if [ -z "$PRURL" ]; then
   fail "could not open PR: $(jget message <<<"$PR")"

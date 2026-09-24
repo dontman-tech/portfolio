@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Portfolio site for Tamif Dontman — full-stack & applied AI engineer. Static
+Portfolio site for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer. Static
 HTML/CSS/JS, no build step, no framework. The audience is a hiring manager who
 should understand "who / what / why talk to me" within 30–90 seconds.
 
@@ -77,3 +77,18 @@ press+spring.
 `tokens.css`. The studio panel switches `data-palette`, `data-glass` and
 `data-bg` on `<html>`; preferences persist to localStorage and must degrade
 silently if storage is blocked.
+
+**Light-on-light surfaces.** The `.card` panes are deliberately light against
+the dark page, so any text sitting on one needs a *fixed* colour, not
+`var(--accent)` — the studio can switch the accent to orange or purple, which
+drops the contrast ratio below AA on a near-white pane. `.card__meta` uses a
+literal `#0066cc` for this reason; the aurora blob carries the palette instead.
+Contrast was measured from rendered pixels, not estimated from token values,
+because the aurora gradient behind each pane is the actual background.
+
+**Layered backgrounds.** `.bg` holds the mesh, blobs, grain and vignette;
+`.matrix-container` is a sibling holding the matrix rain. `app.js` builds one
+`.matrix-pattern` strip per 1000px of viewport width and rebinds on resize, so
+the columns never stretch. The loader is `display:none` unless `html.js` is
+set, and carries its own CSS dismissal animation as a fallback in case
+`app.js` fails to load.

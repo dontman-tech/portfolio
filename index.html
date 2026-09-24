@@ -7,9 +7,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-<title>Tamif Dontman — Full-Stack &amp; Applied AI Engineer</title>
+<title>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</title>
 <meta name="description" content="I build voice-first assistants, two-sided marketplaces and cross-platform apps — then ship them all the way to a device. Python, TypeScript, React Native. Based in Buea, Cameroon, working remotely." />
-<meta name="author" content="Tamif Dontman" />
+<meta name="author" content="Tabe Miracle Fiagmenyi" />
 <meta name="theme-color" content="#05070d" />
 <meta name="color-scheme" content="dark" />
 
@@ -18,7 +18,7 @@
 
 <!-- Social -->
 <meta property="og:type" content="profile" />
-<meta property="og:title" content="Tamif Dontman — Full-Stack &amp; Applied AI Engineer" />
+<meta property="og:title" content="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" />
 <meta property="og:description" content="Voice-first AI assistants, two-sided marketplaces, cross-platform apps. Shipped end to end." />
 <meta property="og:url" content="https://tamif.is-a.dev/" />
 <meta property="og:image" content="https://tamif.is-a.dev/assets/img/og.jpg" />
@@ -26,7 +26,7 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:locale" content="en_US" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Tamif Dontman — Full-Stack &amp; Applied AI Engineer" />
+<meta name="twitter:title" content="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" />
 <meta name="twitter:description" content="Voice-first AI assistants, two-sided marketplaces, cross-platform apps. Shipped end to end." />
 <meta name="twitter:image" content="https://tamif.is-a.dev/assets/img/og.jpg" />
 
@@ -48,10 +48,10 @@
 {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Tamif Dontman",
+  "name": "Tabe Miracle Fiagmenyi",
   "jobTitle": "Full-Stack & Applied AI Engineer",
   "url": "https://tamif.is-a.dev/",
-  "email": "mailto:tamif@dontman.tech",
+  "email": "mailto:tabe7143@gmail.com",
   "address": { "@type": "PostalAddress", "addressLocality": "Buea", "addressCountry": "CM" },
   "sameAs": ["https://github.com/dontman-tech"],
   "knowsAbout": [
@@ -70,6 +70,18 @@
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<!-- Loader — dismissed by app.js on window load, with a hard timeout -->
+<div class="loader" data-loader role="status" aria-label="Loading">
+  <div class="loader__stage">
+    <span class="Strich1" aria-hidden="true"></span>
+    <span class="Strich2" aria-hidden="true"></span>
+    <span class="bubble" aria-hidden="true"></span>
+    <span class="bubble1" aria-hidden="true"></span>
+    <span class="bubble2" aria-hidden="true"></span>
+    <span class="bubble3" aria-hidden="true"></span>
+  </div>
+</div>
+
 <div class="progress" aria-hidden="true"></div>
 
 <!-- Motion image background -->
@@ -78,6 +90,11 @@
   <div class="bg__blob bg__blob--1" data-parallax="0.05"></div>
   <div class="bg__blob bg__blob--2" data-parallax="0.09"></div>
   <div class="bg__blob bg__blob--3" data-parallax="0.07"></div>
+
+  <!-- Matrix rain pattern, layered over the gradient blobs.
+       Strips are injected by app.js. -->
+  <div class="matrix-container" data-matrix></div>
+
   <div class="bg__grain"></div>
   <div class="bg__vignette"></div>
 </div>
@@ -89,10 +106,10 @@
      ===================================================================== -->
 <header class="nav">
   <div class="nav__inner">
-    <a class="brand" href="#top" aria-label="Tamif Dontman — home">
+    <a class="brand" href="#top" aria-label="Tabe Miracle Fiagmenyi — home">
       <span class="brand__mark" aria-hidden="true">T</span>
       <span class="brand__text">
-        <span>Tamif Dontman</span>
+        <span>Tabe Miracle Fiagmenyi</span>
         <small>Full-stack &amp; AI</small>
       </span>
     </a>
@@ -159,13 +176,13 @@
     <span class="studio__label">Palette</span>
     <div class="swatches" role="group" aria-label="Colour palette">
       <button class="swatch" type="button" data-palette-btn="azure" data-palette-name="Azure Glass" aria-pressed="true" aria-label="Azure Glass palette"
-        style="background: linear-gradient(140deg,#6ea8ff,#7bf1d9)"></button>
+        style="background: linear-gradient(140deg,#0071e3,#64d2ff)"></button>
       <button class="swatch" type="button" data-palette-btn="aurora" data-palette-name="Aurora" aria-pressed="false" aria-label="Aurora palette"
-        style="background: linear-gradient(140deg,#4fd1b5,#a6f5a0)"></button>
+        style="background: linear-gradient(140deg,#30d158,#66d4cf)"></button>
       <button class="swatch" type="button" data-palette-btn="dusk" data-palette-name="Dusk" aria-pressed="false" aria-label="Dusk palette"
-        style="background: linear-gradient(140deg,#a98bff,#7bd8ff)"></button>
+        style="background: linear-gradient(140deg,#bf5af2,#64d2ff)"></button>
       <button class="swatch" type="button" data-palette-btn="ember" data-palette-name="Ember" aria-pressed="false" aria-label="Ember palette"
-        style="background: linear-gradient(140deg,#ff9a62,#ffd166)"></button>
+        style="background: linear-gradient(140deg,#ff9f0a,#ffd60a)"></button>
     </div>
   </div>
 
@@ -212,8 +229,8 @@
   <div class="studio__group">
     <span class="studio__label">Site title</span>
     <div class="field">
-      <input type="text" data-title-input value="Tamif Dontman — Full-Stack &amp; Applied AI Engineer" aria-label="Site title" />
-      <span class="mono faint">tab title: <span data-title-out>Tamif Dontman — Full-Stack &amp; Applied AI Engineer</span></span>
+      <input type="text" data-title-input value="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" aria-label="Site title" />
+      <span class="mono faint">tab title: <span data-title-out>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</span></span>
     </div>
   </div>
 
@@ -260,7 +277,7 @@
         </h1>
 
         <p class="hero__lede" data-reveal data-delay="260">
-          I'm <strong>Tamif Dontman</strong>, a full-stack and applied-AI engineer in Buea, Cameroon.
+          I'm <strong>Tabe Miracle Fiagmenyi</strong>, a full-stack and applied-AI engineer in Buea, Cameroon.
           I take an idea from a blank repo to something a stranger can use — voice assistants that
           control a phone, a marketplace that dispatches real pickups, and apps that sync with
           Apple Health. <strong>The demo is never the finish line.</strong>
@@ -306,7 +323,7 @@
       <div class="hero__art">
         <div class="portrait glass glass--pad" data-tilt="8" data-scrub data-scrub-y="40" data-scrub-s="0.05" data-reveal data-delay="200">
           <div class="portrait__frame">
-            <span class="portrait__initials" aria-hidden="true">TD</span>
+            <span class="portrait__initials" aria-hidden="true">TMF</span>
             <span class="portrait__scan" aria-hidden="true"></span>
             <span class="portrait__badge">Buea · CM</span>
             <div class="portrait__meta">
@@ -421,10 +438,10 @@
   <div class="shell">
     <div class="section__head" data-reveal>
       <p class="eyebrow">Selected work</p>
-      <h2 class="h1">Five projects, three stories.</h2>
+      <h2 class="h1">Seven projects, three stories.</h2>
       <p class="lead">
         One is a hard technical build. One solves a problem I could see from my window. One was
-        made with a team. The other two show the range.
+        made with a team. The other four show the range.
       </p>
     </div>
   </div>
@@ -695,6 +712,54 @@
       </div>
     </div>
   </article>
+
+  <!-- ---------- 06 & 07 · The wider range ---------- -->
+  <div class="shell">
+    <div class="section__head mt-7" data-reveal>
+      <p class="eyebrow">Also shipped</p>
+      <h2 class="h2">Two more from the same year.</h2>
+    </div>
+
+    <div class="cards" data-stagger="90">
+      <article class="card">
+        <div class="card__bg"><span class="card__aurora" aria-hidden="true"></span></div>
+        <div class="card__inner">
+          <span class="card__eyebrow">06 / 07 · Hackathon build</span>
+          <h3 class="card__title">Lumina — an AI platform built in 15 hours</h3>
+          <p class="card__meta">Supabase · DeepSeek API · JavaScript</p>
+          <p class="card__body">
+            Architected and deployed with a 3-person team for the Prometheus AI Hackathon, where it
+            placed 4th. Supabase and the DeepSeek API are wired together to process dynamic user
+            requests under tight time constraints.
+          </p>
+          <div class="chip-row mt-5">
+            <span class="chip">Supabase</span>
+            <span class="chip chip--accent2">DeepSeek</span>
+            <span class="chip chip--quiet">team of 3</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__bg"><span class="card__aurora" aria-hidden="true"></span></div>
+        <div class="card__inner">
+          <span class="card__eyebrow">07 / 07 · Security tooling</span>
+          <h3 class="card__title">NESAC — know how strong your password really is</h3>
+          <p class="card__meta">Python · Flask · JavaScript</p>
+          <p class="card__body">
+            A web application that helps users create strong passwords and test the strength of
+            their current ones. Each weakness is explained in plain language, with a stronger
+            passphrase suggested in its place.
+          </p>
+          <div class="chip-row mt-5">
+            <span class="chip">Flask</span>
+            <span class="chip chip--accent2">password scoring</span>
+            <span class="chip chip--quiet">plain-language advice</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
 </section>
 
 <!-- =====================================================================
@@ -713,7 +778,7 @@
     <div class="about__facts" data-stagger="80">
       <div class="fact glass">
         <p class="fact__k">Name</p>
-        <p class="fact__v">Tamif Dontman — publishes as <span class="nowrap">dontman-tech</span></p>
+        <p class="fact__v">Tabe Miracle Fiagmenyi — publishes as <span class="nowrap">dontman-tech</span></p>
       </div>
       <div class="fact glass">
         <p class="fact__k">Location</p>
@@ -724,12 +789,28 @@
         <p class="fact__v">Full-stack engineering with an applied-AI and mobile edge</p>
       </div>
       <div class="fact glass">
+        <p class="fact__k">Education</p>
+        <p class="fact__v">B.Eng. Computer Engineering, University of Buea (FET)</p>
+      </div>
+      <div class="fact glass">
         <p class="fact__k">Looking for</p>
         <p class="fact__v">A product team where I own a slice end to end — full-time or contract</p>
       </div>
       <div class="fact glass">
         <p class="fact__k">Languages</p>
-        <p class="fact__v">English (professional), French (working)</p>
+        <p class="fact__v">English &amp; French (fluent, bilingual)</p>
+      </div>
+      <div class="fact glass">
+        <p class="fact__k">Email</p>
+        <p class="fact__v"><a class="ulink" href="mailto:tabe7143@gmail.com">tabe7143@gmail.com</a></p>
+      </div>
+      <div class="fact glass">
+        <p class="fact__k">Phone</p>
+        <p class="fact__v"><a class="ulink" href="tel:+237680553744">(+237) 680-553-744</a></p>
+      </div>
+      <div class="fact glass">
+        <p class="fact__k">LinkedIn</p>
+        <p class="fact__v"><a class="ulink" href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer">tabe-miracle-fiagmenyi</a></p>
       </div>
       <div class="fact glass">
         <p class="fact__k">Response time</p>
@@ -792,19 +873,29 @@
     <div class="timeline">
       <div class="tl" data-reveal>
         <span class="tl__dot" aria-hidden="true"></span>
-        <p class="tl__when">2025 — Present</p>
-        <p class="tl__what">Founder &amp; Lead Engineer, Tamif Systems</p>
+        <p class="tl__when">July 2026</p>
+        <p class="tl__what">Front-End Developer Intern, CIRCO Orange Internship (Ignite Circle)</p>
         <p class="tl__where">
-          Independent product studio. ARIA, Re-kollect and client work — product framing,
-          architecture, implementation and release, all the way through.
+          Collaborated on front-end features using modern web frameworks, improving overall site
+          performance and UI responsiveness inside a distributed team.
         </p>
       </div>
       <div class="tl" data-reveal data-delay="80">
         <span class="tl__dot" aria-hidden="true"></span>
         <p class="tl__when">2026</p>
-        <p class="tl__what">Front-End Engineer, Ignite Circle (Orange internship programme)</p>
+        <p class="tl__what">3rd Place, Orange Code for Change Hackathon</p>
         <p class="tl__where">
-          Contributed to a multi-developer Next.js client inside a distributed team.
+          Co-developed Re-kollect, a functional MVP built within 12 hours alongside a team of 4,
+          integrating frontend and backend workflows with JavaScript, React, Node.js and Python.
+        </p>
+      </div>
+      <div class="tl" data-reveal data-delay="120">
+        <span class="tl__dot" aria-hidden="true"></span>
+        <p class="tl__when">2026</p>
+        <p class="tl__what">4th Place Finalist, Prometheus AI Hackathon</p>
+        <p class="tl__where">
+          Architected and deployed Lumina, an AI-driven platform created in 15 hours with a
+          3-person team, connecting Supabase and the DeepSeek API.
         </p>
       </div>
       <div class="tl" data-reveal data-delay="160">
@@ -815,6 +906,70 @@
           NESAC password strength checker, Air Canvas, and a stream of small tools built to
           answer my own questions.
         </p>
+      </div>
+    </div>
+
+    <div class="thirds mt-7">
+      <div class="thirds__copy stack" data-reveal>
+        <h3 class="h3">Community &amp; leadership</h3>
+        <div class="timeline">
+          <div class="tl" data-reveal>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <p class="tl__what">Active Member, Cybersecurity Club — University of Buea</p>
+            <p class="tl__where">
+              Core digital security fundamentals, vulnerability awareness and web protective
+              practices.
+            </p>
+          </div>
+          <div class="tl" data-reveal data-delay="80">
+            <span class="tl__dot" aria-hidden="true"></span>
+            <p class="tl__what">Workshop Participant, Renewable Energy Summit 2026</p>
+            <p class="tl__where">
+              Technical sessions organised by the University of Buea Renewable Energy Club at FET.
+            </p>
+          </div>
+          <div class="tl" data-reveal data-delay="160">
+            <span class="tl__dot" aria-hidden="true"></span>
+            <p class="tl__what">Social Impact Volunteer, MIMIO NGO</p>
+            <p class="tl__where">
+              Local community outreach initiatives and event organisation support.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="thirds__art stack" data-reveal data-delay="140">
+        <h3 class="h3">Education</h3>
+        <div class="card-stack">
+          <article class="card">
+            <div class="card__bg">
+              <span class="card__aurora" aria-hidden="true"></span>
+            </div>
+            <div class="card__inner">
+              <span class="card__eyebrow">Degree</span>
+              <h4 class="card__title">B.Eng. Computer Engineering</h4>
+              <p class="card__meta">University of Buea</p>
+              <p class="card__body">
+                Faculty of Engineering and Technology (FET). Coursework in algorithms, databases
+                and systems design alongside full-time product work.
+              </p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__bg">
+              <span class="card__aurora" aria-hidden="true"></span>
+            </div>
+            <div class="card__inner">
+              <span class="card__eyebrow">Programme</span>
+              <h4 class="card__title">Orange Ignite Circle 2026</h4>
+              <p class="card__meta">CIRCO Orange Internship</p>
+              <p class="card__body">
+                Selected for a competitive internship programme; contributed to a shared team
+                codebase and reviewed peers' work.
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
 
@@ -973,15 +1128,15 @@
               You can edit it before sending — no obligation.
             </p>
 
-            <a class="mailto" href="mailto:tamif@dontman.tech" data-flow-mail data-mail-to="tamif@dontman.tech">
+            <a class="mailto" href="mailto:tabe7143@gmail.com" data-flow-mail data-mail-to="tabe7143@gmail.com">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="14" rx="2.4" /><path d="m3.6 6.5 8.4 6 8.4-6" />
               </svg>
-              <span>tamif@dontman.tech</span>
+              <span>tabe7143@gmail.com</span>
             </a>
 
             <div class="row">
-              <a class="btn btn--primary" href="mailto:tamif@dontman.tech" data-flow-mail>
+              <a class="btn btn--primary" href="mailto:tabe7143@gmail.com" data-flow-mail>
                 <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
                   <path d="M4 12h16M14 6l6 6-6 6" />
                 </svg>
@@ -1029,7 +1184,7 @@
   <div class="shell">
     <div class="footer__grid">
       <div>
-        <p class="eyebrow eyebrow--plain">Tamif Dontman</p>
+        <p class="eyebrow eyebrow--plain">Tabe Miracle Fiagmenyi</p>
         <p class="lead mt-5" style="font-size: var(--fs-body)">
           Full-stack &amp; applied-AI engineer. If you read this far, we should probably talk.
         </p>
@@ -1052,14 +1207,14 @@
       <div class="footer__links">
         <p class="footer__h">Elsewhere</p>
         <a class="ulink" href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a class="ulink" href="mailto:tamif@dontman.tech">tamif@dontman.tech</a>
+        <a class="ulink" href="mailto:tabe7143@gmail.com">tabe7143@gmail.com</a>
         <a class="ulink" href="assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf" download data-resume>Resume (PDF)</a>
         <a class="ulink" href="sitemap.xml">Sitemap</a>
       </div>
     </div>
 
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> Tamif Dontman · Buea, Cameroon</span>
+      <span>© <span data-year>2026</span> Tabe Miracle Fiagmenyi · Buea, Cameroon</span>
       <span>Built by hand — no framework, no build step</span>
     </div>
   </div>

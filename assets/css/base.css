@@ -263,10 +263,13 @@ p { text-wrap: pretty; }
 }
 
 /* ---- Buttons ---------------------------------------------------------- */
+/* 3D extruded slab. The two pseudo-elements are the bottom and right faces,
+   rotated out of the plane; `preserve-3d` on the parent keeps them attached
+   while the face tilts. Resting angles are deliberately shallower than a
+   full 70deg/30deg so the label stays legible at small sizes. */
 .btn {
-  --btn-bg: var(--glass-bg-strong);
-  --btn-fg: var(--text);
-  --btn-border: var(--glass-border-strong);
+  --color1: var(--accent);
+  --color2: color-mix(in srgb, var(--accent) 72%, #000);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -275,45 +278,74 @@ p { text-wrap: pretty; }
   /* 44px min-height keeps the control a comfortable touch target at every size */
   min-height: 44px;
   padding: 0.82em 1.5em;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--btn-border);
-  background: var(--btn-bg);
-  color: var(--btn-fg);
+  border: none;
+  border-radius: var(--r-sm);
+  background: linear-gradient(var(--color1), var(--color2));
+  color: #fff;
   font-family: var(--font-display);
   font-size: var(--fs-small);
-  font-weight: 500;
-  letter-spacing: -0.005em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  box-shadow: var(--lift-1), var(--glass-inner);
-  transition: transform var(--dur-2) var(--ease-spring),
-    box-shadow var(--dur-2) var(--ease-out),
-    border-color var(--dur-2) var(--ease-out),
-    background-color var(--dur-2) var(--ease-out);
+  text-shadow: 0 2px 6px rgb(0 0 0 / 0.45);
+  cursor: pointer;
+  perspective: 1000px;
+  transform: rotateX(22deg) rotateZ(7deg);
+  transform-style: preserve-3d;
+  transition: transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+  box-shadow: var(--lift-2);
+}
+
+/* Bottom face */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 auto;
+  width: 100%;
+  height: 14px;
+  background: var(--color2);
+  transform: rotateX(90deg);
+  transform-origin: bottom;
+  border-radius: inherit;
+}
+
+/* Right face */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 14px;
+  height: 100%;
+  background: color-mix(in srgb, var(--color1) 80%, #000);
+  transform: rotateY(-90deg);
+  transform-origin: right;
+  border-radius: inherit;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  border-color: rgb(var(--accent-rgb) / 0.55);
-  box-shadow: var(--lift-2), var(--glow-accent), var(--glass-inner);
+  transform: rotateX(8deg) rotateZ(0deg);
+  box-shadow: var(--lift-3);
 }
 
-.btn:active { transform: translateY(1px) scale(0.972); }
+.btn:active { transform: rotateX(16deg) rotateZ(3deg) translateY(2px); }
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+}
 
 .btn--primary {
-  --btn-fg: var(--ink-900);
-  --btn-border: transparent;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  box-shadow: var(--lift-2), 0 0 0 1px rgb(255 255 255 / 0.14) inset;
+  --color1: var(--accent);
+  --color2: color-mix(in srgb, var(--accent) 66%, #000);
 }
 
-.btn--primary:hover {
-  border-color: transparent;
-  box-shadow: var(--lift-3), 0 0 34px -6px rgb(var(--accent-rgb) / 0.6);
+.btn--ghost {
+  --color1: var(--ink-500);
+  --color2: var(--ink-700);
+  color: var(--text);
 }
-
-.btn--ghost { --btn-bg: transparent; --btn-border: var(--glass-border); }
 
 .btn--sm { padding: 0.6em 1.1em; font-size: var(--fs-micro); }
 

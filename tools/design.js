@@ -55,7 +55,7 @@ const ratio = (a, b) => {
         .map((e) => e.innerText.trim().replace(/\s+/g, ' ')).slice(0, 4),
     };
   });
-  check('who I am is above the fold', /Tamif Dontman/.test(fold.who?.text || ''), fold.who?.text);
+  check('who I am is above the fold', /Tabe Miracle Fiagmenyi/.test(fold.who?.text || ''), fold.who?.text);
   check('what I build is above the fold', fold.what?.inFold, fold.what?.text);
   check('a next step is above the fold', fold.why?.inFold, fold.why?.text);
   check('specialisation is stated immediately', /full-stack|applied-AI|engineer/i.test(fold.who?.text || ''));

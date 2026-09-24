@@ -83,7 +83,7 @@ const check = (name, pass, detail = '') => {
     `visible=${handoff.visible} · ${handoff.buttons.join(' · ')}`);
   check('handoff recaps the chosen answers', handoff.recapRows >= 3, `${handoff.recapRows} rows`);
   check('handoff builds a mailto link', handoff.href.startsWith('mailto:'), handoff.href.slice(0, 90));
-  check('mailto targets the right address', handoff.href.includes('tamif@dontman.tech'));
+  check('mailto targets the right address', handoff.href.includes('tabe7143@gmail.com'));
   check('mailto carries a subject', /subject=/.test(handoff.href));
   check('mailto carries the selected answers',
     /body=/.test(handoff.href) && handoff.href.length > 200,
@@ -115,7 +115,7 @@ const check = (name, pass, detail = '') => {
     await page.waitForTimeout(600);
     const clip = await page.evaluate(() => navigator.clipboard.readText().catch(() => ''));
     check('copy the brief writes a brief to the clipboard',
-      clip.length > 60 && /Hi Tamif/.test(clip), `${clip.length} chars`);
+      clip.length > 60 && /Hi Tabe/.test(clip), `${clip.length} chars`);
     check('the copied brief matches the email body',
       decodeURIComponent(handoff.href.split('body=')[1] || '') === clip,
       'mailto body and clipboard text are identical');

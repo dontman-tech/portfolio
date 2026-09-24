@@ -5,28 +5,30 @@
    ========================================================================== */
 
 :root {
-  /* ---- Palette: Azure Glass (default) -------------------------------- */
-  --ink-900: #05070d;
-  --ink-800: #080c14;
-  --ink-700: #0b101a;
-  --ink-600: #0f1521;
-  --ink-500: #141c2b;
-  --ink-400: #1b2537;
+  /* ---- Palette: Apple Glass (default) -------------------------------- */
+  /* System greys, darkest to lightest — the Apple dark-mode stack. */
+  --ink-900: #000000;
+  --ink-800: #0a0a0b;
+  --ink-700: #1c1c1e;
+  --ink-600: #2c2c2e;
+  --ink-500: #3a3a3c;
+  --ink-400: #48484a;
 
-  --accent: #6ea8ff;
-  --accent-2: #7bf1d9;
-  --accent-3: #b79cff;
-  --signal: #ffb86b;
-  --danger: #ff7a8a;
+  /* Apple system colours (iOS/macOS dark appearance). */
+  --accent: #0071e3;
+  --accent-2: #30d158;
+  --accent-3: #bf5af2;
+  --signal: #ff9f0a;
+  --danger: #ff453a;
 
-  --accent-rgb: 110 168 255;
-  --accent-2-rgb: 123 241 217;
-  --accent-3-rgb: 183 156 255;
-  --signal-rgb: 255 184 107;
+  --accent-rgb: 0 113 227;
+  --accent-2-rgb: 48 209 88;
+  --accent-3-rgb: 191 90 242;
+  --signal-rgb: 255 159 10;
 
-  --text: #eef2fa;
-  --text-muted: #a3b0c6;
-  --text-faint: #7d8ba3;
+  --text: #f5f5f7;
+  --text-muted: #a1a1a6;
+  --text-faint: #86868b;
   --text-strong: #ffffff;
 
   /* ---- Glass material ------------------------------------------------- */
@@ -127,48 +129,50 @@
 }
 
 /* ---- Palette presets -------------------------------------------------- */
+/* All four are drawn from the Apple system colour set so the studio panel
+   stays inside one family. */
+[data-palette="azure"] {
+  --accent: #0071e3;
+  --accent-2: #64d2ff;
+  --accent-3: #bf5af2;
+  --signal: #ffd60a;
+  --accent-rgb: 0 113 227;
+  --accent-2-rgb: 100 210 255;
+  --accent-3-rgb: 191 90 242;
+  --signal-rgb: 255 214 10;
+}
+
 [data-palette="aurora"] {
-  --accent: #4fd1b5;
-  --accent-2: #a6f5a0;
-  --accent-3: #6ea8ff;
-  --signal: #ffd479;
-  --accent-rgb: 79 209 181;
-  --accent-2-rgb: 166 245 160;
-  --accent-3-rgb: 110 168 255;
-  --signal-rgb: 255 212 121;
+  --accent: #30d158;
+  --accent-2: #66d4cf;
+  --accent-3: #0071e3;
+  --signal: #ffd60a;
+  --accent-rgb: 48 209 88;
+  --accent-2-rgb: 102 212 207;
+  --accent-3-rgb: 0 113 227;
+  --signal-rgb: 255 214 10;
 }
 
 [data-palette="dusk"] {
-  --accent: #a98bff;
-  --accent-2: #7bd8ff;
-  --accent-3: #ff9ecd;
-  --signal: #ffc27a;
-  --accent-rgb: 169 139 255;
-  --accent-2-rgb: 123 216 255;
-  --accent-3-rgb: 255 158 205;
-  --signal-rgb: 255 194 122;
+  --accent: #bf5af2;
+  --accent-2: #64d2ff;
+  --accent-3: #ff375f;
+  --signal: #ff9f0a;
+  --accent-rgb: 191 90 242;
+  --accent-2-rgb: 100 210 255;
+  --accent-3-rgb: 255 55 95;
+  --signal-rgb: 255 159 10;
 }
 
 [data-palette="ember"] {
-  --accent: #ff9a62;
-  --accent-2: #ffd166;
-  --accent-3: #ff7a8a;
-  --signal: #7bf1d9;
-  --accent-rgb: 255 154 98;
-  --accent-2-rgb: 255 209 102;
-  --accent-3-rgb: 255 122 138;
-  --signal-rgb: 123 241 217;
-}
-
-[data-palette="slate"] {
-  --accent: #cfe0ff;
-  --accent-2: #9fb3d1;
-  --accent-3: #e8eefc;
-  --signal: #8fd6ff;
-  --accent-rgb: 207 224 255;
-  --accent-2-rgb: 159 179 209;
-  --accent-3-rgb: 232 238 252;
-  --signal-rgb: 143 214 255;
+  --accent: #ff9f0a;
+  --accent-2: #ffd60a;
+  --accent-3: #ff453a;
+  --signal: #30d158;
+  --accent-rgb: 255 159 10;
+  --accent-2-rgb: 255 214 10;
+  --accent-3-rgb: 255 69 58;
+  --signal-rgb: 48 209 88;
 }
 
 /* ---- Glass density ---------------------------------------------------- */
@@ -190,5 +194,8 @@
 
 /* ---- Background modes ------------------------------------------------- */
 [data-bg="still"] .bg__blob,
-[data-bg="still"] .bg__mesh { animation-play-state: paused; }
+[data-bg="still"] .bg__mesh,
+[data-bg="still"] .matrix-column { animation-play-state: paused; }
 [data-bg="mesh"] .bg__blob { opacity: 0.32; }
+[data-bg="mesh"] .matrix-container { opacity: 0.14; }
+[data-bg="still"] .matrix-container { opacity: 0.18; }

@@ -131,7 +131,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -152,7 +153,12 @@
 
 .brand:hover .brand__mark { transform: rotate(-6deg) scale(1.06); }
 
-.brand__text { display: grid; line-height: 1.15; }
+.brand__text { display: grid; line-height: 1.15; min-width: 0; }
+.brand__text > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .brand__text small { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--text-faint); text-transform: uppercase; }
 
 .nav__links {
@@ -183,6 +189,18 @@
 
 .nav__actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
 @media (min-width: 940px) { .nav__actions { margin-left: 0; } }
+
+/* Below this width the full name cannot fit beside the actions without
+   collapsing to an ellipsis stub, so keep only the monogram mark. */
+@media (max-width: 429px) {
+  .brand__text { display: none; }
+}
+
+/* On narrow screens the "Let's talk" CTA is reachable from the chapter
+   sheet, so drop it from the bar and spend the width on the full name. */
+@media (max-width: 599px) {
+  .nav__actions .btn { display: none; }
+}
 
 .icon-btn {
   display: grid;
@@ -1204,3 +1222,384 @@
 .mt-5 { margin-top: var(--s-5); }
 .mt-6 { margin-top: var(--s-6); }
 .mt-7 { margin-top: var(--s-7); }
+
+/* ==========================================================================
+   Cards — inset-shadow slab with an animated aurora behind a frosted pane.
+   Size is derived from the site's own scale (--s-* / fluid type) rather than
+   the fixed 190x254 of the source snippet, so a card fills its grid column
+   at every breakpoint.
+   ========================================================================== */
+.card-stack {
+  display: grid;
+  gap: var(--s-5);
+}
+
+/* Two-up grid for the "also shipped" pair; collapses to one column on
+   narrow screens. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--s-6);
+}
+
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 15.5rem;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  isolation: isolate;
+  /* Light system grey slab; the inner pane sits on top and carries the text. */
+  background: #dfe1eb;
+  box-shadow:
+    rgba(0, 0, 0, 0.17) 0 -23px 25px 0 inset,
+    rgba(0, 0, 0, 0.15) 0 -36px 30px 0 inset,
+    rgba(0, 0, 0, 0.1) 0 -79px 40px 0 inset,
+    rgba(0, 0, 0, 0.06) 0 2px 1px,
+    rgba(0, 0, 0, 0.09) 0 4px 2px,
+    rgba(0, 0, 0, 0.09) 0 8px 4px,
+    rgba(0, 0, 0, 0.09) 0 16px 8px,
+    rgba(0, 0, 0, 0.09) 0 32px 16px;
+  transition: transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    rgba(0, 0, 0, 0.17) 0 -23px 25px 0 inset,
+    rgba(0, 0, 0, 0.15) 0 -36px 30px 0 inset,
+    rgba(0, 0, 0, 0.1) 0 -79px 40px 0 inset,
+    rgba(0, 0, 0, 0.12) 0 6px 3px,
+    rgba(0, 0, 0, 0.14) 0 12px 6px,
+    rgba(0, 0, 0, 0.14) 0 24px 12px,
+    rgba(0, 0, 0, 0.14) 0 48px 24px;
+}
+
+/* Frosted inner pane — holds the text so contrast stays predictable. */
+.card__bg {
+  position: absolute;
+  inset: 6px;
+  z-index: 2;
+  border-radius: calc(var(--r-xl) - 6px);
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.88),
+    rgb(245 245 247 / 0.72)
+  );
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  pointer-events: none;
+}
+
+/* Animated aurora blob, clipped by the card's overflow. */
+.card__aurora {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(28px);
+  z-index: 1;
+  background: radial-gradient(
+    circle,
+    rgb(var(--accent-rgb) / 0.85),
+    rgb(var(--accent-3-rgb) / 0.4),
+    transparent
+  );
+  animation: card-aurora-move 6.5s infinite ease-in-out;
+  opacity: 0.9;
+}
+
+@keyframes card-aurora-move {
+  0%   { transform: translate(-60%, -60%) scale(1); }
+  30%  { transform: translate(10%, -40%) scale(1.15); }
+  60%  { transform: translate(20%, 20%) scale(1.05); }
+  80%  { transform: translate(-40%, 10%) scale(1.2); }
+  100% { transform: translate(-60%, -60%) scale(1); }
+}
+
+.card__inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  height: 100%;
+  padding: var(--s-6) var(--s-5);
+}
+
+.card__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: #6e6e73;
+}
+
+.card__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: #1d1d1f;
+}
+
+.card__meta {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  /* Fixed light-mode blue rather than var(--accent): the pane is light, and
+     an orange or purple accent from the studio panel would drop below AA
+     here. The aurora blob carries the palette instead. */
+  color: #0066cc;
+}
+
+.card__body {
+  margin-top: var(--s-1);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: #3a3a3c;
+}
+
+/* ==========================================================================
+   Matrix rain — the site background pattern.
+   ========================================================================== */
+.matrix-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  /* Transparent rather than the snippet's pure #000, so the page's own
+     gradient still reads through and body text keeps its contrast. */
+  background: transparent;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.matrix-pattern {
+  position: relative;
+  width: 1000px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  width: 20px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: bold;
+  font-family: var(--font-mono);
+  animation: matrix-fall linear infinite;
+  white-space: nowrap;
+}
+
+.matrix-column::before {
+  content: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #ffffff 5%,
+    var(--accent-2) 10%,
+    var(--accent-2) 20%,
+    rgb(var(--accent-2-rgb) / 0.86) 30%,
+    rgb(var(--accent-2-rgb) / 0.7) 40%,
+    rgb(var(--accent-2-rgb) / 0.55) 50%,
+    rgb(var(--accent-2-rgb) / 0.42) 60%,
+    rgb(var(--accent-2-rgb) / 0.3) 70%,
+    rgb(var(--accent-2-rgb) / 0.2) 80%,
+    rgb(var(--accent-2-rgb) / 0.5) 90%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  writing-mode: vertical-lr;
+  letter-spacing: 1px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.matrix-column:nth-child(odd)::before {
+  content: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン123456789";
+}
+
+.matrix-column:nth-child(even)::before {
+  content: "ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポヴァィゥェォャュョッABCDEFGHIJKLMNOPQRSTUVWXYZ";
+}
+
+.matrix-column:nth-child(3n)::before {
+  content: "アカサタナハマヤラワイキシチニヒミリウクスツヌフムユルエケセテネヘメレオコソトノホモヨロヲン0987654321";
+}
+
+.matrix-column:nth-child(4n)::before {
+  content: "ンヲロヨモホノトソコオレメヘネテセケエルユムフヌツスクウリミヒニチシキイワラヤマハナタサカア";
+}
+
+.matrix-column:nth-child(5n)::before {
+  content: "ガザダバパギジヂビピグズヅブプゲゼデベペゴゾドボポヴァィゥェォャュョッ!@#$%^&*()_+-=[]{}|;:,.<>?";
+}
+
+@keyframes matrix-fall {
+  0%   { transform: translateY(-10%); opacity: 1; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+/* Stagger: 40 columns on a 25px pitch, with varied delays and durations so
+   the field never falls in visible lockstep. */
+.matrix-column:nth-child(1)  { left: 0;    animation-delay: -2.5s; animation-duration: 3s; }
+.matrix-column:nth-child(2)  { left: 25px; animation-delay: -3.2s; animation-duration: 4s; }
+.matrix-column:nth-child(3)  { left: 50px; animation-delay: -1.8s; animation-duration: 2.5s; }
+.matrix-column:nth-child(4)  { left: 75px; animation-delay: -2.9s; animation-duration: 3.5s; }
+.matrix-column:nth-child(5)  { left: 100px; animation-delay: -1.5s; animation-duration: 3s; }
+.matrix-column:nth-child(6)  { left: 125px; animation-delay: -3.8s; animation-duration: 4.5s; }
+.matrix-column:nth-child(7)  { left: 150px; animation-delay: -2.1s; animation-duration: 2.8s; }
+.matrix-column:nth-child(8)  { left: 175px; animation-delay: -2.7s; animation-duration: 3.2s; }
+.matrix-column:nth-child(9)  { left: 200px; animation-delay: -3.4s; animation-duration: 3.8s; }
+.matrix-column:nth-child(10) { left: 225px; animation-delay: -1.9s; animation-duration: 2.7s; }
+.matrix-column:nth-child(11) { left: 250px; animation-delay: -3.6s; animation-duration: 4.2s; }
+.matrix-column:nth-child(12) { left: 275px; animation-delay: -2.3s; animation-duration: 3.1s; }
+.matrix-column:nth-child(13) { left: 300px; animation-delay: -3.1s; animation-duration: 3.6s; }
+.matrix-column:nth-child(14) { left: 325px; animation-delay: -2.6s; animation-duration: 2.9s; }
+.matrix-column:nth-child(15) { left: 350px; animation-delay: -3.7s; animation-duration: 4.1s; }
+.matrix-column:nth-child(16) { left: 375px; animation-delay: -2.8s; animation-duration: 3.3s; }
+.matrix-column:nth-child(17) { left: 400px; animation-delay: -3.3s; animation-duration: 3.7s; }
+.matrix-column:nth-child(18) { left: 425px; animation-delay: -2.2s; animation-duration: 2.6s; }
+.matrix-column:nth-child(19) { left: 450px; animation-delay: -3.9s; animation-duration: 4.3s; }
+.matrix-column:nth-child(20) { left: 475px; animation-delay: -2.4s; animation-duration: 3.4s; }
+.matrix-column:nth-child(21) { left: 500px; animation-delay: -1.7s; animation-duration: 2.4s; }
+.matrix-column:nth-child(22) { left: 525px; animation-delay: -3.5s; animation-duration: 3.9s; }
+.matrix-column:nth-child(23) { left: 550px; animation-delay: -2s;   animation-duration: 3s; }
+.matrix-column:nth-child(24) { left: 575px; animation-delay: -4s;   animation-duration: 4.4s; }
+.matrix-column:nth-child(25) { left: 600px; animation-delay: -1.6s; animation-duration: 2.3s; }
+.matrix-column:nth-child(26) { left: 625px; animation-delay: -3s;   animation-duration: 3.5s; }
+.matrix-column:nth-child(27) { left: 650px; animation-delay: -3.8s; animation-duration: 4s; }
+.matrix-column:nth-child(28) { left: 675px; animation-delay: -2.5s; animation-duration: 2.8s; }
+.matrix-column:nth-child(29) { left: 700px; animation-delay: -3.2s; animation-duration: 3.6s; }
+.matrix-column:nth-child(30) { left: 725px; animation-delay: -2.7s; animation-duration: 3.2s; }
+.matrix-column:nth-child(31) { left: 750px; animation-delay: -1.8s; animation-duration: 2.7s; }
+.matrix-column:nth-child(32) { left: 775px; animation-delay: -3.6s; animation-duration: 4.1s; }
+.matrix-column:nth-child(33) { left: 800px; animation-delay: -2.1s; animation-duration: 3.1s; }
+.matrix-column:nth-child(34) { left: 825px; animation-delay: -3.4s; animation-duration: 3.7s; }
+.matrix-column:nth-child(35) { left: 850px; animation-delay: -2.8s; animation-duration: 2.9s; }
+.matrix-column:nth-child(36) { left: 875px; animation-delay: -3.7s; animation-duration: 4.2s; }
+.matrix-column:nth-child(37) { left: 900px; animation-delay: -2.3s; animation-duration: 3.3s; }
+.matrix-column:nth-child(38) { left: 925px; animation-delay: -1.9s; animation-duration: 2.5s; }
+.matrix-column:nth-child(39) { left: 950px; animation-delay: -3.5s; animation-duration: 3.8s; }
+.matrix-column:nth-child(40) { left: 975px; animation-delay: -2.6s; animation-duration: 3.4s; }
+
+/* ---- Loader ----------------------------------------------------------- */
+/* Hidden unless JS is running (html.js is set inline in <head>), so a
+   script-disabled visitor is never trapped behind the curtain. The CSS
+   animation is a second safety net: if app.js never loads, the overlay
+   still dismisses itself. */
+.loader { display: none; }
+
+html.js .loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--ink-900);
+  animation: loader-dismiss 400ms var(--ease-out) 2200ms forwards;
+  transition: opacity var(--dur-3) var(--ease-out),
+    visibility var(--dur-3) var(--ease-out);
+}
+
+@keyframes loader-dismiss {
+  to { opacity: 0; visibility: hidden; }
+}
+
+html.js .loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader__stage {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: grid;
+  place-items: center;
+}
+
+.Strich1 {
+  position: absolute;
+  width: 130px;
+  height: 50px;
+  background: var(--accent);
+  border-radius: 25px;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
+  z-index: 0;
+}
+
+.Strich2 {
+  position: absolute;
+  width: 130px;
+  height: 50px;
+  background: var(--accent);
+  border-radius: 25px;
+  transform: rotate(-90deg);
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
+  z-index: 0;
+}
+
+.bubble,
+.bubble1,
+.bubble2,
+.bubble3 {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: dropAndShift 5s ease-in-out infinite;
+}
+
+.bubble  { left: 15px; z-index: 1; background: radial-gradient(circle at 30% 30%, #ffb3c1, #e64980, #ff8787); }
+.bubble1 { left: 8px;  z-index: 2; background: radial-gradient(circle at 30% 30%, #edb3ff, #ac49e6, #fb87ff); animation-duration: 6s; }
+.bubble2 { left: 12px; z-index: 3; background: radial-gradient(circle at 30% 30%, #b3d8ff, #4963e6, #87a7ff); animation-duration: 4s; }
+.bubble3 { left: 10px; z-index: 4; background: radial-gradient(circle at 30% 30%, #b3ffbc, #35a32f, #75ba61); animation-duration: 7s; }
+
+@keyframes dropAndShift {
+  0%     { transform: translate(0px, 15px); }
+  16.67% { transform: translate(80px, 13px); }
+  33.34% { transform: translate(40px, 10px); }
+  50.01% { transform: translate(40px, -30px); }
+  66.68% { transform: translate(40px, 55px); }
+  83.35% { transform: translate(40px, 10px); }
+  100%   { transform: translate(0px, 15px); }
+}
+
+@keyframes bubbleGlint {
+  0%      { top: 3px; left: 4px; opacity: 0; }
+  8.335%  { top: 6px; left: 6px; opacity: 0.5; }
+  16.67%  { top: 3px; left: 4px; opacity: 0; }
+  33.34%  { top: 3px; left: 4px; opacity: 0.5; }
+  50.01%  { top: 3px; left: 4px; opacity: 0; }
+  58.345% { top: 6px; left: 6px; opacity: 0.5; }
+  66.68%  { top: 3px; left: 4px; opacity: 0; }
+  83.35%  { top: 6px; left: 6px; opacity: 0.5; }
+  100%    { top: 3px; left: 4px; opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .matrix-column { font-size: 14px; line-height: 16px; width: 18px; }
+}
+
+@media (max-width: 480px) {
+  .matrix-column { font-size: 12px; line-height: 14px; width: 15px; }
+}

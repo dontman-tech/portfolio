@@ -153,7 +153,7 @@ const check = (name, pass, detail = '') => {
   }));
   check('html has lang', meta.lang === 'en', meta.lang);
   check('title is descriptive and branded',
-    /Tamif Dontman/.test(meta.title) && meta.title.length > 25, meta.title);
+    /Tabe Miracle Fiagmenyi/.test(meta.title) && meta.title.length > 25, meta.title);
   check('meta description is a real sentence',
     meta.desc >= 80, `${meta.desc} chars`);
   check('Open Graph + Twitter cards present', !!meta.og && !!meta.tw, `${meta.og} / ${meta.tw}`);

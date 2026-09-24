@@ -205,7 +205,7 @@
     // "copy the brief" button can never drift apart.
     const buildBrief = () =>
       [
-        'Hi Tamif,',
+        'Hi Tabe,',
         '',
         `I'm reaching out about: ${answers.intent || '—'}`,
         answers.context ? `Context: ${answers.context}` : '',
@@ -544,8 +544,79 @@
     });
   };
 
+  /* ---------------------------------------------------------------------
+     Matrix rain background.
+
+     Columns are built here rather than in the markup: the pattern is purely
+     decorative, and generating it keeps index.html free of 40 empty nodes.
+     One 1000px strip is emitted per 1000px of viewport so the rain always
+     reaches the right edge.
+     --------------------------------------------------------------------- */
+  const MATRIX_COLUMNS = 40;
+  const MATRIX_PITCH = 25;
+  const MATRIX_STRIP_W = 1000;
+
+  const buildMatrix = () => {
+    const host = $('[data-matrix]');
+    if (!host) return;
+
+    const strips = Math.max(1, Math.ceil(window.innerWidth / MATRIX_STRIP_W));
+    if (host.childElementCount === strips) return;
+
+    const frag = document.createDocumentFragment();
+    for (let s = 0; s < strips; s += 1) {
+      const pattern = document.createElement('div');
+      pattern.className = 'matrix-pattern';
+      for (let i = 0; i < MATRIX_COLUMNS; i += 1) {
+        const col = document.createElement('div');
+        col.className = 'matrix-column';
+        col.style.left = `${i * MATRIX_PITCH}px`;
+        pattern.appendChild(col);
+      }
+      frag.appendChild(pattern);
+    }
+    host.replaceChildren(frag);
+  };
+
+  const bindMatrix = () => {
+    const host = $('[data-matrix]');
+    if (!host) return;
+    buildMatrix();
+    // Rebuilding on resize keeps the rain edge-to-edge on wide displays.
+    let t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(buildMatrix, 180);
+    }, { passive: true });
+  };
+
+  /* ---------------------------------------------------------------------
+     Loader.
+
+     The overlay is removed on window load, with a hard timeout so a slow
+     image can never leave the page behind a curtain.
+     --------------------------------------------------------------------- */
+  const bindLoader = () => {
+    const loader = $('[data-loader]');
+    if (!loader) return;
+
+    const done = () => {
+      loader.classList.add('is-done');
+      setTimeout(() => loader.remove(), 500);
+    };
+
+    if (document.readyState === 'complete') {
+      done();
+    } else {
+      window.addEventListener('load', done, { once: true });
+    }
+    setTimeout(done, 2500);
+  };
+
   const init = () => {
     applyPrefs(readPrefs());
+    bindLoader();
+    bindMatrix();
     bindSheet();
     bindFlow();
     bindStudio();

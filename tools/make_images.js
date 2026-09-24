@@ -278,7 +278,7 @@ function ogHTML() {
     </div>
     <div style="position:absolute;left:96px;bottom:78px" class="mono">
       <span style="color:${A2};font-size:13px">github.com/dontman-tech</span>
-      <span style="color:${MUTED};font-size:13px">&nbsp; · &nbsp;dontman.tech</span>
+      <span style="color:${MUTED};font-size:13px">&nbsp; · &nbsp;tabe7143@gmail.com</span>
     </div>`;
   return frame(body, CSS);
 }
