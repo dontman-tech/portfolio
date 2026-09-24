@@ -1,113 +1,93 @@
 # AGENTS.md
 
-Portfolio site for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer. Static
-HTML/CSS/JS, no build step, no framework. The audience is a hiring manager who
-should understand "who / what / why talk to me" within 30–90 seconds.
+Portfolio site for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer.
 
-This is the **production build**. The authoring studio, the matrix-rain
-background and the loading screen have been removed on purpose — do not
-reintroduce them. The palette is Apple's light appearance only; there is no
-theme switcher and no `data-palette` override.
+React 19 + TypeScript + Tailwind 3 + Framer Motion + Lucide React, bundled by Vite.
+Single page, dark theme (`#0C0C0C`), Kanit from Google Fonts. The audience is a
+hiring manager who should understand "who / what / why talk to me" in 30–90 seconds.
+
+The previous static-HTML build (authoring studio, matrix rain, loader, theme
+switcher, `tools/` QA suites) was replaced wholesale. Do not reintroduce it.
 
 ## Layout
 
 ```
-index.html                single-page portfolio (hero → work → method → wider range → about → contact)
-404.html                  custom error page
-robots.txt sitemap.xml    crawlability
-manifest.webmanifest      PWA metadata
-netlify.toml vercel.json  deploy config (404 routing + cache headers)
-assets/css/tokens.css     design tokens: Apple palette, surfaces, spacing, type, easing
-assets/css/base.css       resets, primitives (reveal/clip/stagger/shift/press), a11y
-assets/css/site.css       component styles
-assets/js/motion.js       scroll engine: reveal, parallax, tilt, magnetic, press, spotlight
-assets/js/app.js          UI logic: nav, mobile sheet, contact flow, toasts
-tools/                    QA suites, dev server, asset generators
+index.html                    document shell, Kanit font, page title, favicon link
+src/main.tsx                  React entry
+src/index.css                 global reset, #0C0C0C, .hero-heading gradient
+src/App.tsx                   section order + MotionConfig(reducedMotion="user")
+src/sections/                 Hero, Marquee, About, Services, Projects, Contact
+src/components/
+  ContactButton.tsx           gradient pill CTA
+  LiveProjectButton.tsx       ghost outline link to GitHub
+  Magnet.tsx                  cursor-following magnetic hover
+  AnimatedText.tsx            scroll-driven character-by-character reveal
+  CornerGraphics.tsx          inline SVG corner decorations for About
+public/                       favicon.svg, robots.txt, sitemap.xml, CNAME, .nojekyll
+.github/workflows/deploy.yml  build dist/ and publish to GitHub Pages
 ```
 
 ## Commands
 
 ```bash
-node tools/serve.js 12000     # preview (custom 404 enabled) — use this, not `python3 -m http.server`
-cd tools && npm test          # all six QA suites
-cd tools && npm run design    # one suite: verify|design|a11y|focus|resilience|flow|audit|shots
-python3 tools/make_resume.py  # regenerate the PDF resume (needs `pip install reportlab`)
-./tools/deploy.sh             # publish to GitHub Pages + open the is-a.dev PR
+npm install
+npm run dev        # dev server on http://localhost:12000
+npm run build      # tsc --noEmit && vite build
+npm run preview    # serve the built bundle on port 12000
 ```
-
-Tests run against `http://127.0.0.1:12000`. Start the server first.
-
-## Deployment
-
-Hosted on GitHub Pages at `tamif.is-a.dev`. `CNAME` (the custom domain) and
-`.nojekyll` (skip Jekyll) are committed in the repo root — Pages requires the
-former and the site assumes the latter. `netlify.toml` and `vercel.json` are
-kept for alternative hosts; they are inert on Pages.
-
-`tools/deploy.sh` is idempotent: it creates the repo, pushes `master`, enables
-Pages, sets the custom domain, then forks `is-a-dev/register` and opens a PR
-adding `domains/tamif.json`. Re-running it skips completed steps.
-
-The token must carry `administration=write`, `repository_creation=write`,
-`pages=write`, `contents=write` and `pull_requests=write`. A GitHub App
-installation token generally has none of these — repo creation and Pages
-enablement both return `Resource not accessible by integration` without them.
-
 
 ## Conventions
 
-**Progressive enhancement.** `index.html`/`404.html` swap `no-js` → `js` in an
-inline head script *before* stylesheets load, and every reveal/clip/stagger rule
-is scoped to `html.js`. Without JavaScript nothing is hidden. `app.js` also has a
-`revealFallback()` that force-reveals content if `motion.js` fails to load. Do
-not add a rule that hides content outside `html.js` — `tools/resilience.js`
-asserts all of this.
+**Transform ownership — the one that bites.** Framer Motion writes an inline
+`transform` for any entrance/`whileInView` animation, and that overrides
+Tailwind's `translate-*` classes on the *same* element. Never put both on one
+node. The hero portrait is the worked example: an absolutely-positioned wrapper
+carries `left-1/2 -translate-x-1/2`, and the `motion.div` entrance animation sits
+on a child inside it. Collapsing them shifts the portrait right by half its width
+and `overflow-x: clip` hides the evidence instead of failing loudly. Tailwind's
+`sm:-translate-y-0` and `sm:translate-y-0` also collide in this file — the latter
+wins the emitted CSS, so the mobile `-translate-y-1/2` centring is intentionally
+dropped at `sm` where the portrait is bottom-anchored instead.
+
+**Full-bleed headings.** `.hero-heading` consumers are sized in `vw` units, so
+their container must carry no horizontal padding — padding shears the outermost
+glyphs. The `overflow-hidden` wrapper that clips the entrance animation masks it.
+
+**Scroll-driven work.** The marquee offset is `(scrollY - sectionTop +
+innerHeight) * 0.3`. Row 1 advances with `translateX(offset - 200)`, row 2 with
+`translateX(-(offset - 200))`, so they drift in opposite directions. Each row is
+rendered three times and shifted by `-33.333%` — exactly one full set, because
+percentage translates resolve against the *node's* own width, not the viewport.
+Without that shift the loop exposes blank space in the sideways direction.
+
+**Tokens vs literals.** There is no `tokens.css` any more; the palette is the
+literal `#0C0C0C` (surface), `#141414` (raised card), `#D7E2EA` (body text on
+dark), and the `#646973 → #BBCCD7` gradient. Body copy over dark surfaces uses
+`#D7E2EA`, which clears WCAG AA. Keep new small labels at or above that.
+
+**Sections that stack.** Services is the only white surface and its wrapper has
+no `overflow-hidden`; Projects pulls itself up (`-mt-10 sm:-mt-12 md:-mt-14`,
+`z-10`) so the Services rounded top corners read as a stack. That negative margin
+is why `#projects` needs its own `overflowX: clip`: `#projects` is a containing
+block for the sticky cards, so it is the element that would otherwise grow a
+horizontal scrollbar from the marquee-width rows.
 
 **Content truthfulness.** Project copy must match the repository it links to.
-Verify a claim against the README before writing it (e.g. Air Canvas uses four
-fingers + pinch, not an open hand). The mailto body and the "copy the brief"
-button share one `buildBrief()` function so they cannot drift.
+Verify a claim against the README before writing it. Lumina appears as
+participation in the Prometheus AI Hackathon; a "4th place" ranking was
+deliberately removed — do not reinstate it. All project links currently point at
+the GitHub profile `https://github.com/dontman-tech`; swap in per-repo URLs only
+once the repo actually exists.
 
-The Prometheus AI Hackathon appears as **participation and the product built
-(Lumina)** only — the "4th place" ranking was deliberately removed from both the
-site and `tools/make_resume.py`. Do not reinstate it; `tools/verify.js` asserts
-the resume source stays free of it.
+**Accessibility.** `MotionConfig reducedMotion="user"` honours
+`prefers-reduced-motion` for all Framer animations. Decorative SVGs are
+`aria-hidden`. The character reveal animates opacity only, and every glyph holds
+0.2 as its floor, so no copy is ever fully invisible.
 
-**Motion is intentional, not decorative.** `prefers-reduced-motion` disables
-parallax/tilt/magnetic and reveals everything immediately. Keep that branch
-working — `tools/verify.js` checks it.
+## Deployment
 
-Smoothness comes from two rules in `motion.js`: all scroll-driven effects read
-from a *smoothed* scroll position (an exponential follow of the real `scrollY`,
-so a 100px wheel step glides rather than jumps), and reads/writes are batched
-into one `requestAnimationFrame` loop with `transform`/`opacity` only — never a
-layout property. `tools/verify.js` asserts the easing converges rather than
-snapping.
-
-**Animation vocabulary** (all in `assets/css/base.css`, driven by `motion.js`):
-`data-reveal` fade+lift · `data-stagger` lists · `data-clip`/`data-clip-x` clip
-reveal · `data-parallax` background drift · `data-tilt` 3D hover ·
-`data-magnetic` cursor lean · `data-count` count-up · `.shift__a/.shift__b` text
-shift · `.is-pressed` press+spring. There is deliberately no pin/scrub-jack:
-the method section is three ordinary cards, not a sticky carousel.
-
-**Tokens, not literals.** Colours, spacing (`--s-*`), radii and easing come from
-`tokens.css`. Changing a value there changes it everywhere; do not hardcode a
-hex or a px that already has a token.
-
-**Contrast contract.** Apple's Secondary Gray (`#86868B`) measures 3.6:1 on
-white, so it clears WCAG AA *only as large text*. `.lead` therefore switches to
-`--subhead` at ≥900px where it renders at 24px+, and stays `--text-muted`
-(Dark Gray, 7.5:1) below that. Any new small label must use `--text-muted` or
-`--text-faint`, never `--subhead`. `tools/design.js` measures this from rendered
-pixels, not from token values.
-
-**Cross-device fit.** Every grid track that holds text is written
-`minmax(0, 1fr)`, and `.hero` sets an explicit single column — an implicit `auto`
-track sizes to the widest child's max-content and silently pushes content past a
-phone viewport (the `.hero__status` pill caused exactly this). `tools/design.js`
-asserts no element is wider than its own viewport at 390/834/1440px.
-
-**Layered backgrounds.** `.bg` holds the mesh and three parallax blobs, driven by
-`data-parallax`. Nothing else layers behind the content; the grain, vignette,
-matrix rain and loader are gone.
+GitHub Pages at `tamif.is-a.dev`, via `.github/workflows/deploy.yml`, which
+builds `dist/` and publishes it. `public/CNAME` pins the custom domain and
+`public/.nojekyll` skips Jekyll. Because the workflow uploads `dist/` (not the
+repo root), both files must live in `public/` to be copied into the artifact —
+putting them in the repo root silently drops the custom domain.

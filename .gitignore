@@ -1,10 +1,7 @@
-# Test/QA artifacts
-.agent_tmp/
-.verify/
-
-# Tooling deps
-tools/node_modules/
-
-# OS noise
+node_modules
+dist
+dist-ssr
+*.local
 .DS_Store
-Thumbs.db
+.vite
+*.log
