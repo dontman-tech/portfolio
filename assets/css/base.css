@@ -1,5 +1,6 @@
 /* ==========================================================================
    base.css — reset, typography, layout rails, primitives.
+   Light appearance: white page, charcoal type, one blue accent.
    ========================================================================== */
 
 *,
@@ -20,7 +21,7 @@ body {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--text);
-  background: var(--ink-900);
+  background: var(--white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -48,14 +49,14 @@ a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; padding: 0; }
 
 :focus-visible {
-  outline: 2px solid var(--accent-2);
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
   border-radius: var(--r-xs);
 }
 
 ::selection {
-  background: rgb(var(--accent-rgb) / 0.34);
-  color: var(--text-strong);
+  background: rgb(var(--accent-rgb) / 0.2);
+  color: var(--black);
 }
 
 /* ---- Typography ------------------------------------------------------- */
@@ -64,6 +65,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
   line-height: var(--lh-snug);
   letter-spacing: var(--ls-tight);
+  color: var(--black);
   text-wrap: balance;
 }
 
@@ -80,11 +82,21 @@ p { text-wrap: pretty; }
 .h2 { font-size: var(--fs-h2); }
 .h3 { font-size: var(--fs-h3); }
 
+/* Section decks and card intros. Apple's Secondary Gray is used only at the
+   large-screen size where it clears WCAG AA; below that the deck falls back
+   to the Dark Gray body colour. */
 .lead {
   font-size: var(--fs-lead);
-  line-height: 1.56;
+  line-height: 1.5;
   color: var(--text-muted);
   max-width: 54ch;
+}
+
+@media (min-width: 900px) {
+  .lead {
+    font-size: var(--fs-lead-lg);
+    color: var(--subhead);
+  }
 }
 
 .muted { color: var(--text-muted); }
@@ -106,29 +118,42 @@ p { text-wrap: pretty; }
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--accent-2);
+  color: var(--blue);
 }
 
 .eyebrow::before {
   content: "";
   width: 26px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-2));
+  background: linear-gradient(90deg, transparent, var(--blue));
 }
 
 .eyebrow--plain::before { display: none; }
 
+/* The single highlighted phrase in the hero headline. A blue underline swash
+   reads as emphasis without the multi-colour gradient that made the old
+   headline look like a template. */
 .grad {
-  background: linear-gradient(
-    104deg,
-    var(--text-strong) 8%,
-    var(--accent) 42%,
-    var(--accent-2) 72%,
-    var(--accent-3) 96%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  position: relative;
+  color: var(--black);
+}
+
+.grad::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 0.12em;
+  border-radius: var(--r-pill);
+  background: var(--blue);
+  transform-origin: left;
+  animation: swashIn 900ms var(--ease-out) 520ms both;
+}
+
+@keyframes swashIn {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 /* ---- Layout rails ----------------------------------------------------- */
@@ -137,6 +162,8 @@ p { text-wrap: pretty; }
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--rail);
+  /* Prevents a wide child from stretching the rail inside a grid/flex parent. */
+  min-width: 0;
 }
 
 .section {
@@ -147,8 +174,8 @@ p { text-wrap: pretty; }
 .section__head {
   display: grid;
   gap: var(--s-4);
-  max-width: 62ch;
-  margin-bottom: var(--s-8);
+  max-width: 64ch;
+  margin-bottom: var(--head-gap);
 }
 
 /* Rule of thirds: content sits on the upper-third / left-third line */
@@ -196,8 +223,8 @@ p { text-wrap: pretty; }
   z-index: 200;
   padding: var(--s-3) var(--s-5);
   border-radius: var(--r-pill);
-  background: var(--accent);
-  color: var(--ink-900);
+  background: var(--blue);
+  color: var(--white);
   font-weight: 600;
   transform: translateY(-160%);
   transition: transform var(--dur-2) var(--ease-out);
@@ -205,34 +232,30 @@ p { text-wrap: pretty; }
 
 .skip-link:focus-visible { transform: translateY(0); }
 
-/* ---- Glass material --------------------------------------------------- */
+/* ---- Surfaces --------------------------------------------------------- */
+/* Apple's material read: a flat card with a hairline, not a frosted pane.
+   The blur is reserved for the two floating chrome surfaces (nav, sheet). */
+.card-surface {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--lift-1);
+}
+
+/* Kept for the gallery-grey panels and any element that predates
+   `.card-surface`; on a light page a solid surface holds contrast better
+   than glass, so this no longer blurs. */
 .glass {
   position: relative;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--gallery);
+  border: 1px solid var(--hairline);
   border-radius: var(--r-lg);
-  box-shadow: var(--glass-shadow), var(--glass-inner);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow: var(--lift-1);
 }
 
-/* Specular highlight along the top edge — sells the 3D "pane" read */
-.glass::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(
-    150deg,
-    rgb(255 255 255 / 0.14) 0%,
-    rgb(255 255 255 / 0) 34%
-  );
-  opacity: 0.9;
-}
-
-.glass--pad { padding: clamp(var(--s-5), 3vw, var(--s-7)); }
-.glass--flat { box-shadow: var(--lift-2), var(--glass-inner); }
+.glass--pad { padding: clamp(var(--s-5), 2.6vw, var(--s-7)); }
+.glass--flat { box-shadow: var(--lift-2); }
 
 /* ---- Chips / tags ----------------------------------------------------- */
 .chip {
@@ -244,17 +267,17 @@ p { text-wrap: pretty; }
   font-family: var(--font-mono);
   font-size: var(--fs-micro);
   letter-spacing: 0.02em;
-  color: rgb(var(--accent-rgb));
-  background: rgb(var(--accent-rgb) / 0.1);
-  border: 1px solid rgb(var(--accent-rgb) / 0.26);
+  color: var(--blue);
+  background: rgb(var(--accent-rgb) / 0.08);
+  border: 1px solid rgb(var(--accent-rgb) / 0.2);
   transition: transform var(--dur-2) var(--ease-spring),
     background-color var(--dur-2) var(--ease-out),
     border-color var(--dur-2) var(--ease-out);
 }
 
-.chip--accent2 { color: var(--accent-2); background: rgb(var(--accent-2-rgb) / 0.1); border-color: rgb(var(--accent-2-rgb) / 0.28); }
-.chip--accent3 { color: var(--accent-3); background: rgb(var(--accent-3-rgb) / 0.1); border-color: rgb(var(--accent-3-rgb) / 0.28); }
-.chip--quiet { color: var(--text-muted); background: rgb(255 255 255 / 0.05); border-color: var(--glass-border); }
+.chip--accent2 { color: #0a7a3f; background: rgb(10 122 63 / 0.08); border-color: rgb(10 122 63 / 0.2); }
+.chip--accent3 { color: #8a4b00; background: rgb(138 75 0 / 0.08); border-color: rgb(138 75 0 / 0.2); }
+.chip--quiet { color: var(--text-muted); background: rgb(0 0 0 / 0.04); border-color: var(--hairline); }
 
 .chip-row {
   display: flex;
@@ -263,13 +286,11 @@ p { text-wrap: pretty; }
 }
 
 /* ---- Buttons ---------------------------------------------------------- */
-/* 3D extruded slab. The two pseudo-elements are the bottom and right faces,
-   rotated out of the plane; `preserve-3d` on the parent keeps them attached
-   while the face tilts. Resting angles are deliberately shallower than a
-   full 70deg/30deg so the label stays legible at small sizes. */
+/* Apple-flat: a solid blue slab with a soft shadow, no extruded 3D faces.
+   The lift on hover is 2px, which reads as feedback without motion sickness. */
 .btn {
-  --color1: var(--accent);
-  --color2: color-mix(in srgb, var(--accent) 72%, #000);
+  --btn-bg: var(--blue);
+  --btn-bg-hover: var(--blue-dark);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -277,77 +298,51 @@ p { text-wrap: pretty; }
   gap: var(--s-3);
   /* 44px min-height keeps the control a comfortable touch target at every size */
   min-height: 44px;
-  padding: 0.82em 1.5em;
-  border: none;
-  border-radius: var(--r-sm);
-  background: linear-gradient(var(--color1), var(--color2));
-  color: #fff;
-  font-family: var(--font-display);
+  padding: 0.72em 1.35em;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: var(--btn-bg);
+  color: var(--white);
+  font-family: var(--font-body);
   font-size: var(--fs-small);
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   white-space: nowrap;
-  text-shadow: 0 2px 6px rgb(0 0 0 / 0.45);
   cursor: pointer;
-  perspective: 1000px;
-  transform: rotateX(22deg) rotateZ(7deg);
-  transform-style: preserve-3d;
-  transition: transform var(--dur-3) var(--ease-out),
-    box-shadow var(--dur-3) var(--ease-out);
-  box-shadow: var(--lift-2);
-}
-
-/* Bottom face */
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 auto;
-  width: 100%;
-  height: 14px;
-  background: var(--color2);
-  transform: rotateX(90deg);
-  transform-origin: bottom;
-  border-radius: inherit;
-}
-
-/* Right face */
-.btn::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto auto;
-  width: 14px;
-  height: 100%;
-  background: color-mix(in srgb, var(--color1) 80%, #000);
-  transform: rotateY(-90deg);
-  transform-origin: right;
-  border-radius: inherit;
+  box-shadow: var(--lift-1);
+  transition: transform var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
 }
 
 .btn:hover {
-  transform: rotateX(8deg) rotateZ(0deg);
-  box-shadow: var(--lift-3);
+  background: var(--btn-bg-hover);
+  transform: translate3d(var(--mag-x, 0px), calc(var(--mag-y, 0px) - 2px), 0);
+  box-shadow: var(--lift-2);
 }
 
-.btn:active { transform: rotateX(16deg) rotateZ(3deg) translateY(2px); }
+.btn:active { transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0) scale(0.985); }
 
 .btn:focus-visible {
-  outline: 3px solid var(--accent-2);
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
 
 .btn--primary {
-  --color1: var(--accent);
-  --color2: color-mix(in srgb, var(--accent) 66%, #000);
+  --btn-bg: var(--blue);
+  --btn-bg-hover: var(--blue-dark);
 }
 
 .btn--ghost {
-  --color1: var(--ink-500);
-  --color2: var(--ink-700);
-  color: var(--text);
+  --btn-bg: var(--white);
+  --btn-bg-hover: var(--gallery);
+  color: var(--charcoal);
+  border-color: var(--hairline-strong);
+  box-shadow: var(--lift-1);
 }
 
-.btn--sm { padding: 0.6em 1.1em; font-size: var(--fs-micro); }
+.btn--sm { padding: 0.5em 1.05em; font-size: var(--fs-micro); }
 
 .btn__icon {
   width: 1.05em;
@@ -364,7 +359,11 @@ p { text-wrap: pretty; }
   transition: transform 160ms var(--ease-spring);
 }
 
-.pressable.is-pressed { transform: scale(0.94); }
+.pressable.is-pressed { transform: scale(0.96); }
+
+.btn.is-pressed,
+.icon-btn.is-pressed,
+.opt.is-pressed { transform: scale(0.97); }
 
 /* ---- Text shift on hover ---------------------------------------------- */
 /* Two stacked copies of the label; the pair slides up on hover. */
@@ -379,13 +378,12 @@ p { text-wrap: pretty; }
 .shift__a,
 .shift__b {
   display: block;
-  transition: transform var(--dur-3) var(--ease-out);
+  transition: transform var(--dur-2) var(--ease-out);
 }
 
 .shift__b {
   position: absolute;
   inset: 0;
-  color: var(--accent-2);
 }
 
 .shift:hover .shift__a,
@@ -400,7 +398,7 @@ button:hover > .shift .shift__b { transform: translateY(-102%); }
 .ulink {
   position: relative;
   display: inline-block;
-  color: var(--text);
+  color: var(--blue);
   transition: color var(--dur-2) var(--ease-out);
 }
 
@@ -417,7 +415,7 @@ button:hover > .shift .shift__b { transform: translateY(-102%); }
   transition: transform var(--dur-3) var(--ease-out);
 }
 
-.ulink:hover { color: var(--accent-2); }
+.ulink:hover { color: var(--blue-dark); }
 .ulink:hover::after { transform: scaleX(1); }
 
 /* ---- Motion primitives (driven by assets/js/motion.js) ---------------- */
@@ -426,11 +424,10 @@ button:hover > .shift .shift__b { transform: translateY(-102%); }
    a syntax error — nothing is hidden and the page reads normally. */
 html.js [data-reveal] {
   opacity: 0;
-  transform: translate3d(var(--reveal-x, 0px), 30px, 0);
+  transform: translate3d(var(--reveal-x, 0px), 26px, 0);
   transition: opacity var(--dur-4) var(--ease-out),
     transform var(--dur-4) var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
 
 html.js [data-reveal].is-in {
@@ -442,7 +439,7 @@ html.js [data-reveal].is-in {
 html.js [data-clip] {
   clip-path: inset(0 0 100% 0);
   opacity: 0;
-  transition: clip-path 900ms var(--ease-out), opacity 500ms var(--ease-out);
+  transition: clip-path 1000ms var(--ease-out), opacity 700ms var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -453,7 +450,7 @@ html.js [data-clip] {
 
 html.js [data-clip-x] {
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 900ms var(--ease-out);
+  transition: clip-path 1000ms var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -472,13 +469,29 @@ html.js [data-clip-x].is-in { clip-path: inset(0 0 0 0); }
    element alone would never reveal anything. */
 html.js [data-stagger] > * {
   opacity: 0;
-  transform: translate3d(0, 22px, 0);
+  transform: translate3d(0, 20px, 0);
   transition: opacity var(--dur-3) var(--ease-out),
     transform var(--dur-3) var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 html.js [data-stagger] > *.is-in { opacity: 1; transform: none; }
+
+/* Each method step slides up and settles in place; motion.js toggles
+   `.is-in` from an IntersectionObserver, so the effect is driven by the
+   scroll position rather than a scroll-jacked sticky sequence. */
+html.js .step[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0);
+  transition: opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js .step[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -501,4 +514,6 @@ html.js [data-stagger] > *.is-in { opacity: 1; transform: none; }
   [data-clip-x] { clip-path: none !important; opacity: 1 !important; }
 
   [data-scrub] { transform: none !important; opacity: 1 !important; }
+
+  .grad::after { animation: none; transform: scaleX(1); }
 }

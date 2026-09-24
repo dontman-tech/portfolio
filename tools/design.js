@@ -143,6 +143,31 @@ const ratio = (a, b) => {
   check('display and body fonts are distinct',
     tokenUse.displayFont !== tokenUse.bodyFont, `${tokenUse.displayFont} vs ${tokenUse.bodyFont}`);
 
+  // --- Cross-device: nothing may be wider than its own viewport, even when
+  // an `overflow: hidden` ancestor hides the document-level scrollbar (the
+  // classic grid-blowout bug: a non-wrapping pill widens an auto track).
+  for (const [name, w, h] of [['phone', 390, 844], ['tablet', 834, 1112], ['desktop', 1440, 900]]) {
+    const dp = await browser.newPage({ viewport: { width: w, height: h } });
+    await dp.goto(BASE + '/', { waitUntil: 'load' });
+    await dp.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    await dp.waitForTimeout(1000);
+    const fit = await dp.evaluate(() => {
+      const vw = window.innerWidth;
+      const over = [];
+      document.querySelectorAll('body *').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.width > vw + 1 && r.width < 4000 && !el.closest('.bg, .marquee, .sr-only, [aria-hidden="true"]')) {
+          over.push(el.tagName.toLowerCase() + '.' + String(el.className || '').split(' ')[0]);
+        }
+      });
+      return { docOverflow: document.documentElement.scrollWidth - vw, over: [...new Set(over)].slice(0, 5) };
+    });
+    check(`${name}: no element exceeds the viewport width`,
+      fit.docOverflow <= 1 && fit.over.length === 0,
+      `doc=${fit.docOverflow}px ${fit.over.join(', ')}`);
+    await dp.close();
+  }
+
   // --- Story: three narrative archetypes are labelled
   const tags = await page.$$eval('.chapter__tag', (els) => els.map((e) => e.innerText.trim()));
   check('projects are framed as a narrative', tags.length >= 5, tags.join(' · '));

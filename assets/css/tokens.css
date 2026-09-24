@@ -1,60 +1,77 @@
 /* ==========================================================================
-   tokens.css — single source of truth for the visual language.
-   Every colour, size, radius, shadow and timing used on the site resolves to
-   a custom property here, so retheming the whole site is a token swap.
+   tokens.css — the single source of truth for the visual language.
+
+   Palette: Apple, light appearance. Pure black and charcoal carry the type,
+   pure white and gallery grey carry the surfaces, system blue is the one
+   accent, and the grey stack handles subheads and body copy. Every colour,
+   size, radius, shadow and timing on the site resolves to a custom property
+   here, so the whole look is a token swap.
    ========================================================================== */
 
 :root {
-  /* ---- Palette: Apple Glass (default) -------------------------------- */
-  /* System greys, darkest to lightest — the Apple dark-mode stack. */
-  --ink-900: #000000;
-  --ink-800: #0a0a0b;
-  --ink-700: #1c1c1e;
-  --ink-600: #2c2c2e;
-  --ink-500: #3a3a3c;
-  --ink-400: #48484a;
+  /* ---- Palette ------------------------------------------------------- */
+  --black: #000000;        /* Apple Pure Black — page text, primary blocks   */
+  --charcoal: #1d1d1f;     /* Apple Charcoal — headlines and dark slabs      */
+  --white: #ffffff;        /* Apple Pure White — page and card surfaces      */
+  --gallery: #f5f5f7;      /* Apple Gallery Gray — product / recessed panels */
+  --blue: #0071e3;         /* Apple System Blue — links and primary accent   */
+  --grey-2: #86868b;       /* Apple Secondary Gray — subheadings             */
+  --grey-3: #555555;       /* Apple Dark Gray — body copy                    */
 
-  /* Apple system colours (iOS/macOS dark appearance). */
-  --accent: #0071e3;
-  --accent-2: #30d158;
-  --accent-3: #bf5af2;
-  --signal: #ff9f0a;
-  --danger: #ff453a;
+  --blue-dark: #0062c4;
+  --hairline: rgb(0 0 0 / 0.09);
+  --hairline-strong: rgb(0 0 0 / 0.16);
 
+  --accent: var(--blue);
+  --accent-dark: var(--blue-dark);
   --accent-rgb: 0 113 227;
-  --accent-2-rgb: 48 209 88;
-  --accent-3-rgb: 191 90 242;
-  --signal-rgb: 255 159 10;
 
-  --text: #f5f5f7;
-  --text-muted: #a1a1a6;
-  --text-faint: #86868b;
-  --text-strong: #ffffff;
+  /* Legacy aliases — kept so every component that reaches for the old names
+     resolves to the new palette instead of falling back to nothing. */
+  --ink-900: var(--white);
+  --ink-800: var(--white);
+  --ink-700: var(--charcoal);
+  --ink-600: var(--gallery);
+  --ink-500: var(--gallery);
+  --ink-400: var(--grey-2);
+  --accent-2: var(--blue);
+  --accent-3: var(--blue);
+  --signal: var(--blue);
+  --danger: #d70015;
+  --accent-2-rgb: 0 113 227;
+  --accent-3-rgb: 0 113 227;
+  --signal-rgb: 0 113 227;
 
-  /* ---- Glass material ------------------------------------------------- */
-  --glass-blur: 20px;
-  --glass-sat: 150%;
-  --glass-bg: linear-gradient(
-    152deg,
-    rgb(255 255 255 / 0.1),
-    rgb(255 255 255 / 0.028)
-  );
-  --glass-bg-strong: linear-gradient(
-    152deg,
-    rgb(255 255 255 / 0.16),
-    rgb(255 255 255 / 0.05)
-  );
-  --glass-border: rgb(255 255 255 / 0.14);
-  --glass-border-strong: rgb(255 255 255 / 0.24);
-  --glass-inner: inset 0 1px 0 rgb(255 255 255 / 0.2);
-  --glass-shadow: 0 24px 60px -18px rgb(0 0 0 / 0.7);
+  --text: var(--charcoal);
+  --text-strong: var(--black);
+  --text-muted: var(--grey-3);
+  /* Apple's Secondary Gray (#86868B) measures 3.6:1 on white: it clears AA
+     only as *large* text. Section decks are set at 24px+ so they can carry it;
+     every smaller label uses the palette's Dark Gray (#555555, 7.5:1). */
+  --text-faint: var(--grey-3);
+  --subhead: var(--grey-2);
+
+  /* ---- Surfaces & chrome --------------------------------------------- */
+  --surface: var(--white);
+  --surface-2: var(--gallery);
+  --surface-glass: rgb(255 255 255 / 0.72);
+  --surface-glass-strong: rgb(255 255 255 / 0.86);
+  --surface-nav: rgb(255 255 255 / 0.78);
+
+  --glass-blur: 22px;
+  --glass-sat: 180%;
+  --glass-bg: var(--surface-glass);
+  --glass-bg-strong: var(--surface-glass-strong);
+  --glass-border: var(--hairline);
+  --glass-border-strong: var(--hairline-strong);
+  --glass-inner: inset 0 1px 0 rgb(255 255 255 / 0.9);
+  --glass-shadow: 0 20px 50px -24px rgb(0 0 0 / 0.22);
 
   /* ---- Depth / elevation --------------------------------------------- */
-  --lift-1: 0 2px 8px -2px rgb(0 0 0 / 0.5);
-  --lift-2: 0 14px 34px -12px rgb(0 0 0 / 0.62);
-  --lift-3: 0 30px 70px -20px rgb(0 0 0 / 0.72);
-  --glow-accent: 0 0 0 1px rgb(var(--accent-rgb) / 0.32),
-    0 18px 46px -18px rgb(var(--accent-rgb) / 0.5);
+  --lift-1: 0 1px 3px rgb(0 0 0 / 0.06), 0 6px 18px -10px rgb(0 0 0 / 0.16);
+  --lift-2: 0 10px 30px -14px rgb(0 0 0 / 0.2);
+  --lift-3: 0 26px 60px -24px rgb(0 0 0 / 0.28);
+  --glow-accent: 0 0 0 3px rgb(var(--accent-rgb) / 0.16);
 
   /* ---- Type ----------------------------------------------------------- */
   --font-display: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -65,21 +82,24 @@
      --fs-display is tied to the hero copy column (~55% of the viewport) so the
      headline's longest line never outgrows its column and re-wraps inside the
      reveal mask. Do not raise the vw coefficient without re-measuring. */
-  --fs-display: clamp(2.2rem, 4.9vw, 4rem);
-  --fs-h1: clamp(2.1rem, 1.25rem + 3.4vw, 3.6rem);
-  --fs-h2: clamp(1.65rem, 1.15rem + 2vw, 2.5rem);
-  --fs-h3: clamp(1.2rem, 1rem + 0.85vw, 1.6rem);
-  --fs-lead: clamp(1.06rem, 0.98rem + 0.42vw, 1.3rem);
+  --fs-display: clamp(2.15rem, 1.4rem + 3.6vw, 3.75rem);
+  --fs-h1: clamp(1.95rem, 1.25rem + 2.8vw, 3.2rem);
+  --fs-h2: clamp(1.5rem, 1.1rem + 1.7vw, 2.25rem);
+  --fs-h3: clamp(1.15rem, 1rem + 0.75vw, 1.5rem);
+  --fs-lead: clamp(1.06rem, 0.98rem + 0.4vw, 1.3rem);
+  /* Large-screen deck size. 1.5rem is the floor at which Apple's Secondary
+     Gray clears WCAG AA, so this token is also a contrast contract. */
+  --fs-lead-lg: clamp(1.5rem, 1.2rem + 0.7vw, 1.75rem);
   --fs-body: clamp(0.97rem, 0.94rem + 0.16vw, 1.06rem);
   --fs-small: 0.875rem;
   --fs-micro: 0.76rem;
 
-  --lh-tight: 1.06;
-  --lh-snug: 1.24;
-  --lh-body: 1.68;
-  --ls-display: -0.035em;
+  --lh-tight: 1.08;
+  --lh-snug: 1.26;
+  --lh-body: 1.66;
+  --ls-display: -0.032em;
   --ls-tight: -0.02em;
-  --ls-label: 0.18em;
+  --ls-label: 0.16em;
 
   /* ---- Space (4px base) ----------------------------------------------- */
   --s-1: 0.25rem;
@@ -94,108 +114,66 @@
   --s-10: 7rem;
   --s-11: 9rem;
 
-  --section-y: clamp(4.5rem, 3rem + 7vw, 9.5rem);
-  --gutter: clamp(1.15rem, 0.6rem + 3vw, 3.5rem);
+  /* Vertical rhythm. Each breakpoint re-tunes these so desktop, tablet and
+     phone all land on a deliberate cadence instead of one value scaled down. */
+  --section-y: clamp(4.25rem, 3.25rem + 3.4vw, 7.5rem);
+  --section-y-tight: clamp(3rem, 2.2rem + 2.6vw, 5rem);
+  --head-gap: clamp(2rem, 1.4rem + 2.2vw, 3.5rem);
+  --gutter: clamp(1rem, 0.5rem + 2.4vw, 2.5rem);
   --measure: 68ch;
-  --maxw: 1280px;
+  --maxw: 1240px;
+
+  /* Horizontal rail — the page's side margin, tuned per device class. */
+  --rail: clamp(1.25rem, 0.75rem + 2.8vw, 4rem);
 
   /* ---- Radius --------------------------------------------------------- */
   --r-xs: 8px;
   --r-sm: 12px;
   --r-md: 18px;
-  --r-lg: 26px;
-  --r-xl: 36px;
+  --r-lg: 24px;
+  --r-xl: 32px;
   --r-pill: 999px;
 
   /* ---- Motion --------------------------------------------------------- */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.4, 1);
+  /* Soft ease-out for entrances, a gentle in-out for looping offsets, and a
+     spring reserved for pointer feedback. Long durations read as considered
+     rather than sluggish because the curve decelerates early. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.5, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.42, 0.5, 1);
   --ease-press: cubic-bezier(0.2, 0.9, 0.3, 1);
 
-  --dur-1: 140ms;
-  --dur-2: 260ms;
-  --dur-3: 480ms;
-  --dur-4: 760ms;
-
-  /* Motion intensity multiplier, driven by the studio panel */
-  --motion: 1;
+  --dur-1: 160ms;
+  --dur-2: 300ms;
+  --dur-3: 560ms;
+  --dur-4: 900ms;
 
   /* ---- Layout rails --------------------------------------------------- */
-  --rail: clamp(1.15rem, 0.5rem + 3.4vw, 4.5rem);
-  --nav-h: 68px;
+  --nav-h: 64px;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-/* ---- Palette presets -------------------------------------------------- */
-/* All four are drawn from the Apple system colour set so the studio panel
-   stays inside one family. */
-[data-palette="azure"] {
-  --accent: #0071e3;
-  --accent-2: #64d2ff;
-  --accent-3: #bf5af2;
-  --signal: #ffd60a;
-  --accent-rgb: 0 113 227;
-  --accent-2-rgb: 100 210 255;
-  --accent-3-rgb: 191 90 242;
-  --signal-rgb: 255 214 10;
+/* ---- Breakpoint-tuned rhythm ------------------------------------------
+   Three deliberate spacing profiles: phone, tablet, desktop. Keeping them
+   here means the sections never need device queries of their own. */
+@media (max-width: 599px) {
+  :root {
+    --rail: 1.25rem;
+    --section-y: 4rem;
+    --section-y-tight: 2.75rem;
+    --head-gap: 1.75rem;
+    --gutter: 1rem;
+    --nav-h: 60px;
+  }
 }
 
-[data-palette="aurora"] {
-  --accent: #30d158;
-  --accent-2: #66d4cf;
-  --accent-3: #0071e3;
-  --signal: #ffd60a;
-  --accent-rgb: 48 209 88;
-  --accent-2-rgb: 102 212 207;
-  --accent-3-rgb: 0 113 227;
-  --signal-rgb: 255 214 10;
+@media (min-width: 600px) and (max-width: 1023px) {
+  :root {
+    --rail: 2.5rem;
+    --section-y: 5.5rem;
+    --section-y-tight: 3.75rem;
+    --head-gap: 2.5rem;
+    --gutter: 1.75rem;
+  }
 }
-
-[data-palette="dusk"] {
-  --accent: #bf5af2;
-  --accent-2: #64d2ff;
-  --accent-3: #ff375f;
-  --signal: #ff9f0a;
-  --accent-rgb: 191 90 242;
-  --accent-2-rgb: 100 210 255;
-  --accent-3-rgb: 255 55 95;
-  --signal-rgb: 255 159 10;
-}
-
-[data-palette="ember"] {
-  --accent: #ff9f0a;
-  --accent-2: #ffd60a;
-  --accent-3: #ff453a;
-  --signal: #30d158;
-  --accent-rgb: 255 159 10;
-  --accent-2-rgb: 255 214 10;
-  --accent-3-rgb: 255 69 58;
-  --signal-rgb: 48 209 88;
-}
-
-/* ---- Glass density ---------------------------------------------------- */
-[data-glass="low"] {
-  --glass-blur: 8px;
-  --glass-sat: 115%;
-  --glass-bg: linear-gradient(152deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.018));
-  --glass-border: rgb(255 255 255 / 0.09);
-  --glass-shadow: 0 14px 34px -14px rgb(0 0 0 / 0.6);
-}
-
-[data-glass="high"] {
-  --glass-blur: 30px;
-  --glass-sat: 180%;
-  --glass-bg: linear-gradient(152deg, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.05));
-  --glass-border: rgb(255 255 255 / 0.22);
-  --glass-shadow: 0 32px 80px -22px rgb(0 0 0 / 0.78);
-}
-
-/* ---- Background modes ------------------------------------------------- */
-[data-bg="still"] .bg__blob,
-[data-bg="still"] .bg__mesh,
-[data-bg="still"] .matrix-column { animation-play-state: paused; }
-[data-bg="mesh"] .bg__blob { opacity: 0.32; }
-[data-bg="mesh"] .matrix-container { opacity: 0.14; }
-[data-bg="still"] .matrix-container { opacity: 0.18; }

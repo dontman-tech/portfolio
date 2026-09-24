@@ -2,26 +2,27 @@
    motion.js — the site's animation engine.
 
    One rAF loop does all scroll-driven work so reads and writes stay batched
-   and never thrash layout. Everything degrades gracefully:
+   and never thrash layout. The scroll position used for effects is *smoothed*
+   (an exponential follow of the real scrollY), so wheel steps of 100px do not
+   translate into 100px jumps — the transform trails the scroll and glides.
+
+   Everything degrades gracefully:
      · prefers-reduced-motion  → static, fully readable page
      · no IntersectionObserver → reveals resolve immediately
-     · small viewports / touch → parallax and pin are skipped or simplified
+     · small viewports / touch → parallax is skipped or simplified
 
    Data-attribute contract (set in markup):
-     data-reveal[="up|left|right|scale"]   fade + lift on enter
-     data-stagger                          fade + lift children, index-delayed
-     data-clip / data-clip-x               clip-path reveal
-     data-scrub                            continuous scroll-mapped transform
+     data-reveal[="up|left|right"]   fade + lift on enter
+     data-stagger                     fade + lift children, index-delayed
+     data-clip / data-clip-x          clip-path reveal
+     data-scrub                       continuous scroll-mapped transform
        data-scrub-y  px travel (negative = slower/background layer)
        data-scrub-s  scale delta across the range
        data-scrub-o  minimum opacity at the range edges (default 1 = no fade)
-     data-parallax="0.18"                  px-per-scroll parallax factor
-     data-tilt="7"                         max degrees of 3D tilt on pointer move
-     data-magnetic="14"                    pointer-attracted offset in px
-     data-pin                              sticky narrative container
-       [data-pin-layer]                     stacked panels that swap in place
-       [data-pin-tick]                      progress ticks
-     data-count="120"                      count-up number on first view
+     data-parallax="0.18"             px-per-scroll parallax factor
+     data-tilt="7"                    max degrees of 3D tilt on pointer move
+     data-magnetic="14"               pointer-attracted offset in px
+     data-count="120"                 count-up number on first view
    ========================================================================== */
 
 (() => {
@@ -37,12 +38,6 @@
   const smoothstep = (edge0, edge1, x) => {
     const t = clamp((x - edge0) / (edge1 - edge0 || 1));
     return t * t * (3 - 2 * t);
-  };
-
-  /** Multiplier so the studio panel can dial motion up or down. */
-  const motionScale = () => {
-    const v = parseFloat(getComputedStyle(root).getPropertyValue('--motion'));
-    return Number.isFinite(v) ? v : 1;
   };
 
   /* ---------------------------------------------------------------------
@@ -68,7 +63,7 @@
           }
         });
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.12 }
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
     );
   }
 
@@ -85,8 +80,8 @@
   const registerReveals = (scope = document) => {
     scope.querySelectorAll('[data-reveal], [data-clip], [data-clip-x]').forEach((el) => {
       const kind = el.dataset.reveal;
-      if (kind === 'left') el.style.setProperty('--reveal-x', '-34px');
-      if (kind === 'right') el.style.setProperty('--reveal-x', '34px');
+      if (kind === 'left') el.style.setProperty('--reveal-x', '-30px');
+      if (kind === 'right') el.style.setProperty('--reveal-x', '30px');
       observeReveal(el, el.dataset.delay ? Number(el.dataset.delay) : undefined);
     });
 
@@ -108,12 +103,12 @@
   const runCount = (el) => {
     const target = Number(el.dataset.count) || 0;
     const suffix = el.dataset.countSuffix || '';
-    const dur = reduced.matches ? 0 : 1100;
+    const dur = reduced.matches ? 0 : 1200;
     const t0 = performance.now();
 
     const step = (now) => {
       const t = dur ? clamp((now - t0) / dur) : 1;
-      const eased = 1 - Math.pow(1 - t, 3);
+      const eased = 1 - Math.pow(1 - t, 4);
       el.textContent = `${Math.round(target * eased)}${suffix}`;
       if (t < 1) requestAnimationFrame(step);
     };
@@ -142,11 +137,10 @@
   };
 
   /* ---------------------------------------------------------------------
-     Scroll-driven layer: scrub, parallax, pin, progress.
+     Scroll-driven layer: scrub, parallax, progress.
      --------------------------------------------------------------------- */
   const scrubEls = [];
   const parallaxEls = [];
-  const pinEls = [];
 
   const registerScrollWork = (scope = document) => {
     scope.querySelectorAll('[data-scrub]').forEach((el) => {
@@ -162,16 +156,6 @@
     scope.querySelectorAll('[data-parallax]').forEach((el) => {
       if (parallaxEls.some((r) => r.el === el)) return;
       parallaxEls.push({ el, f: Number(el.dataset.parallax) || 0.15, cur: 0 });
-    });
-
-    scope.querySelectorAll('[data-pin]').forEach((el) => {
-      if (pinEls.some((r) => r.el === el)) return;
-      pinEls.push({
-        el,
-        layers: Array.from(el.querySelectorAll('[data-pin-layer]')),
-        ticks: Array.from(el.querySelectorAll('[data-pin-tick]')),
-        active: -1,
-      });
     });
   };
 
@@ -196,69 +180,60 @@
   let needsMeasure = true;
   let progressEl = null;
 
+  // The value effects actually use: a lazy follower of the real scroll. 0.1
+  // is slow enough to feel like momentum and fast enough to never lag.
+  let smoothY = window.scrollY || 0;
+
   const tick = () => {
-    const scale = motionScale();
-    const y = window.scrollY || window.pageYOffset;
+    const targetY = window.scrollY || window.pageYOffset;
+    const still = reduced.matches;
 
     if (progressEl) {
       const max = document.documentElement.scrollHeight - vh;
-      root.style.setProperty('--page-progress', max > 0 ? clamp(y / max).toFixed(4) : '0');
+      root.style.setProperty('--page-progress', max > 0 ? clamp(targetY / max).toFixed(4) : '0');
     }
 
-    const still = reduced.matches || scale === 0;
+    if (still) {
+      requestAnimationFrame(tick);
+      return;
+    }
 
-    if (!still && (y !== lastScroll || needsMeasure)) {
-      lastScroll = y;
+    // Exponential follow, frame-rate independent.
+    smoothY = lerp(smoothY, targetY, 0.11);
+    if (Math.abs(smoothY - targetY) < 0.1) smoothY = targetY;
+    const y = smoothY;
 
+    if (y !== lastScroll || needsMeasure) {
       if (needsMeasure) {
         scrubEls.forEach((r) => measure(r, vh));
         parallaxEls.forEach((r) => measure(r, vh));
-        pinEls.forEach((r) => {
-          measure(r, vh);
-          r.span = Math.max(1, r.height - vh);
-        });
         needsMeasure = false;
+        lastScroll = -1;
       } else {
-        // Keep geometry fresh without re-reading every frame: cheap deltas.
-        const dy = y - (tick._y ?? y);
+        // Keep geometry fresh without re-reading every frame: cheap deltas
+        // against the real scroll delta, not the smoothed one.
+        const dy = targetY - (tick._t ?? targetY);
         scrubEls.forEach((r) => { r.top -= dy; r.center -= dy; });
         parallaxEls.forEach((r) => { r.top -= dy; r.center -= dy; });
-        pinEls.forEach((r) => { r.top -= dy; r.center -= dy; });
+        tick._t = targetY;
       }
-      tick._y = y;
+      lastScroll = y;
 
       scrubEls.forEach((r) => {
         const p = progressOf(r);
         const signed = p * 2 - 1;
-        r.el.style.setProperty('--scrub-y', `${(-signed * r.y * scale).toFixed(2)}px`);
-        if (r.s) r.el.style.setProperty('--scrub-s', (1 + (p - 0.5) * r.s * scale).toFixed(4));
+        r.el.style.setProperty('--scrub-y', `${(-signed * r.y).toFixed(2)}px`);
+        if (r.s) r.el.style.setProperty('--scrub-s', (1 + (p - 0.5) * r.s).toFixed(4));
         if (r.o < 1) {
-          const edge = Math.min(smoothstep(0, 0.24, p), smoothstep(1, 0.76, p));
+          const edge = Math.min(smoothstep(0, 0.26, p), smoothstep(1, 0.74, p));
           r.el.style.setProperty('--scrub-o', (r.o + (1 - r.o) * edge).toFixed(3));
         }
       });
 
       parallaxEls.forEach((r) => {
-        const offset = (r.center - vh / 2) * -r.f * scale;
-        r.cur = lerp(r.cur, offset, 0.14);
+        const offset = (r.center - vh / 2) * -r.f;
+        r.cur = lerp(r.cur, offset, 0.12);
         r.el.style.setProperty('--par-y', `${r.cur.toFixed(2)}px`);
-      });
-
-      pinEls.forEach((r) => {
-        const p = clamp((y - r.top) / r.span);
-        const n = r.layers.length;
-        if (!n) return;
-        const idx = Math.min(n - 1, Math.floor(p * n));
-        if (idx === r.active) return;
-        r.active = idx;
-        r.layers.forEach((layer, i) => {
-          layer.classList.toggle('is-active', i === idx);
-          layer.classList.toggle('is-past', i < idx);
-        });
-        r.ticks.forEach((tk, i) => {
-          tk.classList.toggle('is-active', i === idx);
-          tk.classList.toggle('is-past', i < idx);
-        });
       });
     }
 
@@ -268,23 +243,24 @@
   const onResize = () => {
     vh = window.innerHeight;
     needsMeasure = true;
-    tick._y = undefined;
+    lastScroll = -1;
+    tick._t = undefined;
   };
 
   /* ---------------------------------------------------------------------
-     3D tilt — glass panes lean toward the pointer.
+     3D tilt — cards lean a little toward the pointer.
      --------------------------------------------------------------------- */
   const bindTilt = (el) => {
-    const max = Number(el.dataset.tilt) || 7;
+    const max = Number(el.dataset.tilt) || 6;
     let raf = 0;
     let target = { x: 0, y: 0 };
     let cur = { x: 0, y: 0 };
 
     const render = () => {
-      cur.x = lerp(cur.x, target.x, 0.16);
-      cur.y = lerp(cur.y, target.y, 0.16);
+      cur.x = lerp(cur.x, target.x, 0.12);
+      cur.y = lerp(cur.y, target.y, 0.12);
       el.style.transform =
-        `perspective(1100px) rotateX(${cur.y.toFixed(3)}deg) rotateY(${cur.x.toFixed(3)}deg)`;
+        `perspective(1200px) rotateX(${cur.y.toFixed(3)}deg) rotateY(${cur.x.toFixed(3)}deg)`;
       if (Math.abs(cur.x - target.x) > 0.01 || Math.abs(cur.y - target.y) > 0.01) {
         raf = requestAnimationFrame(render);
       } else {
@@ -312,14 +288,14 @@
      Magnetic hover — buttons lean toward the cursor, then spring back.
      --------------------------------------------------------------------- */
   const bindMagnetic = (el) => {
-    const pull = Number(el.dataset.magnetic) || 12;
+    const pull = Number(el.dataset.magnetic) || 10;
     let raf = 0;
     let target = { x: 0, y: 0 };
     let cur = { x: 0, y: 0 };
 
     const render = () => {
-      cur.x = lerp(cur.x, target.x, 0.2);
-      cur.y = lerp(cur.y, target.y, 0.2);
+      cur.x = lerp(cur.x, target.x, 0.16);
+      cur.y = lerp(cur.y, target.y, 0.16);
       el.style.setProperty('--mag-x', `${cur.x.toFixed(2)}px`);
       el.style.setProperty('--mag-y', `${cur.y.toFixed(2)}px`);
       if (Math.abs(cur.x - target.x) > 0.05 || Math.abs(cur.y - target.y) > 0.05) {
@@ -348,7 +324,7 @@
      Press + spring — every pressable surface compresses on contact.
      --------------------------------------------------------------------- */
   const bindPress = () => {
-    const selector = '.btn, .opt, .icon-btn, .chip, .route, .swatch, .seg__btn, .nav__link, .mailto, [data-press]';
+    const selector = '.btn, .opt, .icon-btn, .chip, .route, .nav__link, .mailto, [data-press]';
 
     document.addEventListener('pointerdown', (e) => {
       const el = e.target.closest(selector);
@@ -371,13 +347,13 @@
      --------------------------------------------------------------------- */
   const bindSpotlight = (el) => {
     let raf = 0;
-    let target = { x: vh ? window.innerWidth / 2 : 0, y: 0 };
+    let target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     let cur = { ...target };
 
     const render = () => {
-      cur.x = lerp(cur.x, target.x, 0.09);
-      cur.y = lerp(cur.y, target.y, 0.09);
-      el.style.transform = `translate3d(${cur.x - 280}px, ${cur.y - 280}px, 0)`;
+      cur.x = lerp(cur.x, target.x, 0.08);
+      cur.y = lerp(cur.y, target.y, 0.08);
+      el.style.transform = `translate3d(${cur.x - 310}px, ${cur.y - 310}px, 0)`;
       raf = Math.abs(cur.x - target.x) > 0.5 || Math.abs(cur.y - target.y) > 0.5
         ? requestAnimationFrame(render)
         : 0;
@@ -396,7 +372,7 @@
     const nav = document.querySelector('.nav');
     if (!nav) return;
 
-    const stuck = () => nav.classList.toggle('is-stuck', window.scrollY > 24);
+    const stuck = () => nav.classList.toggle('is-stuck', window.scrollY > 20);
     stuck();
     window.addEventListener('scroll', stuck, { passive: true });
 
@@ -441,7 +417,7 @@
       if (spot) bindSpotlight(spot);
     }
 
-    // Elements injected later (toasts, flow slides) can request the same setup.
+    // Elements injected later can request the same setup.
     window.OHMotion = {
       register: (scope) => {
         registerReveals(scope);

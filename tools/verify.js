@@ -2,9 +2,9 @@
  * Verification harness.
  *
  * Drives the real page in headless Chromium and asserts the behaviours the
- * design brief depends on: no console errors, reveals actually fire, the pin
- * narrative advances, the contact flow reaches its handoff slide, the studio
- * panel re-themes the document, and reduced-motion renders a static page.
+ * design brief depends on: no console errors, reveals actually fire, the
+ * method steps are discrete page sections, the contact flow reaches its
+ * handoff slide, and reduced-motion renders a static page.
  *
  * Run:  node tools/verify.js
  */
@@ -69,33 +69,59 @@ async function main() {
     Array.from(document.querySelectorAll('[data-count]')).map((e) => e.textContent));
   check('counters reach their targets', counts.join(',') === '17,5,4,2', counts.join(','));
 
-  // Scroll-driven scrub writes a transform
+  // Scroll-driven parallax writes a transform to the background blobs
   await page.evaluate(() => window.scrollTo(0, 700));
-  await page.waitForTimeout(700);
-  const scrubY = await page.evaluate(() => {
-    const el = document.querySelector('[data-scrub]');
-    return el.style.getPropertyValue('--scrub-y');
+  await page.waitForTimeout(900);
+  const parY = await page.evaluate(() => {
+    const el = document.querySelector('.bg__blob[data-parallax]');
+    return el.style.getPropertyValue('--par-y');
   });
-  check('scrub drives a transform value', !!scrubY && scrubY !== '0px', scrubY);
+  check('scroll drives a parallax transform value', !!parY && parY !== '0px', parY);
+
+  // The smoothed scroll follower is what keeps motion from being choppy: after
+  // a jump, the transform must ease toward its destination over several frames
+  // rather than snapping. Sample just after the jump and again once settled.
+  const easing = await page.evaluate(async () => {
+    const el = document.querySelector('.bg__blob[data-parallax]');
+    window.scrollTo(0, 0);
+    await new Promise((r) => setTimeout(r, 1400));
+    const before = parseFloat(el.style.getPropertyValue('--par-y')) || 0;
+    window.scrollTo(0, 1800);
+    await new Promise((r) => setTimeout(r, 40));
+    const during = parseFloat(el.style.getPropertyValue('--par-y')) || 0;
+    await new Promise((r) => setTimeout(r, 1400));
+    const after = parseFloat(el.style.getPropertyValue('--par-y')) || 0;
+    return { before, during, after };
+  });
+  check('scroll motion eases instead of snapping',
+    Math.abs(easing.after - easing.during) > 1 &&
+      Math.abs(easing.during - easing.before) < Math.abs(easing.after - easing.before),
+    `${easing.before.toFixed(1)} → ${easing.during.toFixed(1)} → ${easing.after.toFixed(1)}`);
 
   // Progress rail advances
   const prog = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue('--page-progress').trim());
   check('page progress rail advances', parseFloat(prog) > 0, prog);
 
-  // Pin narrative: scroll into it and confirm the active layer changes
-  const pinTop = await page.evaluate(() => {
-    const el = document.querySelector('[data-pin]');
-    return el.getBoundingClientRect().top + window.scrollY;
+  // Method: three discrete steps, each its own card on the page (no pinned
+  // carousel swapping layers inside a sticky viewport).
+  const steps = await page.evaluate(() => {
+    const els = Array.from(document.querySelectorAll('#method .step'));
+    return {
+      count: els.length,
+      numbered: els.every((e) => !!e.querySelector('.step__num')),
+      titled: els.every((e) => !!e.querySelector('.step__title')),
+      hasPin: !!document.querySelector('[data-pin]'),
+      hasLayer: !!document.querySelector('[data-pin-layer]'),
+      heights: els.map((e) => Math.round(e.getBoundingClientRect().height)),
+    };
   });
-  const layer0 = await page.evaluate(() =>
-    document.querySelectorAll('[data-pin-layer]')[0].classList.contains('is-active'));
-  await page.evaluate((y) => window.scrollTo(0, y + 900), pinTop);
-  await page.waitForTimeout(700);
-  const activeIdx = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('[data-pin-layer]')).findIndex((l) =>
-      l.classList.contains('is-active')));
-  check('pin narrative advances past layer 0', layer0 && activeIdx > 0, `active=${activeIdx}`);
+  check('method is split into discrete steps', steps.count === 3 && steps.numbered && steps.titled,
+    `${steps.count} steps`);
+  check('the pinned carousel is gone', !steps.hasPin && !steps.hasLayer,
+    `pin=${steps.hasPin} layer=${steps.hasLayer}`);
+  check('every method step has real height on the page', steps.heights.every((h) => h > 120),
+    steps.heights.join(', '));
 
   // Stagger group resolves (children carry .is-in, since each is observed)
   await page.evaluate(() => document.querySelector('#about').scrollIntoView());
@@ -160,43 +186,44 @@ async function main() {
       s.classList.contains('is-active')));
   check('flow back button steps backwards', afterBack === 2, `active=${afterBack}`);
 
-  // Studio: palette switch retints tokens
-  const before = await page.evaluate(() =>
-    getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(500);
-  await page.click('[data-palette-btn="ember"]');
-  await page.waitForTimeout(400);
-  const after = await page.evaluate(() =>
-    getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
-  check('studio palette switch retints the theme', before !== after, `${before} → ${after}`);
+  // Production build: the authoring studio, matrix rain and loader are gone.
+  const removed = await page.evaluate(() => ({
+    studio: !!document.querySelector('.studio, [data-studio-open], [data-studio-close]'),
+    matrix: !!document.querySelector('.matrix-container, [data-matrix]'),
+    loader: !!document.querySelector('.loader, [data-loader]'),
+    palettes: document.querySelectorAll('[data-palette-btn]').length,
+  }));
+  check('design studio removed from the production build', !removed.studio && !removed.palettes,
+    `studio=${removed.studio} swatches=${removed.palettes}`);
+  check('matrix rain removed', !removed.matrix);
+  check('loader removed', !removed.loader);
 
-  // Title customisation
-  await page.fill('[data-title-input]', 'Custom Title Test');
-  await page.waitForTimeout(300);
-  const title = await page.title();
-  check('studio edits the document title', title === 'Custom Title Test', title);
+  // Light Apple palette is the only theme: no data-palette override.
+  const theme = await page.evaluate(() => {
+    const cs = getComputedStyle(document.documentElement);
+    return {
+      attr: document.documentElement.dataset.palette || '',
+      accent: cs.getPropertyValue('--accent').trim(),
+      bg: cs.getPropertyValue('background-color').trim(),
+      colorScheme: cs.getPropertyValue('color-scheme').trim(),
+    };
+  });
+  check('site is pinned to the Apple light accent (#0071e3)', theme.accent === '#0071e3', theme.accent);
+  check('site declares the light colour scheme', theme.colorScheme === 'light', theme.colorScheme);
+  check('no palette override attribute remains', theme.attr === '', theme.attr || '(none)');
 
-  // Favicon customisation
-  await page.click('[data-favicon-btn="orbit"]');
-  await page.waitForTimeout(300);
-  const fav = await page.getAttribute('link[rel="icon"][type="image/svg+xml"]', 'href');
-  check('studio swaps the favicon', /image\/svg\+xml/.test(fav || '') && /ellipse/.test(decodeURIComponent(fav || '')));
-
-  // Prefs persist across a reload
-  await page.reload({ waitUntil: 'load' });
-  await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
-  await page.waitForTimeout(900);
-  const persisted = await page.evaluate(() => document.documentElement.dataset.palette);
-  check('studio preferences persist', persisted === 'ember', persisted);
-
-  // Reset clears
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(400);
-  await page.click('[data-reset]');
-  await page.waitForTimeout(500);
-  const resetPal = await page.evaluate(() => document.documentElement.dataset.palette || '');
-  check('studio reset returns to defaults', resetPal === '', resetPal || '(none)');
+  // Resume: served, a real PDF, and regenerated from a source that no longer
+  // claims a Prometheus placement (only participation + the product built).
+  const resume = await page.request.get(BASE + '/assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf');
+  const resumeBody = await resume.body();
+  check('resume PDF still served', resume.status() === 200, String(resume.status()));
+  check('resume PDF is a real PDF', resumeBody.slice(0, 5).toString() === '%PDF-');
+  const resumeSrc = require('fs').readFileSync(
+    path.join(__dirname, 'make_resume.py'), 'utf8');
+  check('resume source drops the Prometheus ranking but keeps the build',
+    !/4th Place|Finalist/i.test(resumeSrc) && /Prometheus AI Hackathon/.test(resumeSrc)
+      && /Lumina/.test(resumeSrc),
+    'ranking removed, participation kept');
 
   // Screenshots for eyeballing
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -263,9 +290,11 @@ async function main() {
     return els.filter((e) => parseFloat(getComputedStyle(e).opacity) === 1).length;
   });
   check('reduced motion shows all content', rmOpacity > 5, `${rmOpacity} visible`);
-  const rmScrub = await rmPage.evaluate(() =>
-    document.querySelector('[data-scrub]').style.getPropertyValue('--scrub-y'));
-  check('reduced motion disables scrub transforms', !rmScrub, rmScrub || '(none)');
+  const rmPar = await rmPage.evaluate(() => {
+    const el = document.querySelector('.bg__blob[data-parallax]');
+    return el ? el.style.getPropertyValue('--par-y') : '(no element)';
+  });
+  check('reduced motion disables scroll transforms', !rmPar, rmPar || '(none)');
   await rmPage.screenshot({ path: path.join(OUT, 'reduced-motion.png') });
   await rm.close();
 

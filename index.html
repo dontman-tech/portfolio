@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-palette="azure" data-glass="medium" data-bg="motion" class="no-js">
+<html lang="en" class="no-js">
 <head>
 <!-- Set before stylesheets load so the reveal animations can be gated on it:
      if JavaScript never runs, nothing is hidden behind an opacity:0 rule. -->
@@ -10,8 +10,8 @@
 <title>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</title>
 <meta name="description" content="I build voice-first assistants, two-sided marketplaces and cross-platform apps — then ship them all the way to a device. Python, TypeScript, React Native. Based in Buea, Cameroon, working remotely." />
 <meta name="author" content="Tabe Miracle Fiagmenyi" />
-<meta name="theme-color" content="#05070d" />
-<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="color-scheme" content="light" />
 
 <link rel="canonical" href="https://tamif.is-a.dev/" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
@@ -30,8 +30,8 @@
 <meta name="twitter:description" content="Voice-first AI assistants, two-sided marketplaces, cross-platform apps. Shipped end to end." />
 <meta name="twitter:image" content="https://tamif.is-a.dev/assets/img/og.jpg" />
 
-<!-- Icons: an inline SVG default, swapped at runtime by the studio panel -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236ea8ff'/%3E%3Cstop offset='1' stop-color='%237bf1d9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='sans-serif' font-size='38' font-weight='700' fill='%2308101c' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E" />
+<!-- Icons -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='sans-serif' font-size='38' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
 
@@ -70,33 +70,14 @@
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<!-- Loader — dismissed by app.js on window load, with a hard timeout -->
-<div class="loader" data-loader role="status" aria-label="Loading">
-  <div class="loader__stage">
-    <span class="Strich1" aria-hidden="true"></span>
-    <span class="Strich2" aria-hidden="true"></span>
-    <span class="bubble" aria-hidden="true"></span>
-    <span class="bubble1" aria-hidden="true"></span>
-    <span class="bubble2" aria-hidden="true"></span>
-    <span class="bubble3" aria-hidden="true"></span>
-  </div>
-</div>
-
 <div class="progress" aria-hidden="true"></div>
 
-<!-- Motion image background -->
+<!-- Light background: a quiet gallery-grey wash with one soft bloom. -->
 <div class="bg" aria-hidden="true">
   <div class="bg__mesh"></div>
-  <div class="bg__blob bg__blob--1" data-parallax="0.05"></div>
-  <div class="bg__blob bg__blob--2" data-parallax="0.09"></div>
-  <div class="bg__blob bg__blob--3" data-parallax="0.07"></div>
-
-  <!-- Matrix rain pattern, layered over the gradient blobs.
-       Strips are injected by app.js. -->
-  <div class="matrix-container" data-matrix></div>
-
-  <div class="bg__grain"></div>
-  <div class="bg__vignette"></div>
+  <div class="bg__blob bg__blob--1" data-parallax="0.04"></div>
+  <div class="bg__blob bg__blob--2" data-parallax="0.07"></div>
+  <div class="bg__blob bg__blob--3" data-parallax="0.05"></div>
 </div>
 
 <div class="spotlight" aria-hidden="true"></div>
@@ -116,18 +97,13 @@
 
     <nav class="nav__links" aria-label="Chapters">
       <a class="nav__link" href="#top" data-target="top" aria-current="true">Start</a>
-      <a class="nav__link" href="#method" data-target="method">How I work</a>
       <a class="nav__link" href="#work" data-target="work">Work</a>
+      <a class="nav__link" href="#method" data-target="method">Method</a>
       <a class="nav__link" href="#about" data-target="about">About</a>
       <a class="nav__link" href="#contact" data-target="contact">Talk</a>
     </nav>
 
     <div class="nav__actions">
-      <button class="icon-btn" type="button" data-studio-open aria-expanded="false" aria-label="Open the design studio">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z" /><path d="M14.5 5.5 18.5 9.5" />
-        </svg>
-      </button>
       <a class="btn btn--primary btn--sm" href="#contact">
         <span class="shift"><span class="shift__a">Let's talk</span><span class="shift__b" aria-hidden="true">Let's talk</span></span>
       </a>
@@ -148,117 +124,16 @@
     </svg>
   </button>
   <a class="sheet__link" href="#top">Start</a>
-  <a class="sheet__link" href="#method">How I work</a>
   <a class="sheet__link" href="#work">Work</a>
+  <a class="sheet__link" href="#method">Method</a>
   <a class="sheet__link" href="#about">About</a>
   <a class="sheet__link" href="#contact">Talk</a>
 </div>
 
-<!-- =====================================================================
-     Customisation studio
-     ===================================================================== -->
-<aside class="studio" role="dialog" aria-modal="true" aria-labelledby="studio-title" aria-hidden="true" inert>
-  <div class="row" style="justify-content: space-between">
-    <div>
-      <p class="eyebrow eyebrow--plain" id="studio-title">Design studio</p>
-      <p class="muted" style="font-size: var(--fs-small); margin-top: var(--s-2)">
-        Every surface here is token-driven. Change it, and the page keeps up.
-      </p>
-    </div>
-    <button class="icon-btn" type="button" data-studio-close aria-label="Close the design studio">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-        <path d="M6 6l12 12M18 6 6 18" />
-      </svg>
-    </button>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Palette</span>
-    <div class="swatches" role="group" aria-label="Colour palette">
-      <button class="swatch" type="button" data-palette-btn="azure" data-palette-name="Azure Glass" aria-pressed="true" aria-label="Azure Glass palette"
-        style="background: linear-gradient(140deg,#0071e3,#64d2ff)"></button>
-      <button class="swatch" type="button" data-palette-btn="aurora" data-palette-name="Aurora" aria-pressed="false" aria-label="Aurora palette"
-        style="background: linear-gradient(140deg,#30d158,#66d4cf)"></button>
-      <button class="swatch" type="button" data-palette-btn="dusk" data-palette-name="Dusk" aria-pressed="false" aria-label="Dusk palette"
-        style="background: linear-gradient(140deg,#bf5af2,#64d2ff)"></button>
-      <button class="swatch" type="button" data-palette-btn="ember" data-palette-name="Ember" aria-pressed="false" aria-label="Ember palette"
-        style="background: linear-gradient(140deg,#ff9f0a,#ffd60a)"></button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Glass density</span>
-    <div class="seg" role="group" aria-label="Glass density">
-      <button class="seg__btn" type="button" data-glass-btn="low" aria-pressed="false">Low</button>
-      <button class="seg__btn" type="button" data-glass-btn="medium" aria-pressed="true">Medium</button>
-      <button class="seg__btn" type="button" data-glass-btn="high" aria-pressed="false">High</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Background</span>
-    <div class="seg" role="group" aria-label="Background mode">
-      <button class="seg__btn" type="button" data-bg-btn="motion" aria-pressed="true">Motion</button>
-      <button class="seg__btn" type="button" data-bg-btn="mesh" aria-pressed="false">Mesh</button>
-      <button class="seg__btn" type="button" data-bg-btn="still" aria-pressed="false">Still</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Motion intensity</span>
-    <div class="field">
-      <input type="range" min="0" max="1.6" step="0.1" value="1" data-motion-range aria-label="Motion intensity" />
-      <div class="row" style="justify-content: space-between">
-        <span class="mono faint">scroll + parallax</span>
-        <span class="mono" data-motion-out style="color: var(--accent-2)">100%</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Accent hue</span>
-    <div class="field">
-      <input type="range" min="-120" max="120" step="5" value="0" data-hue-range aria-label="Accent hue rotation" />
-      <div class="row" style="justify-content: space-between">
-        <span class="mono faint">background tint</span>
-        <span class="mono" data-hue-out style="color: var(--accent-2)">0°</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Site title</span>
-    <div class="field">
-      <input type="text" data-title-input value="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" aria-label="Site title" />
-      <span class="mono faint">tab title: <span data-title-out>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</span></span>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <span class="studio__label">Favicon</span>
-    <div class="seg" role="group" aria-label="Favicon style">
-      <button class="seg__btn" type="button" data-favicon-btn="monogram" aria-pressed="true">Mono</button>
-      <button class="seg__btn" type="button" data-favicon-btn="glass" aria-pressed="false">Glass</button>
-      <button class="seg__btn" type="button" data-favicon-btn="orbit" aria-pressed="false">Orbit</button>
-    </div>
-  </div>
-
-  <div class="studio__group">
-    <label class="toggle">
-      <span>Cursor spotlight</span>
-      <input type="checkbox" data-spotlight-toggle checked />
-      <span class="toggle__track" aria-hidden="true"></span>
-    </label>
-    <button class="btn btn--ghost btn--sm" type="button" data-reset>
-      <span class="shift"><span class="shift__a">Reset to defaults</span><span class="shift__b" aria-hidden="true">Reset to defaults</span></span>
-    </button>
-  </div>
-</aside>
-
 <main id="main">
 
 <!-- =====================================================================
-     Hero — the 30-second answer
+     Hero — the 30-second answer: who, what, why talk to me
      ===================================================================== -->
 <section class="hero" id="top">
   <div class="shell">
@@ -284,11 +159,11 @@
         </p>
 
         <div class="row hero__actions" data-reveal data-delay="360">
-          <a class="btn btn--primary" href="#work" data-magnetic="14">
+          <a class="btn btn--primary" href="#work" data-magnetic="10">
             <span class="shift"><span class="shift__a">See the work</span><span class="shift__b" aria-hidden="true">See the work</span></span>
             <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
           </a>
-          <a class="btn" href="assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf" download data-resume data-magnetic="12">
+          <a class="btn btn--ghost" href="assets/resume/Tabe-Miracle-Fiagmenyi-Resume.pdf" download data-resume data-magnetic="9">
             <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
               <path d="M14 3v5h5M6 3h8l5 5v13H6z" /><path d="M9 13h6M9 17h4" />
             </svg>
@@ -321,10 +196,9 @@
       </div>
 
       <div class="hero__art">
-        <div class="portrait glass glass--pad" data-tilt="8" data-scrub data-scrub-y="40" data-scrub-s="0.05" data-reveal data-delay="200">
+        <div class="portrait" data-tilt="5" data-reveal data-delay="200">
           <div class="portrait__frame">
             <span class="portrait__initials" aria-hidden="true">TMF</span>
-            <span class="portrait__scan" aria-hidden="true"></span>
             <span class="portrait__badge">Buea · CM</span>
             <div class="portrait__meta">
               <span class="eyebrow eyebrow--plain">Currently</span>
@@ -339,9 +213,9 @@
 
     </div>
 
-    <p class="hero__scroll" data-reveal data-delay="620">
+    <p class="hero__scroll" data-reveal data-delay="560">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
-      Scroll — five projects, three stories
+      Scroll — seven projects, three stories
     </p>
   </div>
 </section>
@@ -370,69 +244,7 @@
 </div>
 
 <!-- =====================================================================
-     How I work — pin + transform narrative
-     ===================================================================== -->
-<section class="section" id="method">
-  <div class="shell">
-    <div class="section__head" data-reveal>
-      <p class="eyebrow">The method</p>
-      <h2 class="h1">Anyone can get something working once.</h2>
-      <p class="lead">
-        The engineering I care about happens after the happy path. Three rules run through
-        everything below.
-      </p>
-    </div>
-  </div>
-
-  <div class="pin" data-pin>
-    <div class="pin__viewport">
-      <div class="shell">
-        <div class="pin__layers">
-
-          <article class="pin__layer glass glass--pad is-active" data-pin-layer>
-            <p class="pin__index">01 / 03</p>
-            <h3 class="h2">Degrade, don't break.</h3>
-            <p class="lead" style="max-width: 46ch">
-              No microphone? ARIA falls back to text. No API key? It falls back to a deterministic
-              offline mode. No HealthKit module? Pulse Fit shows simulated data. A user should never
-              meet a dead end because one dependency was missing.
-            </p>
-          </article>
-
-          <article class="pin__layer glass glass--pad" data-pin-layer>
-            <p class="pin__index">02 / 03</p>
-            <h3 class="h2">Route before you generate.</h3>
-            <p class="lead" style="max-width: 46ch">
-              "Turn on the flashlight" is a command, not a prompt. ARIA scores skills by regex and
-              keyword confidence first and only reaches for a model when nothing matches — faster,
-              cheaper, and it works with the network off.
-            </p>
-          </article>
-
-          <article class="pin__layer glass glass--pad" data-pin-layer>
-            <p class="pin__index">03 / 03</p>
-            <h3 class="h2">Ship to the device.</h3>
-            <p class="lead" style="max-width: 46ch">
-              A repo is not a product. Every project here runs on hardware a normal person owns —
-              an Android phone, a webcam, a browser tab — and I keep tuning until the first-run
-              experience explains itself.
-            </p>
-          </article>
-
-        </div>
-
-        <div class="pin__rail" aria-hidden="true">
-          <span class="pin__tick is-active" data-pin-tick></span>
-          <span class="pin__tick" data-pin-tick></span>
-          <span class="pin__tick" data-pin-tick></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- =====================================================================
-     Work — five chapters
+     Work — proof first. The strongest story leads the page.
      ===================================================================== -->
 <section class="section" id="work">
   <div class="shell">
@@ -554,6 +366,66 @@
     </div>
   </article>
 
+</section>
+
+<!-- =====================================================================
+     Method — one step, one card.
+     Each rule is a discrete, numbered step on the page rather than a layer
+     swapped inside a pinned viewport, so nothing stalls and nothing is
+     hidden behind a scroll-jacked sequence.
+     ===================================================================== -->
+<section class="section" id="method">
+  <div class="shell">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">The method</p>
+      <h2 class="h1">Anyone can get something working once.</h2>
+      <p class="lead">
+        The engineering I care about happens after the happy path. Three rules run through
+        every project on this page.
+      </p>
+    </div>
+
+    <div class="steps">
+      <article class="step" data-reveal>
+        <span class="step__num" aria-hidden="true">01</span>
+        <h3 class="h3 step__title">Degrade, don't break.</h3>
+        <p class="step__body">
+          No microphone? ARIA falls back to text. No API key? It falls back to a deterministic
+          offline mode. No HealthKit module? Pulse Fit shows simulated data. A user should never
+          meet a dead end because one dependency was missing.
+        </p>
+        <p class="step__aside mono">Fallbacks are designed in, not bolted on.</p>
+      </article>
+
+      <article class="step" data-reveal data-delay="90">
+        <span class="step__num" aria-hidden="true">02</span>
+        <h3 class="h3 step__title">Route before you generate.</h3>
+        <p class="step__body">
+          "Turn on the flashlight" is a command, not a prompt. ARIA scores skills by regex and
+          keyword confidence first and only reaches for a model when nothing matches — faster,
+          cheaper, and it works with the network off.
+        </p>
+        <p class="step__aside mono">Cheap paths first, models last.</p>
+      </article>
+
+      <article class="step" data-reveal data-delay="180">
+        <span class="step__num" aria-hidden="true">03</span>
+        <h3 class="h3 step__title">Ship to the device.</h3>
+        <p class="step__body">
+          A repo is not a product. Every project here runs on hardware a normal person owns —
+          an Android phone, a webcam, a browser tab — and I keep tuning until the first-run
+          experience explains itself.
+        </p>
+        <p class="step__aside mono">The device is the finish line.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     Work — the rest of the range
+     ===================================================================== -->
+<section class="section">
   <!-- ---------- 03 · Collaborative ---------- -->
   <article class="chapter">
     <div class="shell">
@@ -713,6 +585,7 @@
     </div>
   </article>
 
+
   <!-- ---------- 06 & 07 · The wider range ---------- -->
   <div class="shell">
     <div class="section__head mt-7" data-reveal>
@@ -722,15 +595,14 @@
 
     <div class="cards" data-stagger="90">
       <article class="card">
-        <div class="card__bg"><span class="card__aurora" aria-hidden="true"></span></div>
         <div class="card__inner">
           <span class="card__eyebrow">06 / 07 · Hackathon build</span>
           <h3 class="card__title">Lumina — an AI platform built in 15 hours</h3>
           <p class="card__meta">Supabase · DeepSeek API · JavaScript</p>
           <p class="card__body">
-            Architected and deployed with a 3-person team for the Prometheus AI Hackathon, where it
-            placed 4th. Supabase and the DeepSeek API are wired together to process dynamic user
-            requests under tight time constraints.
+            Architected and deployed with a 3-person team for the Prometheus AI Hackathon. Supabase and
+            the DeepSeek API are wired together to process dynamic user requests under tight time
+            constraints.
           </p>
           <div class="chip-row mt-5">
             <span class="chip">Supabase</span>
@@ -741,7 +613,6 @@
       </article>
 
       <article class="card">
-        <div class="card__bg"><span class="card__aurora" aria-hidden="true"></span></div>
         <div class="card__inner">
           <span class="card__eyebrow">07 / 07 · Security tooling</span>
           <h3 class="card__title">NESAC — know how strong your password really is</h3>
@@ -762,9 +633,6 @@
   </div>
 </section>
 
-<!-- =====================================================================
-     About
-     ===================================================================== -->
 <section class="section" id="about">
   <div class="shell">
     <div class="section__head" data-reveal>
@@ -892,7 +760,7 @@
       <div class="tl" data-reveal data-delay="120">
         <span class="tl__dot" aria-hidden="true"></span>
         <p class="tl__when">2026</p>
-        <p class="tl__what">4th Place Finalist, Prometheus AI Hackathon</p>
+        <p class="tl__what">Participant, Prometheus AI Hackathon</p>
         <p class="tl__where">
           Architected and deployed Lumina, an AI-driven platform created in 15 hours with a
           3-person team, connecting Supabase and the DeepSeek API.
@@ -942,9 +810,6 @@
         <h3 class="h3">Education</h3>
         <div class="card-stack">
           <article class="card">
-            <div class="card__bg">
-              <span class="card__aurora" aria-hidden="true"></span>
-            </div>
             <div class="card__inner">
               <span class="card__eyebrow">Degree</span>
               <h4 class="card__title">B.Eng. Computer Engineering</h4>
@@ -956,9 +821,6 @@
             </div>
           </article>
           <article class="card">
-            <div class="card__bg">
-              <span class="card__aurora" aria-hidden="true"></span>
-            </div>
             <div class="card__inner">
               <span class="card__eyebrow">Programme</span>
               <h4 class="card__title">Orange Ignite Circle 2026</h4>
@@ -985,9 +847,6 @@
   </div>
 </section>
 
-<!-- =====================================================================
-     Contact — an option flow, not a form
-     ===================================================================== -->
 <section class="section" id="contact">
   <div class="shell">
     <div class="section__head" data-reveal>
@@ -1177,9 +1036,6 @@
 
 </main>
 
-<!-- =====================================================================
-     Footer
-     ===================================================================== -->
 <footer class="footer">
   <div class="shell">
     <div class="footer__grid">

@@ -95,30 +95,25 @@ const check = (name, pass, detail = '') => {
   check('flow options are native buttons', optTags.every((t) => t === 'button'),
     [...new Set(optTags)].join(','));
 
-  // Studio dialog semantics + Escape
-  const studioSem = await page.evaluate(() => {
-    const s = document.querySelector('.studio');
-    return {
-      role: s?.getAttribute('role'),
-      ariaModal: s?.getAttribute('aria-modal'),
-      labelled: !!document.getElementById(s?.getAttribute('aria-labelledby') || ''),
-    };
-  });
-  check('studio is an accessible modal dialog',
-    studioSem.role === 'dialog' && studioSem.ariaModal === 'true' && studioSem.labelled,
-    JSON.stringify(studioSem));
+  // Studio dialog semantics were removed with the studio; assert it is gone
+  // so a regression that reintroduces an untrapped dialog is caught.
+  const studioGone = await page.evaluate(() => ({
+    studio: !!document.querySelector('.studio'),
+    openers: document.querySelectorAll('[data-studio-open]').length,
+  }));
+  check('authoring studio is absent from the production build',
+    !studioGone.studio && studioGone.openers === 0, JSON.stringify(studioGone));
 
-  await page.click('[data-studio-open]');
-  await page.waitForTimeout(500);
-  const opened = await page.evaluate(() =>
-    document.querySelector('.studio').classList.contains('is-open'));
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(500);
-  const closed = await page.evaluate(() =>
-    !document.querySelector('.studio').classList.contains('is-open'));
-  const focusBack = await page.evaluate(() => document.activeElement?.hasAttribute('data-studio-open'));
-  check('studio opens, closes on Escape, restores focus',
-    opened && closed && focusBack, `opened=${opened} closed=${closed} focusRestored=${focusBack}`);
+  // Method steps read as a real ordered list of headings.
+  const stepHeads = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#method .step')).map((s) => ({
+      num: s.querySelector('.step__num')?.textContent.trim(),
+      title: s.querySelector('.step__title')?.textContent.trim(),
+      h: Math.round(s.getBoundingClientRect().height),
+    })));
+  check('method steps are numbered and titled in order',
+    stepHeads.length === 3 && stepHeads.every((s, i) => s.num === `0${i + 1}` && s.title),
+    stepHeads.map((s) => `${s.num} ${s.title}`).join(' · '));
 
   // Progress bar is decorative
   const progressHidden = await page.evaluate(() =>

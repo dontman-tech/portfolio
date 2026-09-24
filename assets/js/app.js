@@ -1,40 +1,19 @@
 /* ==========================================================================
-   app.js — interactive behaviour.
+   app.js — interactive behaviour for the production build.
 
      · Contact flow: a four-step option picker that ends in a real handoff
-     · Customisation studio: palette, glass density, background mode, motion,
-       accent hue, site title and favicon — all persisted to localStorage
      · Mobile chapter sheet, toasts, year stamping
+
+   The customisation studio, matrix background and loader have been removed:
+   this is the production site, and those were authoring affordances.
    ========================================================================== */
 
 (() => {
   'use strict';
 
-  const root = document.documentElement;
   const $ = (sel, scope = document) => scope.querySelector(sel);
   const $$ = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  /* ---------------------------------------------------------------------
-     Persistence
-     --------------------------------------------------------------------- */
-  const KEY = 'oh.portfolio.prefs.v1';
-
-  const readPrefs = () => {
-    try {
-      return JSON.parse(localStorage.getItem(KEY) || '{}') || {};
-    } catch {
-      return {};
-    }
-  };
-
-  const writePrefs = (patch) => {
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ ...readPrefs(), ...patch }));
-    } catch {
-      /* storage disabled — the site still works, just without memory */
-    }
-  };
 
   /* ---------------------------------------------------------------------
      Focus containment for overlays.
@@ -107,7 +86,7 @@
   const toast = (message, kind = 'ok') => {
     if (!toastHost) return;
     const el = document.createElement('div');
-    el.className = `toast glass toast--${kind}`;
+    el.className = `toast toast--${kind}`;
     el.setAttribute('role', 'status');
     el.textContent = message;
     toastHost.appendChild(el);
@@ -197,7 +176,7 @@
       if (!moveFocus || reduced.matches) return;
       const focusTarget = slides[index].querySelector('.opt, .btn');
       if (focusTarget) {
-        setTimeout(() => focusTarget.focus({ preventScroll: true }), 340);
+        setTimeout(() => focusTarget.focus({ preventScroll: true }), 360);
       }
     };
 
@@ -251,7 +230,6 @@
         const value = opt.dataset.flowValue || opt.textContent.trim();
 
         answers[key] = value;
-        writePrefs({ lastIntent: value });
 
         $$(`[data-flow-key="${key}"]`, flow).forEach((o) => {
           const chosen = o === opt;
@@ -259,7 +237,7 @@
           o.setAttribute('aria-pressed', String(chosen));
         });
 
-        const delay = reduced.matches ? 0 : 260;
+        const delay = reduced.matches ? 0 : 280;
         setTimeout(() => render(index + 1), delay);
         return;
       }
@@ -291,245 +269,6 @@
   };
 
   /* ---------------------------------------------------------------------
-     Customisation studio
-     --------------------------------------------------------------------- */
-  const DEFAULT_TITLE = document.title;
-
-  const applyPrefs = (prefs) => {
-    if (prefs.palette) {
-      root.dataset.palette = prefs.palette;
-      $$('[data-palette-btn]').forEach((b) =>
-        b.setAttribute('aria-pressed', String(b.dataset.paletteBtn === prefs.palette))
-      );
-    }
-    if (prefs.glass) {
-      root.dataset.glass = prefs.glass;
-      $$('[data-glass-btn]').forEach((b) =>
-        b.setAttribute('aria-pressed', String(b.dataset.glassBtn === prefs.glass))
-      );
-    }
-    if (prefs.bg) {
-      root.dataset.bg = prefs.bg;
-      $$('[data-bg-btn]').forEach((b) =>
-        b.setAttribute('aria-pressed', String(b.dataset.bgBtn === prefs.bg))
-      );
-    }
-    if (prefs.motion != null) {
-      root.style.setProperty('--motion', String(prefs.motion));
-      const range = $('[data-motion-range]');
-      if (range) range.value = String(prefs.motion);
-      const out = $('[data-motion-out]');
-      if (out) out.textContent = `${Math.round(prefs.motion * 100)}%`;
-    }
-    if (prefs.hue) {
-      root.style.setProperty('--hue-shift', `${prefs.hue}deg`);
-      const hueRange = $('[data-hue-range]');
-      if (hueRange) hueRange.value = String(prefs.hue);
-      const hueOut = $('[data-hue-out]');
-      if (hueOut) hueOut.textContent = `${prefs.hue}°`;
-    }
-    if (prefs.title) {
-      document.title = prefs.title;
-      const titleInput = $('[data-title-input]');
-      if (titleInput) titleInput.value = prefs.title;
-      const titleOut = $('[data-title-out]');
-      if (titleOut) titleOut.textContent = prefs.title;
-    }
-    if (prefs.favicon) {
-      setFavicon(prefs.favicon);
-      $$('[data-favicon-btn]').forEach((b) =>
-        b.setAttribute('aria-pressed', String(b.dataset.faviconBtn === prefs.favicon))
-      );
-    }
-    if (prefs.spotlight === false) {
-      const spot = $('.spotlight');
-      if (spot) spot.hidden = true;
-    }
-  };
-
-  /* ---------------------------------------------------------------------
-     Favicon: generated at runtime so it can be re-coloured on demand.
-     --------------------------------------------------------------------- */
-  const FAVICONS = {
-    monogram: (c1, c2) => {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/>
-        </linearGradient></defs>
-        <rect width="64" height="64" rx="16" fill="url(#g)"/>
-        <text x="32" y="45" font-family="Sora,Segoe UI,sans-serif" font-size="38"
-          font-weight="700" fill="#08101c" text-anchor="middle">T</text>
-      </svg>`;
-      return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-    },
-    glass: (c1, c2) => {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/>
-        </linearGradient></defs>
-        <rect width="64" height="64" rx="16" fill="#0b101a"/>
-        <rect x="6" y="6" width="52" height="52" rx="13" fill="url(#g)" opacity=".22"/>
-        <rect x="6" y="6" width="52" height="52" rx="13" fill="none" stroke="url(#g)" stroke-width="3"/>
-        <path d="M20 42 L32 20 L44 42" fill="none" stroke="url(#g)" stroke-width="4"
-          stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>`;
-      return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-    },
-    orbit: (c1, c2) => {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/>
-        </linearGradient></defs>
-        <rect width="64" height="64" rx="16" fill="#0b101a"/>
-        <circle cx="32" cy="32" r="9" fill="url(#g)"/>
-        <ellipse cx="32" cy="32" rx="24" ry="11" fill="none" stroke="url(#g)"
-          stroke-width="3" transform="rotate(-28 32 32)"/>
-        <circle cx="50" cy="22" r="4.5" fill="${c2}"/>
-      </svg>`;
-      return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-    },
-  };
-
-  const setFavicon = (name) => {
-    const style = getComputedStyle(root);
-    const c1 = style.getPropertyValue('--accent').trim() || '#6ea8ff';
-    const c2 = style.getPropertyValue('--accent-2').trim() || '#7bf1d9';
-    const build = FAVICONS[name] || FAVICONS.monogram;
-    const href = build(c1, c2);
-
-    $$('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((link) => {
-      if (link.dataset.keep) return;
-      link.href = href;
-    });
-    const svgIcon = $('link[rel="icon"][type="image/svg+xml"]');
-    if (svgIcon) svgIcon.href = href;
-  };
-
-  const bindStudio = () => {
-    const studio = $('.studio');
-    const openers = $$('[data-studio-open]');
-    const close = $('[data-studio-close]');
-    if (!studio) return;
-    let lastFocus = null;
-
-    const setOpen = (open) => {
-      studio.classList.toggle('is-open', open);
-      studio.setAttribute('aria-hidden', String(!open));
-      studio.toggleAttribute('inert', !open);
-      openers.forEach((o) => o.setAttribute('aria-expanded', String(open)));
-      document.body.classList.toggle('is-locked', open);
-      if (open) {
-        lastFocus = document.activeElement;
-        // The click that opened this panel focuses its own button as a default
-        // action, which runs after this handler — so defer our focus a frame.
-        requestAnimationFrame(() => focusNow($('button, input', studio)));
-      } else if (lastFocus && document.contains(lastFocus)) {
-        lastFocus.focus();
-      }
-    };
-
-    openers.forEach((o) => o.addEventListener('click', () => setOpen(!studio.classList.contains('is-open'))));
-    close?.addEventListener('click', () => setOpen(false));
-    document.addEventListener('keydown', (e) => {
-      if (!studio.classList.contains('is-open')) return;
-      if (e.key === 'Escape') { setOpen(false); return; }
-      trapFocus(studio, e);
-    });
-
-    studio.addEventListener('click', (e) => {
-      const palette = e.target.closest('[data-palette-btn]');
-      if (palette) {
-        root.dataset.palette = palette.dataset.paletteBtn;
-        $$('[data-palette-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b === palette)));
-        writePrefs({ palette: palette.dataset.paletteBtn });
-        // Accent colours feed the runtime favicon, so rebuild it.
-        setFavicon(root.dataset.faviconName || readPrefs().favicon || 'monogram');
-        toast(`Palette: ${palette.dataset.paletteName || palette.dataset.paletteBtn}`);
-        return;
-      }
-
-      const glass = e.target.closest('[data-glass-btn]');
-      if (glass) {
-        root.dataset.glass = glass.dataset.glassBtn;
-        $$('[data-glass-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b === glass)));
-        writePrefs({ glass: glass.dataset.glassBtn });
-        return;
-      }
-
-      const bg = e.target.closest('[data-bg-btn]');
-      if (bg) {
-        root.dataset.bg = bg.dataset.bgBtn;
-        $$('[data-bg-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b === bg)));
-        writePrefs({ bg: bg.dataset.bgBtn });
-        return;
-      }
-
-      const fav = e.target.closest('[data-favicon-btn]');
-      if (fav) {
-        root.dataset.faviconName = fav.dataset.faviconBtn;
-        $$('[data-favicon-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b === fav)));
-        setFavicon(fav.dataset.faviconBtn);
-        writePrefs({ favicon: fav.dataset.faviconBtn });
-        toast('Favicon updated in the browser tab.');
-        return;
-      }
-
-      if (e.target.closest('[data-reset]')) {
-        try { localStorage.removeItem(KEY); } catch { /* ignore */ }
-        root.removeAttribute('data-palette');
-        root.removeAttribute('data-glass');
-        root.removeAttribute('data-bg');
-        root.style.removeProperty('--motion');
-        root.style.removeProperty('--hue-shift');
-        document.title = DEFAULT_TITLE;
-        const ti = $('[data-title-input]');
-        if (ti) ti.value = DEFAULT_TITLE;
-        const to = $('[data-title-out]');
-        if (to) to.textContent = DEFAULT_TITLE;
-        setFavicon('monogram');
-        toast('Studio reset to defaults.');
-      }
-    });
-
-    const motionRange = $('[data-motion-range]');
-    motionRange?.addEventListener('input', () => {
-      const v = Number(motionRange.value);
-      root.style.setProperty('--motion', String(v));
-      const out = $('[data-motion-out]');
-      if (out) out.textContent = `${Math.round(v * 100)}%`;
-      writePrefs({ motion: v });
-      window.OHMotion?.remeasure();
-    });
-
-    const hueRange = $('[data-hue-range]');
-    hueRange?.addEventListener('input', () => {
-      const v = Number(hueRange.value);
-      root.style.setProperty('--hue-shift', `${v}deg`);
-      const out = $('[data-hue-out]');
-      if (out) out.textContent = `${v}°`;
-      writePrefs({ hue: v });
-      const bgs = $$('.bg__blob');
-      bgs.forEach((b) => { b.style.filter = `blur(70px) hue-rotate(${v}deg)`; });
-    });
-
-    const titleInput = $('[data-title-input]');
-    titleInput?.addEventListener('input', () => {
-      const v = titleInput.value.trim() || DEFAULT_TITLE;
-      document.title = v;
-      const out = $('[data-title-out]');
-      if (out) out.textContent = v;
-      writePrefs({ title: v });
-    });
-
-    const spotToggle = $('[data-spotlight-toggle]');
-    spotToggle?.addEventListener('change', () => {
-      const spot = $('.spotlight');
-      if (spot) spot.hidden = !spotToggle.checked;
-      writePrefs({ spotlight: spotToggle.checked });
-    });
-  };
-
-  /* ---------------------------------------------------------------------
      Misc
      --------------------------------------------------------------------- */
   const bindMisc = () => {
@@ -544,82 +283,9 @@
     });
   };
 
-  /* ---------------------------------------------------------------------
-     Matrix rain background.
-
-     Columns are built here rather than in the markup: the pattern is purely
-     decorative, and generating it keeps index.html free of 40 empty nodes.
-     One 1000px strip is emitted per 1000px of viewport so the rain always
-     reaches the right edge.
-     --------------------------------------------------------------------- */
-  const MATRIX_COLUMNS = 40;
-  const MATRIX_PITCH = 25;
-  const MATRIX_STRIP_W = 1000;
-
-  const buildMatrix = () => {
-    const host = $('[data-matrix]');
-    if (!host) return;
-
-    const strips = Math.max(1, Math.ceil(window.innerWidth / MATRIX_STRIP_W));
-    if (host.childElementCount === strips) return;
-
-    const frag = document.createDocumentFragment();
-    for (let s = 0; s < strips; s += 1) {
-      const pattern = document.createElement('div');
-      pattern.className = 'matrix-pattern';
-      for (let i = 0; i < MATRIX_COLUMNS; i += 1) {
-        const col = document.createElement('div');
-        col.className = 'matrix-column';
-        col.style.left = `${i * MATRIX_PITCH}px`;
-        pattern.appendChild(col);
-      }
-      frag.appendChild(pattern);
-    }
-    host.replaceChildren(frag);
-  };
-
-  const bindMatrix = () => {
-    const host = $('[data-matrix]');
-    if (!host) return;
-    buildMatrix();
-    // Rebuilding on resize keeps the rain edge-to-edge on wide displays.
-    let t;
-    window.addEventListener('resize', () => {
-      clearTimeout(t);
-      t = setTimeout(buildMatrix, 180);
-    }, { passive: true });
-  };
-
-  /* ---------------------------------------------------------------------
-     Loader.
-
-     The overlay is removed on window load, with a hard timeout so a slow
-     image can never leave the page behind a curtain.
-     --------------------------------------------------------------------- */
-  const bindLoader = () => {
-    const loader = $('[data-loader]');
-    if (!loader) return;
-
-    const done = () => {
-      loader.classList.add('is-done');
-      setTimeout(() => loader.remove(), 500);
-    };
-
-    if (document.readyState === 'complete') {
-      done();
-    } else {
-      window.addEventListener('load', done, { once: true });
-    }
-    setTimeout(done, 2500);
-  };
-
   const init = () => {
-    applyPrefs(readPrefs());
-    bindLoader();
-    bindMatrix();
     bindSheet();
     bindFlow();
-    bindStudio();
     bindMisc();
     revealFallback();
   };

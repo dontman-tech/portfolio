@@ -30,11 +30,11 @@ OUT = os.path.join(
     "Tabe-Miracle-Fiagmenyi-Resume.pdf",
 )
 
-INK = colors.HexColor("#0E1420")
-MUTED = colors.HexColor("#5A6478")
-ACCENT = colors.HexColor("#3F6FE0")
-ACCENT_2 = colors.HexColor("#00C2A8")
-RULE = colors.HexColor("#D8DEE9")
+INK = colors.HexColor("#1D1D1F")
+MUTED = colors.HexColor("#555555")
+ACCENT = colors.HexColor("#0071E3")
+ACCENT_2 = colors.HexColor("#86868B")
+RULE = colors.HexColor("#D2D2D7")
 
 NAME = "TABE MIRACLE FIAGMENYI"
 ROLE = "Full-Stack & Applied AI Engineer"
@@ -91,7 +91,7 @@ AWARDS = [
         ],
     ),
     (
-        "4th Place Finalist \u2014 Prometheus AI Hackathon",
+        "Participant \u2014 Prometheus AI Hackathon",
         "Buea, Cameroon",
         [
             "Architected and deployed Lumina, an AI-driven platform created in 15 hours with a "

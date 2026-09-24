@@ -16,6 +16,7 @@ set -uo pipefail
 
 OWNER="dontman-tech"
 REPO="portfolio"
+BRANCH="main"
 DOMAIN="tamif.is-a.dev"
 PAGES_HOST="${OWNER}.github.io"
 SITE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -71,11 +72,11 @@ else
 fi
 
 # ------------------------------------------------------------------- push
-step "2. Push master"
+step "2. Push ${BRANCH}"
 cd "$SITE_DIR" || exit 1
 git remote remove origin 2>/dev/null || true
 git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git"
-if git push -u origin master 2>&1 | tail -3; then
+if git push -u origin "${BRANCH}" 2>&1 | tail -3; then
   pass "pushed (or already up to date)"
 else
   fail "push failed"; exit 1
@@ -86,14 +87,14 @@ step "3. GitHub Pages"
 if [ "$(status "/repos/${OWNER}/${REPO}/pages")" = "200" ]; then
   skip "already enabled"
 else
-  RESP=$(api POST "/repos/${OWNER}/${REPO}/pages" '{"source":{"branch":"master","path":"/"}}')
+  RESP=$(api POST "/repos/${OWNER}/${REPO}/pages" "{\"source\":{\"branch\":\"${BRANCH}\",\"path\":\"/\"}}")
   MSG=$(jget message <<<"$RESP")
   if [ -n "$MSG" ]; then
     fail "could not enable Pages: ${MSG}"
     fail "the token needs pages=write"
     exit 1
   fi
-  pass "enabled from master /"
+  pass "enabled from ${BRANCH} /"
 fi
 
 # Custom domain is also committed as the CNAME file, but set it here too so

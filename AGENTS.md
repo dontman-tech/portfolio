@@ -4,19 +4,24 @@ Portfolio site for Tabe Miracle Fiagmenyi — full-stack & applied AI engineer. 
 HTML/CSS/JS, no build step, no framework. The audience is a hiring manager who
 should understand "who / what / why talk to me" within 30–90 seconds.
 
+This is the **production build**. The authoring studio, the matrix-rain
+background and the loading screen have been removed on purpose — do not
+reintroduce them. The palette is Apple's light appearance only; there is no
+theme switcher and no `data-palette` override.
+
 ## Layout
 
 ```
-index.html                single-page portfolio (hero → method → work → about → skills → contact)
+index.html                single-page portfolio (hero → work → method → wider range → about → contact)
 404.html                  custom error page
 robots.txt sitemap.xml    crawlability
 manifest.webmanifest      PWA metadata
 netlify.toml vercel.json  deploy config (404 routing + cache headers)
-assets/css/tokens.css     design tokens: palette, glass, backgrounds, spacing, type
+assets/css/tokens.css     design tokens: Apple palette, surfaces, spacing, type, easing
 assets/css/base.css       resets, primitives (reveal/clip/stagger/shift/press), a11y
 assets/css/site.css       component styles
-assets/js/motion.js       scroll engine: reveal, scrub, pin, tilt, magnetic, press
-assets/js/app.js          UI logic: nav, studio panel, contact flow, prefs
+assets/js/motion.js       scroll engine: reveal, parallax, tilt, magnetic, press, spotlight
+assets/js/app.js          UI logic: nav, mobile sheet, contact flow, toasts
 tools/                    QA suites, dev server, asset generators
 ```
 
@@ -26,7 +31,7 @@ tools/                    QA suites, dev server, asset generators
 node tools/serve.js 12000     # preview (custom 404 enabled) — use this, not `python3 -m http.server`
 cd tools && npm test          # all six QA suites
 cd tools && npm run design    # one suite: verify|design|a11y|focus|resilience|flow|audit|shots
-python3 tools/make_resume.py  # regenerate the PDF resume
+python3 tools/make_resume.py  # regenerate the PDF resume (needs `pip install reportlab`)
 ./tools/deploy.sh             # publish to GitHub Pages + open the is-a.dev PR
 ```
 
@@ -63,32 +68,46 @@ Verify a claim against the README before writing it (e.g. Air Canvas uses four
 fingers + pinch, not an open hand). The mailto body and the "copy the brief"
 button share one `buildBrief()` function so they cannot drift.
 
+The Prometheus AI Hackathon appears as **participation and the product built
+(Lumina)** only — the "4th place" ranking was deliberately removed from both the
+site and `tools/make_resume.py`. Do not reinstate it; `tools/verify.js` asserts
+the resume source stays free of it.
+
 **Motion is intentional, not decorative.** `prefers-reduced-motion` disables
-scrub/tilt/magnetic and reveals everything immediately. Keep that branch working
-— `tools/verify.js` checks it.
+parallax/tilt/magnetic and reveals everything immediately. Keep that branch
+working — `tools/verify.js` checks it.
+
+Smoothness comes from two rules in `motion.js`: all scroll-driven effects read
+from a *smoothed* scroll position (an exponential follow of the real `scrollY`,
+so a 100px wheel step glides rather than jumps), and reads/writes are batched
+into one `requestAnimationFrame` loop with `transform`/`opacity` only — never a
+layout property. `tools/verify.js` asserts the easing converges rather than
+snapping.
 
 **Animation vocabulary** (all in `assets/css/base.css`, driven by `motion.js`):
 `data-reveal` fade+lift · `data-stagger` lists · `data-clip`/`data-clip-x` clip
-reveal · `data-pin` pin+transform · `data-scrub` parallax · `data-tilt` 3D hover ·
-`data-magnetic` cursor lean · `.shift__a/.shift__b` text shift · `.is-pressed`
-press+spring.
+reveal · `data-parallax` background drift · `data-tilt` 3D hover ·
+`data-magnetic` cursor lean · `data-count` count-up · `.shift__a/.shift__b` text
+shift · `.is-pressed` press+spring. There is deliberately no pin/scrub-jack:
+the method section is three ordinary cards, not a sticky carousel.
 
 **Tokens, not literals.** Colours, spacing (`--s-*`), radii and easing come from
-`tokens.css`. The studio panel switches `data-palette`, `data-glass` and
-`data-bg` on `<html>`; preferences persist to localStorage and must degrade
-silently if storage is blocked.
+`tokens.css`. Changing a value there changes it everywhere; do not hardcode a
+hex or a px that already has a token.
 
-**Light-on-light surfaces.** The `.card` panes are deliberately light against
-the dark page, so any text sitting on one needs a *fixed* colour, not
-`var(--accent)` — the studio can switch the accent to orange or purple, which
-drops the contrast ratio below AA on a near-white pane. `.card__meta` uses a
-literal `#0066cc` for this reason; the aurora blob carries the palette instead.
-Contrast was measured from rendered pixels, not estimated from token values,
-because the aurora gradient behind each pane is the actual background.
+**Contrast contract.** Apple's Secondary Gray (`#86868B`) measures 3.6:1 on
+white, so it clears WCAG AA *only as large text*. `.lead` therefore switches to
+`--subhead` at ≥900px where it renders at 24px+, and stays `--text-muted`
+(Dark Gray, 7.5:1) below that. Any new small label must use `--text-muted` or
+`--text-faint`, never `--subhead`. `tools/design.js` measures this from rendered
+pixels, not from token values.
 
-**Layered backgrounds.** `.bg` holds the mesh, blobs, grain and vignette;
-`.matrix-container` is a sibling holding the matrix rain. `app.js` builds one
-`.matrix-pattern` strip per 1000px of viewport width and rebinds on resize, so
-the columns never stretch. The loader is `display:none` unless `html.js` is
-set, and carries its own CSS dismissal animation as a fallback in case
-`app.js` fails to load.
+**Cross-device fit.** Every grid track that holds text is written
+`minmax(0, 1fr)`, and `.hero` sets an explicit single column — an implicit `auto`
+track sizes to the widest child's max-content and silently pushes content past a
+phone viewport (the `.hero__status` pill caused exactly this). `tools/design.js`
+asserts no element is wider than its own viewport at 390/834/1440px.
+
+**Layered backgrounds.** `.bg` holds the mesh and three parallax blobs, driven by
+`data-parallax`. Nothing else layers behind the content; the grain, vignette,
+matrix rain and loader are gone.

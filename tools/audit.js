@@ -48,9 +48,10 @@ const parseRgb = (s) => (s.match(/\d+/g) || [0, 0, 0]).slice(0, 3).map(Number);
     };
     add('hero', document.querySelector('.hero'));
     add('marquee', document.querySelector('.marquee'));
-    add('method (head+pin)', document.querySelector('#method'));
-    add('  pin track', document.querySelector('.pin'));
-    add('  pin steps spacer', document.querySelector('.pin__steps'));
+    add('method (steps)', document.querySelector('#method'));
+    add('  step 1', document.querySelector('#method .step:nth-child(1)'));
+    add('  step 2', document.querySelector('#method .step:nth-child(2)'));
+    add('  step 3', document.querySelector('#method .step:nth-child(3)'));
     add('work', document.querySelector('#work'));
     add('about', document.querySelector('#about'));
     add('contact', document.querySelector('#contact'));
@@ -267,6 +268,49 @@ const parseRgb = (s) => (s.match(/\d+/g) || [0, 0, 0]).slice(0, 3).map(Number);
     };
   });
   console.log(`  FCP ${metrics.fcp}ms · DOMContentLoaded ${metrics.domContentLoaded}ms · load ${metrics.load}ms`);
+
+  console.log('\n=== SPACING ACROSS DEVICE PROFILES ===');
+  const profiles = [
+    ['phone', 390, 844],
+    ['tablet', 834, 1112],
+    ['desktop', 1440, 900],
+  ];
+  for (const [name, w, h] of profiles) {
+    const p = await browser.newPage({ viewport: { width: w, height: h } });
+    await p.goto(BASE + '/', { waitUntil: 'load' });
+    await p.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    await p.waitForTimeout(1200);
+    const report = await p.evaluate(() => {
+      const cs = getComputedStyle(document.documentElement);
+      const secs = Array.from(document.querySelectorAll('section.section'));
+      const pads = secs.map((s) => ({
+        id: s.id || '(work-rest)',
+        pt: Math.round(parseFloat(getComputedStyle(s).paddingTop)),
+        pb: Math.round(parseFloat(getComputedStyle(s).paddingBottom)),
+      }));
+      const overflow = document.documentElement.scrollWidth - window.innerWidth;
+      const rows = Array.from(document.querySelectorAll('.hero__grid, .steps, .about__facts, .cards, .thirds'))
+        .map((el) => ({
+          cls: el.className.split(' ')[0],
+          cols: getComputedStyle(el).gridTemplateColumns.split(' ').length,
+        }));
+      return {
+        rail: cs.getPropertyValue('--rail').trim(),
+        sectionY: cs.getPropertyValue('--section-y').trim(),
+        pads,
+        overflow,
+        rows,
+      };
+    });
+    const padSet = [...new Set(report.pads.map((p) => `${p.pt}/${p.pb}`))];
+    console.log(
+      `  ${name.padEnd(8)} ${String(w).padStart(4)}x${h}  rail=${report.rail.padEnd(7)} ` +
+      `section-y=${report.sectionY.padEnd(7)} overflow=${report.overflow}px`
+    );
+    console.log(`           distinct section paddings: ${padSet.length} (${padSet.join(', ')})`);
+    console.log(`           grids: ${report.rows.map((r) => `${r.cls}=${r.cols}col`).join(' · ')}`);
+    await p.close();
+  }
 
   await browser.close();
 })();
