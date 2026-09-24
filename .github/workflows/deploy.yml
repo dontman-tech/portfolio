@@ -26,6 +26,12 @@ jobs:
       - run: npm ci
       - run: npm run build
       - uses: actions/configure-pages@v5
+        with:
+          # Pages is (or was) configured for legacy branch-root serving, which
+          # publishes the Vite source index.html and therefore a blank page.
+          # Enabling from here switches the site to this workflow's artifact
+          # using the job token, which carries the pages:write permission.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
