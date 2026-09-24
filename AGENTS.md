@@ -54,6 +54,21 @@ cards carry `stack-card sticky top-24` on the `.card` wrapper and keep the `<art
 and `.content` is a 300%-wide flex track holding two `.word` halves, which the keyframe steps by
 33.33% — the two words are the only children, so the slide loops without exposing a gap.
 
+**Marquee tiles never go blank.** The `.content` track is 300% of the 420px tile and each `.word`
+is 50% of that, with the text centred inside it. At the `-33.33%` keyframe the first word's centre
+lands 105px left of the tile and the second 105px right, so *both* words sit outside the 420px
+window and the tile renders empty for the middle 40% of every 6s cycle. The `.card__icon` watermark
+(fixed, centred, `z-index: 0` under `.content`'s `z-index: 1`) is what keeps the card readable
+there — do not drop it, and do not "fix" the keyframe by shortening the track without re-checking
+that some text is on screen at every step.
+
+**Brand icons are inlined, not fetched from Lucide.** Lucide removed its brand glyphs, so
+`data-lucide="github"` and `data-lucide="linkedin"` render nothing at all. The `BRAND` map holds
+simple-icons path data for the marquee tiles and the contact links; `GENERIC` holds the one entry
+with no brand mark of its own (REST APIs, an inlined Lucide-shaped globe). Every marquee candidate
+carries an `icon` key naming its map entry — add a tile by adding the key, not by adding another
+`<script>` tag. Set `generic: true` on the item to pull from `GENERIC` instead of `BRAND`.
+
 Anything sitting on a `.card` must use `#0C0C0C` ink, not `#D7E2EA`; the shell is light
 (`rgb(223,225,235)`), so the dark-surface body colour would be invisible. Keep opacity at or above
 `/60`, which is the floor that clears WCAG AA on this background. `#D7E2EA` remains correct for
@@ -65,6 +80,17 @@ the dashed `.portrait-fallback` box, so a missing file degrades instead of showi
 The `[hidden] { display: none !important }` rule is required — `.portrait-fallback` sets
 `display: flex` and the `img` carries Tailwind's `block`, both of which would otherwise beat the
 `hidden` attribute and leave both visible at once.
+
+**Hero heading sits over the portrait.** The `h1` wrapper carries `z-20` and the absolutely
+positioned portrait wrapper carries `z-10`, so the glyphs paint on top of the image where the two
+overlap. Keep the heading's own wrapper above the portrait; swapping them lets the image cover the
+text and the `overflow-x: clip` on the layout wrapper hides the regression instead of failing
+loudly. The heading wrapper must also stay free of horizontal padding — `.hero-heading` is sized
+in `vw`, so padding shears the outermost glyphs.
+
+**About CTA.** "More about me" is an `<a>` to the GitHub profile with
+`rel="noopener noreferrer"`, alongside the other outbound links. It is styled as a bordered pill
+rather than the gradient `.card` CTA so it reads as secondary to "Contact me".
 
 **Content truthfulness.** Project copy must match the repository it links to; verify a claim
 against the README before writing it. Lumina appears as participation in the Prometheus AI
