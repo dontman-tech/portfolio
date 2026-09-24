@@ -151,6 +151,117 @@
         will-change: transform;
         transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
       }
+
+      /* Glassy card shell --------------------------------------------------- */
+      .card {
+        width: 190px;
+        height: 254px;
+        background: rgb(223, 225, 235);
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow:
+          inset 0px 56px 40px #2224,
+          inset 0px -56px 40px #fff,
+          1px 1px 2px #fff,
+          -1px -1px 2px #4442;
+      }
+
+      .content {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 300%;
+        height: 100%;
+        transform: translateX(0%);
+        animation: anim 6s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+
+      .word {
+        width: 50%;
+        text-align: center;
+        color: #333;
+        font-size: 30px;
+        font-weight: 600;
+        text-shadow: 9px 8px 3px #4443;
+      }
+
+      @keyframes anim {
+        0% {
+          transform: translateX(0%);
+        }
+        20% {
+          transform: translateX(0%);
+        }
+        30% {
+          transform: translateX(-33.33%);
+        }
+        70% {
+          transform: translateX(-33.33%);
+        }
+        80% {
+          transform: translateX(-66.66%);
+        }
+        100% {
+          transform: translateX(-66.66%);
+        }
+      }
+
+      /* The shell is a fixed 190x254 by default; these variants let it carry
+         full-width content (projects, contact) and the 420x270 marquee tile. */
+      .card--tile {
+        width: 420px;
+        height: 270px;
+      }
+
+      .card--fluid {
+        width: 100%;
+        height: auto;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .content {
+          animation: none;
+        }
+      }
+
+      /* Hero portrait ------------------------------------------------------- */
+      .hero-glow {
+        position: absolute;
+        inset: -12% -18% 0;
+        background: radial-gradient(
+          circle at 50% 62%,
+          rgba(182, 0, 168, 0.28),
+          rgba(118, 33, 176, 0.12) 45%,
+          transparent 72%
+        );
+        filter: blur(28px);
+        pointer-events: none;
+      }
+
+      /* The hidden attribute must beat the display rules on .portrait-fallback
+         and Tailwind's `block` on the img, otherwise the fallback never toggles. */
+      [hidden] {
+        display: none !important;
+      }
+
+      .portrait-fallback {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        aspect-ratio: 4 / 5;
+        border: 1px dashed rgba(12, 12, 12, 0.35);
+        border-radius: 24px;
+        background: rgba(215, 226, 234, 0.08);
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(12, 12, 12, 0.6);
+      }
     </style>
   </head>
 
@@ -183,12 +294,20 @@
         <!-- Portrait -->
         <div class="pointer-events-none absolute bottom-0 left-1/2 z-10 w-[280px] -translate-x-1/2 sm:w-[360px] md:w-[440px] lg:w-[520px]">
           <div id="portrait-magnet" class="magnetic-inner pointer-events-auto">
+            <span class="hero-glow" aria-hidden="true"></span>
+            <!-- Drop your own image at portrait.png next to index.html and it
+                 replaces the placeholder below automatically. -->
             <img
-              src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
+              src="portrait.png"
               alt="Portrait of Tabe Miracle Fiagmenyi"
-              class="block h-auto w-full select-none"
+              class="relative block h-auto w-full select-none"
               draggable="false"
+              onerror="this.hidden = true; document.getElementById('portrait-placeholder').hidden = false;"
             />
+            <div id="portrait-placeholder" class="portrait-fallback relative" hidden>
+              <i data-lucide="user-round-plus" class="h-10 w-10"></i>
+              <span>Add portrait.png</span>
+            </div>
           </div>
         </div>
 
@@ -277,7 +396,7 @@
 
         <ul class="mx-auto mt-16 max-w-5xl divide-y divide-[#0C0C0C]/15 border-y border-[#0C0C0C]/15">
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">01</span>
+            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">01</span>
             <div>
               <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
                 Full-Stack Web &amp; Mobile Development
@@ -289,7 +408,7 @@
             </div>
           </li>
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">02</span>
+            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">02</span>
             <div>
               <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
                 Applied AI &amp; Computer Vision Integration
@@ -301,7 +420,7 @@
             </div>
           </li>
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">03</span>
+            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">03</span>
             <div>
               <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
                 Backend &amp; API Engineering
@@ -313,7 +432,7 @@
             </div>
           </li>
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">04</span>
+            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">04</span>
             <div>
               <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
                 Resilient &amp; Offline-First System Design
@@ -325,7 +444,7 @@
             </div>
           </li>
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/35" style="font-size: clamp(2rem, 5vw, 3.5rem)">05</span>
+            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">05</span>
             <div>
               <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
                 Rapid MVP Development &amp; Prototyping
@@ -353,111 +472,117 @@
         </h2>
 
         <div class="mx-auto mt-20 max-w-4xl" data-stack>
-          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Applied AI / Voice Assistant</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">ARIA Voice AI Assistant</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI / Voice Assistant</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">ARIA Voice AI Assistant</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               Voice-first assistant featuring a modular skill router, long-term memory, offline
               deterministic fallbacks, and an Android bridge server controlling device Wi-Fi,
               flashlight, alarms, and screenshots.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Kotlin</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flask</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">PWA</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Kotlin</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">PWA</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
 
-          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Mobile App / Marketplace</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Marketplace</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               Two-sided marketplace connecting waste generators to independent collectors with
               role-based auth, Firestore lifecycle, map pinning with Nominatim geocoding, and FCM
               fan-out.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flutter</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Dart</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Firebase</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">OSM</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flutter</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Dart</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Firebase</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OSM</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
 
-          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Applied AI Platform</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Lumina AI-Driven Platform</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI Platform</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Lumina AI-Driven Platform</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               AI-driven platform connecting Supabase and DeepSeek API to process dynamic user
               requests under tight 15-hour hackathon constraints.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">JavaScript</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Supabase</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">DeepSeek API</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Supabase</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">DeepSeek API</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
 
-          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Computer Vision / Gesture Control</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Air Canvas Gesture Drawing</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Computer Vision / Gesture Control</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Air Canvas Gesture Drawing</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               Air-drawing application with a five-gesture mode machine (draw, hover, erase, palette,
               clear) tuned for real-time webcam finger and pinch tracking.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">MediaPipe</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">OpenCV</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">MediaPipe</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OpenCV</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
 
-          <article class="stack-card sticky top-24 mb-10 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Web Security / Utility</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">NESAC Password Strength Checker</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Web Security / Utility</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">NESAC Password Strength Checker</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               Security tool that scores password resilience, explains vulnerabilities in plain
               language, and generates secure passphrases.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Python</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Flask</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">JavaScript</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
 
-          <article class="stack-card sticky top-24 rounded-3xl border border-[#D7E2EA]/15 bg-[#141414] p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Mobile App / Health</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#D7E2EA] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA]/80 sm:text-lg">
+          <div class="card card--fluid stack-card sticky top-24"><article class="p-8 sm:p-10">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Health</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
+            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
               Fitness application with custom workout plans, animated progress rings, bidirectional
               Apple HealthKit/Google Fit sync, and simulated data fallbacks.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">React Native</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">Expo</span>
-              <span class="rounded-full border border-[#D7E2EA]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#D7E2EA]/70">HealthKit</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">React Native</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Expo</span>
+              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">HealthKit</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/30 px-5 py-2 text-sm text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
+          </div>
         </div>
       </section>
 
@@ -471,48 +596,48 @@
         </h2>
 
         <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
-          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
-            <i data-lucide="map-pin" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="map-pin" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Location</span>
-              <span class="block text-base text-[#D7E2EA]">Buea, Cameroon</span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Location</span>
+              <span class="block text-base text-[#0C0C0C]">Buea, Cameroon</span>
             </span>
           </a>
 
-          <a href="mailto:tabe7143@gmail.com" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
-            <i data-lucide="mail" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+          <a href="mailto:tabe7143@gmail.com" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="mail" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Email</span>
-              <span class="block text-base text-[#D7E2EA]">tabe7143@gmail.com</span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Email</span>
+              <span class="block text-base text-[#0C0C0C]">tabe7143@gmail.com</span>
             </span>
           </a>
 
-          <a href="tel:+237680553744" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
-            <i data-lucide="phone" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+          <a href="tel:+237680553744" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="phone" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">Phone / WhatsApp</span>
-              <span class="block text-base text-[#D7E2EA]">(+237) 680-553-744</span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Phone / WhatsApp</span>
+              <span class="block text-base text-[#0C0C0C]">(+237) 680-553-744</span>
             </span>
           </a>
 
-          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80">
-            <i data-lucide="github" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+            <i data-lucide="github" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">GitHub</span>
-              <span class="block text-base text-[#D7E2EA]">github.com/dontman-tech</span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">GitHub</span>
+              <span class="block text-base text-[#0C0C0C]">github.com/dontman-tech</span>
             </span>
           </a>
 
-          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-[#D7E2EA]/15 bg-[#141414] p-6 transition-opacity duration-200 hover:opacity-80 sm:col-span-2">
-            <i data-lucide="linkedin" class="h-6 w-6 shrink-0 text-[#D7E2EA]/70"></i>
+          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80 sm:col-span-2">
+            <i data-lucide="linkedin" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/50">LinkedIn</span>
-              <span class="block text-base text-[#D7E2EA]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
+              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">LinkedIn</span>
+              <span class="block text-base text-[#0C0C0C]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
             </span>
           </a>
         </div>
 
-        <p class="mt-16 text-center text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/40">
+        <p class="mt-16 text-center text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/60">
           &copy; <span id="year">2026</span> Tabe Miracle Fiagmenyi — TAMIF
         </p>
       </section>
@@ -549,14 +674,14 @@
 
       function marqueeTile(item) {
         const tile = document.createElement('div');
-        tile.className =
-          'flex h-[270px] w-[420px] shrink-0 flex-col justify-between rounded-2xl border border-[#D7E2EA]/20 bg-[#141414] p-8 shadow-[inset_0_1px_0_rgba(215,226,234,0.06),0_0_40px_rgba(215,226,234,0.04)]';
+        tile.className = 'card card--tile shrink-0';
+        // .content is 300% wide with two .word halves; the keyframe steps it by
+        // 33.33% each time, so the pair slides across and loops seamlessly.
         tile.innerHTML =
-          '<span class="text-xs font-medium uppercase tracking-[0.25em] text-[#D7E2EA]/50"></span>' +
-          '<span class="text-3xl font-semibold text-[#D7E2EA] sm:text-4xl"></span>';
-        const [tag, title] = tile.children;
-        tag.textContent = item.tag;
+          '<div class="content"><span class="word"></span><span class="word"></span></div>';
+        const [title, tag] = tile.querySelector('.content').children;
         title.textContent = item.title;
+        tag.textContent = item.tag;
         return tile;
       }
 

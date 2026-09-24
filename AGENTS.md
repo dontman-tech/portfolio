@@ -12,6 +12,7 @@ wholesale. Do not reintroduce either.
 
 ```
 index.html                    the entire site
+portrait.png                  hero portrait — swap this file to change the image
 favicon.svg                   favicon referenced by index.html
 CNAME                         tamif.is-a.dev
 robots.txt, sitemap.xml       crawler metadata
@@ -44,6 +45,26 @@ with a per-word opacity floor of `0.2`, so no copy is ever fully invisible.
 **Palette.** Literal `#0C0C0C` (surface), `#141414` (raised card), `#D7E2EA` (body text on dark),
 and the `#646973 → #BBCCD7` gradient in `.hero-heading`. Services is the only white surface;
 Projects overlaps it with `-mt-12` and a `rounded-t-[50px]` top so the sections read as a stack.
+
+**Glass cards.** The `.card` / `.content` / `.word` / `@keyframes anim` block is a fixed 190x254
+shell with a bevelled inset shadow. Projects, contact tiles and marquee tiles all reuse it by
+adding `.card--fluid` (full-width, auto height) or `.card--tile` (420x270) — never by editing
+`.card` itself. Two gotchas: a sticky element only travels inside its parent's box, so project
+cards carry `stack-card sticky top-24` on the `.card` wrapper and keep the `<article>` static;
+and `.content` is a 300%-wide flex track holding two `.word` halves, which the keyframe steps by
+33.33% — the two words are the only children, so the slide loops without exposing a gap.
+
+Anything sitting on a `.card` must use `#0C0C0C` ink, not `#D7E2EA`; the shell is light
+(`rgb(223,225,235)`), so the dark-surface body colour would be invisible. Keep opacity at or above
+`/60`, which is the floor that clears WCAG AA on this background. `#D7E2EA` remains correct for
+everything on the `#0C0C0C` sections (hero, about, contact footer).
+
+**Hero portrait.** `index.html` loads `portrait.png` from the repo root, so the image is swapped
+by replacing that file, not by editing markup. An `onerror` handler hides the `img` and reveals
+the dashed `.portrait-fallback` box, so a missing file degrades instead of showing a broken icon.
+The `[hidden] { display: none !important }` rule is required — `.portrait-fallback` sets
+`display: flex` and the `img` carries Tailwind's `block`, both of which would otherwise beat the
+`hidden` attribute and leave both visible at once.
 
 **Content truthfulness.** Project copy must match the repository it links to; verify a claim
 against the README before writing it. Lumina appears as participation in the Prometheus AI
