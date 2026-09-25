@@ -59,6 +59,65 @@
         color: transparent;
       }
 
+      /* Glass surfaces ------------------------------------------------------ */
+      .glass {
+        background: linear-gradient(135deg, rgba(215, 226, 234, 0.08), rgba(215, 226, 234, 0.03));
+        -webkit-backdrop-filter: blur(16px) saturate(1.3);
+        backdrop-filter: blur(16px) saturate(1.3);
+        border: 1px solid rgba(215, 226, 234, 0.14);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .glass-card {
+        border-radius: 24px;
+        transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 200ms linear, box-shadow 200ms linear;
+      }
+
+      .glass-card:hover {
+        border-color: rgba(215, 226, 234, 0.28);
+        box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      /* Elegant section transitions ---------------------------------------- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px) scale(0.985);
+        transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+          transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      /* Section seams: soft curved glass dividers between dark sections */
+      .section-seam {
+        position: relative;
+        z-index: 1;
+        margin-top: -50px;
+        height: 100px;
+        border-radius: 50px 50px 0 0;
+        background: linear-gradient(180deg, rgba(215, 226, 234, 0.06), transparent 80%);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(215, 226, 234, 0.1);
+        border-left: 1px solid rgba(215, 226, 234, 0.06);
+        border-right: 1px solid rgba(215, 226, 234, 0.06);
+        pointer-events: none;
+      }
+
       .cta-gradient {
         background: linear-gradient(
           123deg,
@@ -302,7 +361,7 @@
       >
         <!-- Navbar -->
         <nav
-          class="relative z-20 flex w-full items-center justify-between text-[0.7rem] sm:text-sm"
+          class="glass relative z-20 mx-auto flex w-full max-w-4xl items-center justify-between rounded-full px-6 py-3 text-[0.7rem] sm:px-10 sm:text-sm"
         >
           <a href="#about" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">About</a>
           <a href="#services" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Services</a>
@@ -430,6 +489,8 @@
       </section>
 
       <!-- ============================ SERVICES =========================== -->
+      <div class="section-seam" aria-hidden="true"></div>
+
       <section
         id="services"
         class="relative w-full rounded-t-[50px] bg-[#FFFFFF] px-8 py-24 text-[#0C0C0C]"
@@ -441,7 +502,7 @@
           Services
         </h2>
 
-        <ul class="mx-auto mt-16 max-w-5xl divide-y divide-[#0C0C0C]/15 border-y border-[#0C0C0C]/15">
+        <ul class="glass mx-auto mt-16 max-w-5xl divide-y divide-[#0C0C0C]/15 border-y border-[#0C0C0C]/15 rounded-[28px] px-6 sm:px-10" style="background: rgba(255,255,255,0.55)">
           <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
             <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">01</span>
             <div>
@@ -505,6 +566,8 @@
         </ul>
       </section>
 
+      <div class="section-seam" aria-hidden="true" style="background: linear-gradient(180deg, rgba(215,226,234,0.06), transparent 80%)"></div>
+
       <!-- ============================ PROJECTS =========================== -->
       <section
         id="projects"
@@ -518,7 +581,7 @@
           Projects
         </h2>
 
-        <div class="relative mx-auto mt-10 max-w-4xl rounded-[24px] border border-[#D7E2EA]/15 bg-[#141414] px-8 py-6 sm:px-10">
+        <div class="glass glass-card reveal relative mx-auto mt-10 max-w-4xl px-8 py-6 sm:px-10">
           <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Currently building</p>
           <p class="mt-3 text-base font-light leading-relaxed text-[#D7E2EA] sm:text-lg">
             <span class="font-semibold">Phoney</span> — a Linux "Phone Link": pairing an Android
@@ -529,7 +592,7 @@
         </div>
 
         <div class="mx-auto mt-20 max-w-4xl" data-stack>
-          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI / Voice Assistant · Flagship</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">ARIA — Voice AI Assistant</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -552,7 +615,7 @@
           </article>
           </div>
 
-          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Marketplace</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -575,7 +638,7 @@
           </article>
           </div>
 
-          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI Platform</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Lumina AI-Driven Platform</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -596,7 +659,7 @@
           </article>
           </div>
 
-          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Computer Vision / Gesture Control</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Air Canvas Gesture Drawing</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -617,7 +680,7 @@
           </article>
           </div>
 
-          <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Web Security / Utility</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">NESAC Password Strength Checker</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -638,7 +701,7 @@
           </article>
           </div>
 
-          <div class="card card--fluid stack-card sticky top-24"><article class="p-8 sm:p-10">
+          <div class="stack-card sticky top-24"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Health</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
@@ -671,43 +734,43 @@
         </h2>
 
         <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
-          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
             <i data-lucide="map-pin" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
               <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Location</span>
-              <span class="block text-base text-[#0C0C0C]">Buea, Cameroon</span>
+              <span class="block text-base text-[#D7E2EA]">Buea, Cameroon</span>
             </span>
           </a>
 
-          <a href="mailto:tabe7143@gmail.com" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+          <a href="mailto:tabe7143@gmail.com" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
             <i data-lucide="mail" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
               <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Email</span>
-              <span class="block text-base text-[#0C0C0C]">tabe7143@gmail.com</span>
+              <span class="block text-base text-[#D7E2EA]">tabe7143@gmail.com</span>
             </span>
           </a>
 
-          <a href="tel:+237680553744" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+          <a href="tel:+237680553744" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
             <i data-lucide="phone" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
               <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Phone / WhatsApp</span>
-              <span class="block text-base text-[#0C0C0C]">(+237) 680-553-744</span>
+              <span class="block text-base text-[#D7E2EA]">(+237) 680-553-744</span>
             </span>
           </a>
 
-          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80">
+          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
             <i data-brand="github" class="brand-icon h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
               <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">GitHub</span>
-              <span class="block text-base text-[#0C0C0C]">github.com/dontman-tech</span>
+              <span class="block text-base text-[#D7E2EA]">github.com/dontman-tech</span>
             </span>
           </a>
 
-          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="card card--fluid flex items-center gap-4 p-6 transition-opacity duration-200 hover:opacity-80 sm:col-span-2">
+          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA] sm:col-span-2">
             <i data-brand="linkedin" class="brand-icon h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
             <span>
               <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">LinkedIn</span>
-              <span class="block text-base text-[#0C0C0C]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
+              <span class="block text-base text-[#D7E2EA]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
             </span>
           </a>
         </div>
@@ -719,6 +782,21 @@
     </div>
 
     <script>
+      /* Elegant section transitions: reveal sections as they enter the viewport. */
+      const revealTargets = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+      revealTargets.forEach((el) => revealObserver.observe(el));
+
       /* Brand marks keyed by simple-icons slug, inlined as path data. */
       const BRAND = {
 python: 'M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z',
