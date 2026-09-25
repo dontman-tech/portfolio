@@ -366,6 +366,7 @@
           <a href="#about" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">About</a>
           <a href="#services" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Services</a>
           <a href="#projects" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Projects</a>
+          <a href="#notes" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Notes</a>
           <a href="#contact" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Contact</a>
         </nav>
 
@@ -721,6 +722,53 @@
             </a>
           </article>
           </div>
+        </div>
+      </section>
+
+      <!-- ============================= NOTES ============================= -->
+      <section id="notes" class="relative w-full px-6 pb-28 pt-4 sm:px-10">
+        <h2
+          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
+          style="font-size: clamp(2.5rem, 10vw, 140px)"
+        >
+          Notes
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-center text-base font-light text-[#D7E2EA]/80 sm:text-lg">
+          Short write-ups on how I think and build — decisions I'd defend, and a few I'd reverse.
+        </p>
+
+        <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
+          <article class="glass glass-card reveal p-8">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Engineering</p>
+            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Graceful degradation is a feature, not an apology</h3>
+            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
+              Building for Cameroon taught me that "no internet" is a normal state, not an error
+              state. Every product I ship now has an offline path that stays genuinely useful —
+              from ARIA's local skill router to Pulse Fit's simulated data. If the demo dies when
+              the Wi-Fi does, it was never finished.
+            </p>
+          </article>
+          <article class="glass glass-card reveal p-8">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Process</p>
+            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Ship the boring parts first</h3>
+            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
+              Hackathons reward the demo; production rewards the recovery. I now build error
+              states, empty states, and the onboarding path before the shiny flow. The lesson came
+              from Re-kollect: the features everyone remembered were the ones that worked when
+              something upstream failed.
+            </p>
+          </article>
+          <article class="glass glass-card reveal p-8 sm:col-span-2">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Building in public</p>
+            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Phoney: what pairing over TLS actually taught me</h3>
+            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
+              Reimplementing the KDE Connect protocol taught me more than any tutorial: identity
+              exchange before TLS, why both sides waiting on each other deadlocks a handshake, and
+              how a single <code class="rounded bg-white/10 px-1.5 py-0.5 font-mono text-sm">recv</code>
+              on the wrong socket survives every unit test and fails in the wild. I'm writing up
+              the full protocol walkthrough as I go — the loopback test rig alone is worth a post.
+            </p>
+          </article>
         </div>
       </section>
 
