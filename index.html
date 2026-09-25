@@ -18,21 +18,7 @@
       rel="stylesheet"
     />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { kanit: ['Kanit', 'sans-serif'] },
-            colors: {
-              surface: '#0C0C0C',
-              raised: '#141414',
-              body: '#D7E2EA',
-            },
-          },
-        },
-      };
-    </script>
+    <link rel="stylesheet" href="tailwind.css" />
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -431,6 +417,15 @@
             More about me
             <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
           </a>
+
+          <a
+            href="resume.pdf"
+            download
+            class="mt-4 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/40 px-7 py-3 text-sm font-medium uppercase tracking-wider text-[#D7E2EA] transition-colors duration-200 hover:border-[#D7E2EA] hover:bg-[#D7E2EA]/10"
+          >
+            Download résumé
+            <i data-lucide="file-down" class="h-4 w-4"></i>
+          </a>
         </div>
       </section>
 
@@ -523,14 +518,27 @@
           Projects
         </h2>
 
+        <div class="relative mx-auto mt-10 max-w-4xl rounded-[24px] border border-[#D7E2EA]/15 bg-[#141414] px-8 py-6 sm:px-10">
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Currently building</p>
+          <p class="mt-3 text-base font-light leading-relaxed text-[#D7E2EA] sm:text-lg">
+            <span class="font-semibold">Phoney</span> — a Linux "Phone Link": pairing an Android
+            phone with a Linux desktop over the KDE Connect protocol. Notifications, file transfer,
+            clipboard sync, SMS, calls, and screen mirroring, all from the terminal or the tray.
+            <a href="https://github.com/dontman-tech/phoney" target="_blank" rel="noopener noreferrer" class="underline decoration-[#b600a8] underline-offset-4 hover:opacity-80">Follow along →</a>
+          </p>
+        </div>
+
         <div class="mx-auto mt-20 max-w-4xl" data-stack>
           <div class="card card--fluid stack-card sticky top-24 mb-10"><article class="p-8 sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI / Voice Assistant</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">ARIA Voice AI Assistant</h3>
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI / Voice Assistant · Flagship</p>
+            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">ARIA — Voice AI Assistant</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Voice-first assistant featuring a modular skill router, long-term memory, offline
-              deterministic fallbacks, and an Android bridge server controlling device Wi-Fi,
-              flashlight, alarms, and screenshots.
+              The problem: voice assistants stop working the moment the internet does — useless on a
+              student budget in Cameroon. I built ARIA around a skill router that answers locally
+              when offline and escalates to the cloud only when it must: an Android bridge server
+              drives Wi-Fi, flashlight, alarms and screenshots natively, a PWA control panel stays
+              usable on any device, and DeepSeek integration is a pluggable upgrade, not a
+              dependency. Outcome: an assistant that keeps its core skills in airplane mode.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
@@ -538,7 +546,7 @@
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">PWA</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/aria-ai" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
@@ -548,9 +556,12 @@
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Marketplace</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Two-sided marketplace connecting waste generators to independent collectors with
-              role-based auth, Firestore lifecycle, map pinning with Nominatim geocoding, and FCM
-              fan-out.
+              The problem: in many Cameroonian neighbourhoods, waste collection is a cash and
+              coordination mess — generators can't find collectors, collectors can't find work. I
+              shipped the Flutter marketplace connecting the two sides: role-based auth, a
+              Firestore request lifecycle, live map pinning via Nominatim geocoding, and FCM
+              fan-out so a posted pickup reaches nearby collectors in seconds. Built as the
+              capstone of a team hackathon cycle — my slice was the backend flows and geo layer.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flutter</span>
@@ -558,7 +569,7 @@
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Firebase</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OSM</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/rekollect" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
@@ -568,15 +579,18 @@
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI Platform</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Lumina AI-Driven Platform</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              AI-driven platform connecting Supabase and DeepSeek API to process dynamic user
-              requests under tight 15-hour hackathon constraints.
+              A 15-hour hackathon build with a real lesson in scoping: instead of chasing a broad AI
+              demo, we wired Supabase and the DeepSeek API into one pipeline that routes dynamic
+              user requests to the right handler and degrades gracefully when rate limits hit.
+              We placed in the challenge, and the architecture survived being handed to the next
+              team intact — the metric I care about most in sprint code.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Supabase</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">DeepSeek API</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/lumina-cameroon1" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
@@ -586,15 +600,18 @@
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Computer Vision / Gesture Control</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Air Canvas Gesture Drawing</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Air-drawing application with a five-gesture mode machine (draw, hover, erase, palette,
-              clear) tuned for real-time webcam finger and pinch tracking.
+              A computer-vision take on "no mouse, no problem". MediaPipe hand landmarks drive a
+              five-gesture mode machine — draw, hover, erase, palette, clear — where the hard part
+              wasn't tracking, it was gesture stability: filtering pinch jitter so a trembling
+              hand doesn't spray dots across the canvas. Tuning the temporal smoothing against
+              real webcam footage at 15fps was the whole project.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">MediaPipe</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OpenCV</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/air-canvas" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
@@ -604,15 +621,18 @@
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Web Security / Utility</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">NESAC Password Strength Checker</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Security tool that scores password resilience, explains vulnerabilities in plain
-              language, and generates secure passphrases.
+              Most strength checkers give a color bar and a shrug. NESAC scores password resilience
+              and then explains the verdict in plain language — which pattern leaked it, why it
+              falls, how long a brute-force would take — and generates secure passphrases on the
+              spot. Flask backend, no data ever leaves the page. Built as a public-facing security
+              utility for non-technical users.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/NESAC-Password-Strength-Checker" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
@@ -622,15 +642,18 @@
             <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Health</p>
             <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
             <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Fitness application with custom workout plans, animated progress rings, bidirectional
-              Apple HealthKit/Google Fit sync, and simulated data fallbacks.
+              A cross-platform tracker built on React Native and Expo: custom workout plans, animated
+              progress rings, and bidirectional HealthKit/Google Fit sync. The design decision I'm
+              proudest of is the simulated-data fallback — when permissions are denied or sensors
+              are missing, the app stays fully demonstrable instead of blank. Graceful degradation
+              as a feature, not an apology.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">React Native</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Expo</span>
               <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">HealthKit</span>
             </div>
-            <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
+            <a href="https://github.com/dontman-tech/Pulse-fit" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
               View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
             </a>
           </article>
