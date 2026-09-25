@@ -123,6 +123,19 @@
         }
       }
 
+      /* Vertical separators in the nav dock. */
+      .nav-sep {
+        width: 1px;
+        align-self: stretch;
+        margin: 0.35em 0;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(215, 226, 234, 0.4),
+          transparent
+        );
+      }
+
       /* Section seams: soft curved glass dividers between dark sections */
       /* Vertical section separators: a thin glass rule with a centered
          node, sitting between dark sections. Visible on all profiles; on
@@ -426,9 +439,13 @@
           class="glass relative z-20 mx-auto flex w-full max-w-4xl items-center justify-between rounded-full px-6 py-3 text-[0.7rem] sm:px-10 sm:text-sm"
         >
           <a href="#about" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">About</a>
+          <span class="nav-sep" aria-hidden="true"></span>
           <a href="#services" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Services</a>
+          <span class="nav-sep" aria-hidden="true"></span>
           <a href="#projects" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Projects</a>
+          <span class="nav-sep" aria-hidden="true"></span>
           <a href="#notes" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Notes</a>
+          <span class="nav-sep" aria-hidden="true"></span>
           <a href="#contact" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Contact</a>
         </nav>
 
@@ -789,12 +806,13 @@
           </article>
           </div>
 
-          <div class="reveal mt-16 flex justify-center">
+          <div class="reveal mt-20 flex flex-col items-center gap-4">
             <a href="https://github.com/dontman-tech?tab=repositories" target="_blank" rel="noopener noreferrer"
-               class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/60 px-8 py-4 text-sm font-medium uppercase tracking-wider text-[#0C0C0C] shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-transform duration-200 hover:scale-[1.03]">
+               class="cta-gradient inline-flex items-center gap-3 rounded-full px-10 py-5 text-base font-semibold uppercase tracking-widest text-white shadow-[0_14px_40px_rgba(182,0,168,0.45)] transition-transform duration-200 hover:scale-[1.06] sm:text-lg">
               See more projects
-              <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+              <i data-lucide="arrow-up-right" class="h-5 w-5"></i>
             </a>
+            <span class="text-xs uppercase tracking-[0.25em] text-[#0C0C0C]/60">Full archive on GitHub</span>
           </div>
         </div>
       </section>>
