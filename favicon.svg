@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#646973" />
-      <stop offset="100%" stop-color="#BBCCD7" />
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="#0C0C0C" />
-  <text x="32" y="46" font-family="Kanit, sans-serif" font-size="40" font-weight="900"
-        text-anchor="middle" fill="url(#g)">T</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TAMIF">
+  <rect width="64" height="64" rx="16" fill="#0D0D12" />
+  <rect x="6" y="6" width="52" height="52" rx="12" fill="#FF6A3D" />
+  <path d="M18 46 32 16l14 30h-8.6L32 32.4 26.6 46z" fill="#0D0D12" />
 </svg>
