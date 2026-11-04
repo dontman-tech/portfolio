@@ -3,931 +3,993 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0C0C0C" />
+    <meta name="theme-color" content="#0D0D12" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta
       name="description"
-      content="Tabe Miracle Fiagmenyi (TAMIF) — software engineering student, full-stack and applied AI engineer shipping complete products end to end."
+      content="Tabe Miracle Fiagmenyi (TAMIF) — full-stack and applied AI engineer in Buea, Cameroon, shipping complete products end to end."
     />
+    <link rel="canonical" href="https://tamif.is-a.dev/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" />
+    <meta
+      property="og:description"
+      content="Full-stack and applied AI engineer shipping complete products end to end. Selected work, services and contact."
+    />
+    <meta property="og:url" content="https://tamif.is-a.dev/" />
+    <meta property="og:image" content="https://tamif.is-a.dev/portrait.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer" />
+    <meta
+      name="twitter:description"
+      content="Full-stack and applied AI engineer shipping complete products end to end. Selected work, services and contact."
+    />
+    <meta name="twitter:image" content="https://tamif.is-a.dev/portrait.png" />
+
     <title>Tabe Miracle Fiagmenyi — Full-Stack &amp; Applied AI Engineer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="tailwind.css" />
+    <link rel="stylesheet" href="styles.css" />
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Tabe Miracle Fiagmenyi",
+        "alternateName": "TAMIF",
+        "url": "https://tamif.is-a.dev/",
+        "jobTitle": "Full-Stack & Applied AI Engineer",
+        "address": { "@type": "PostalAddress", "addressLocality": "Buea", "addressCountry": "Cameroon" },
+        "email": "mailto:tabe7143@gmail.com",
+        "sameAs": ["https://github.com/dontman-tech", "https://linkedin.com/in/tabe-miracle-fiagmenyi"]
       }
-
-      html {
-        scroll-behavior: smooth;
-        /* Mobile engines (notably iOS Safari) otherwise inflate font sizes on
-           wide/landscape viewports, which would reflow copy relative to desktop.
-           Pinning the adjustment keeps every device profile on the same metrics. */
-        -webkit-text-size-adjust: 100%;
-        text-size-adjust: 100%;
-        /* Identical scroll physics across engines: Firefox exposes a wider
-           classic scrollbar that reflows content vs WebKit's overlay bars. */
-        scrollbar-gutter: stable both-edges;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(215, 226, 234, 0.25) #0c0c0c;
-        overscroll-behavior-y: none;
-      }
-
-      /* Chromium quantises Kanit glyph advances to whole pixels (documented in
-         AGENTS.md), measuring the same string up to ~2% wider than Firefox/
-         WebKit and wrapping lines differently at tight widths. Rendering the
-         whole document at 0.5px-downscaled granularity via transform on wide
-         viewports is too invasive; instead, prevent any single word from
-         tipping a line: headings stay one line (nowrap already), and body
-         copy gets per-line tolerance via balanced wrapping where supported. */
-      p {
-        text-wrap: pretty;
-      }
-
-      h1, h2, h3 {
-        text-wrap: balance;
-      }
-
-      html,
-      body {
-        background-color: #0c0c0c;
-      }
-
-      body {
-        font-family: 'Kanit', sans-serif;
-        color: #d7e2ea;
-        overflow-x: clip;
-      }
-
-      .hero-heading {
-        background: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-      }
-
-      /* Glass surfaces ------------------------------------------------------ */
-      .glass {
-        background: linear-gradient(135deg, rgba(215, 226, 234, 0.08), rgba(215, 226, 234, 0.03));
-        -webkit-backdrop-filter: blur(16px) saturate(1.3);
-        backdrop-filter: blur(16px) saturate(1.3);
-        border: 1px solid rgba(215, 226, 234, 0.14);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
-          inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      }
-
-      .glass-card {
-        border-radius: 24px;
-        transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-          border-color 200ms linear, box-shadow 200ms linear;
-      }
-
-      .glass-card:hover {
-        border-color: rgba(215, 226, 234, 0.28);
-        box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45),
-          inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      }
-
-      /* Elegant section transitions ---------------------------------------- */
-      .reveal {
-        opacity: 0;
-        transform: translateY(28px) scale(0.985);
-        transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-          transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      .reveal.is-visible {
-        opacity: 1;
-        transform: none;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .reveal {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-      }
-
-      /* Vertical separators in the nav dock. */
-      .nav-sep {
-        width: 1px;
-        align-self: stretch;
-        margin: 0.35em 0;
-        background: linear-gradient(
-          180deg,
-          transparent,
-          rgba(215, 226, 234, 0.4),
-          transparent
-        );
-      }
-
-      /* Section seams: soft curved glass dividers between dark sections */
-      /* Vertical section separators: a thin glass rule with a centered
-         node, sitting between dark sections. Visible on all profiles; on
-         mobile it's the main structural cue between full-width sections. */
-      .section-divider {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        height: 96px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        background: transparent;
-      }
-
-      .section-divider::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background: linear-gradient(
-          180deg,
-          transparent,
-          rgba(215, 226, 234, 0.35) 22%,
-          rgba(215, 226, 234, 0.35) 78%,
-          transparent
-        );
-      }
-
-      /* Diamond node at the seam's midpoint — the site's corner-motif echo. */
-      .section-divider::after {
-        content: '';
-        width: 7px;
-        height: 7px;
-        transform: rotate(45deg);
-        background: rgba(215, 226, 234, 0.55);
-        box-shadow: 0 0 12px rgba(182, 0, 168, 0.45);
-      }
-
-      .section-seam {
-        position: relative;
-        z-index: 1;
-        margin-top: -50px;
-        height: 100px;
-        border-radius: 50px 50px 0 0;
-        background: linear-gradient(180deg, rgba(215, 226, 234, 0.06), transparent 80%);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(215, 226, 234, 0.1);
-        border-left: 1px solid rgba(215, 226, 234, 0.06);
-        border-right: 1px solid rgba(215, 226, 234, 0.06);
-        pointer-events: none;
-      }
-
-      .cta-gradient {
-        background: linear-gradient(
-          123deg,
-          #18011f 7%,
-          #b600a8 37%,
-          #7621b0 72%,
-          #be4c00 100%
-        );
-        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35),
-          inset 0 -8px 18px rgba(0, 0, 0, 0.35), 0 14px 34px rgba(182, 0, 168, 0.28);
-      }
-
-      /* Marquee ------------------------------------------------------------ */
-      .marquee-row {
-        display: flex;
-        gap: 1rem;
-        width: max-content;
-        will-change: transform;
-      }
-
-      @media (prefers-reduced-motion: no-preference) {
-        .marquee-row--right {
-          animation: marquee-right 46s linear infinite;
-        }
-        .marquee-row--left {
-          animation: marquee-left 46s linear infinite;
-        }
-      }
-
-      @keyframes marquee-right {
-        from {
-          transform: translateX(-50%);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-
-      @keyframes marquee-left {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .marquee-row {
-          transform: translateX(0);
-        }
-      }
-
-      /* Corner graphics ---------------------------------------------------- */
-      @keyframes float-slow {
-        0%,
-        100% {
-          transform: translateY(0) rotate(0deg);
-        }
-        50% {
-          transform: translateY(-14px) rotate(4deg);
-        }
-      }
-
-      .float-icon {
-        animation: float-slow 7s ease-in-out infinite;
-      }
-
-      /* Bio word reveal ---------------------------------------------------- */
-      .bio-word {
-        opacity: 0.2;
-        transition: opacity 180ms linear;
-      }
-
-      /* Project stacking --------------------------------------------------- */
-      .stack-card {
-        transition: transform 120ms linear, opacity 120ms linear;
-      }
-
-      .magnetic-inner {
-        will-change: transform;
-        transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      /* Glassy card shell --------------------------------------------------- */
-      .card {
-        width: 190px;
-        height: 254px;
-        background: rgb(223, 225, 235);
-        overflow: hidden;
-        border-radius: 20px;
-        box-shadow:
-          inset 0px 56px 40px #2224,
-          inset 0px -56px 40px #fff,
-          1px 1px 2px #fff,
-          -1px -1px 2px #4442;
-      }
-
-      .content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 300%;
-        height: 100%;
-        transform: translateX(0%);
-        animation: anim 6s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
-
-      .word {
-        width: 50%;
-        text-align: center;
-        color: #333;
-        font-size: 30px;
-        font-weight: 600;
-        text-shadow: 9px 8px 3px #4443;
-      }
-
-      @keyframes anim {
-        0% {
-          transform: translateX(0%);
-        }
-        20% {
-          transform: translateX(0%);
-        }
-        30% {
-          transform: translateX(-33.33%);
-        }
-        70% {
-          transform: translateX(-33.33%);
-        }
-        80% {
-          transform: translateX(-66.66%);
-        }
-        100% {
-          transform: translateX(-66.66%);
-        }
-      }
-
-      /* The shell is a fixed 190x254 by default; these variants let it carry
-         full-width content (projects, contact) and the 420x270 marquee tile. */
-      .card--tile {
-        position: relative;
-        width: 420px;
-        height: 270px;
-      }
-
-      /* Stack glyph, watermarked behind the sliding words. The tiles are the
-         only place the .content track moves, so a fixed icon here is what keeps
-         a card from ever reading as blank mid-transition: during the -33.33%
-         keyframe both word halves sit outside the 420px window. */
-      .card__icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #0c0c0c;
-        opacity: 0.45;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      .card__icon svg {
-        display: block;
-        width: 150px;
-        height: 150px;
-      }
-
-      /* <i> is inline, so the h-6/w-6 utilities would be ignored without an
-         explicit box; the inner SVG then fills it. */
-      .brand-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .brand-icon svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-
-      .card--fluid {
-        width: 100%;
-        height: auto;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .content {
-          animation: none;
-        }
-      }
-
-      /* Hero portrait ------------------------------------------------------- */
-      .hero-glow {
-        position: absolute;
-        inset: -12% -18% 0;
-        background: radial-gradient(
-          circle at 50% 62%,
-          rgba(182, 0, 168, 0.28),
-          rgba(118, 33, 176, 0.12) 45%,
-          transparent 72%
-        );
-        filter: blur(28px);
-        pointer-events: none;
-      }
-
-      /* The hidden attribute must beat the display rules on .portrait-fallback
-         and Tailwind's `block` on the img, otherwise the fallback never toggles. */
-      [hidden] {
-        display: none !important;
-      }
-
-      .portrait-fallback {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        aspect-ratio: 4 / 5;
-        border: 1px dashed rgba(12, 12, 12, 0.35);
-        border-radius: 24px;
-        background: rgba(215, 226, 234, 0.08);
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 0.7rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: rgba(12, 12, 12, 0.6);
-      }
-    </style>
+    </script>
   </head>
 
   <body>
-    <div id="top" class="relative w-full min-h-screen bg-[#0C0C0C]" style="overflow-x: clip">
-      <!-- ============================== HERO ============================== -->
-      <section
-        id="hero"
-        class="relative flex min-h-screen w-full flex-col justify-between bg-[#0C0C0C] px-6 pt-8 sm:px-10"
-      >
-        <!-- Navbar -->
-        <nav
-          class="glass relative z-20 mx-auto flex w-full max-w-4xl items-center justify-between rounded-full px-6 py-3 text-[0.7rem] sm:px-10 sm:text-sm"
-        >
-          <a href="#about" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">About</a>
-          <span class="nav-sep" aria-hidden="true"></span>
-          <a href="#services" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Services</a>
-          <span class="nav-sep" aria-hidden="true"></span>
-          <a href="#projects" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Projects</a>
-          <span class="nav-sep" aria-hidden="true"></span>
-          <a href="#notes" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Notes</a>
-          <span class="nav-sep" aria-hidden="true"></span>
-          <a href="#contact" class="nav-link text-[#D7E2EA] font-medium uppercase tracking-wider transition-opacity duration-200 hover:opacity-70">Contact</a>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav">
+      <div class="wrap site-nav__inner">
+        <a class="brand" href="#top">
+          <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="1" y="1" width="22" height="22" rx="6" fill="#FF6A3D" />
+            <path d="M6.6 17.5 12 6.2l5.4 11.3h-3.1L12 12.6l-2.3 4.9z" fill="#0D0D12" />
+          </svg>
+          <span>TAMIF</span>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#notes">Notes</a></li>
+            <li class="nav-cta">
+              <a class="btn btn--primary btn--sm" href="#contact">Hire me</a>
+            </li>
+          </ul>
         </nav>
+      </div>
+    </header>
 
-        <!-- Heading -->
-        <div class="relative z-0 mt-10 w-full overflow-hidden">
-          <h1
-            class="hero-heading font-black uppercase leading-none tracking-tight whitespace-nowrap text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]"
-          >
-            Hi, i'm tamif
-          </h1>
-        </div>
+    <main id="main">
+      <!-- ============================== HERO ============================== -->
+      <section id="top" class="section section--ink dotgrid hero">
+        <div class="wrap hero__grid">
+          <div>
+            <p class="eyebrow">Buea, Cameroon · Available for work</p>
+            <h1 class="hero__title">
+              Hi, I'm<br />Tamif —<br /><em>I ship</em> software.
+            </h1>
+            <p class="hero__lead">
+              Full-stack &amp; applied AI engineer. I take products from an empty repository to
+              something real people can use — offline-first, resilient, and finished.
+            </p>
 
-        <!-- Portrait -->
-        <div class="pointer-events-none absolute bottom-0 left-1/2 z-10 w-[280px] -translate-x-1/2 sm:w-[360px] md:w-[440px] lg:w-[520px]">
-          <div id="portrait-magnet" class="magnetic-inner pointer-events-auto">
-            <span class="hero-glow" aria-hidden="true"></span>
-            <!-- Drop your own image at portrait.png next to index.html and it
-                 replaces the placeholder below automatically. -->
-            <img
-              src="portrait.png"
-              alt="Tamif's portrait"
-              class="relative block h-auto w-full select-none"
-              draggable="false"
-              onerror="this.hidden = true; document.getElementById('portrait-placeholder').hidden = false;"
-            />
-            <div id="portrait-placeholder" class="portrait-fallback relative" hidden>
-              <i data-lucide="user-round-plus" class="h-10 w-10"></i>
-              <span>Add portrait.png</span>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#contact">
+                Hire me
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="#projects">See my work</a>
             </div>
+
+            <dl class="hero__facts">
+              <div>
+                <dt>Focus</dt>
+                <dd>Full-stack &amp; applied AI</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>Python · TypeScript · Flutter</dd>
+              </div>
+              <div>
+                <dt>Building</dt>
+                <dd>Euthora</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="portrait">
+            <span class="portrait__block" aria-hidden="true"></span>
+            <img
+              id="portrait-img"
+              class="portrait__img"
+              src="portrait.png"
+              alt="Portrait of Tabe Miracle Fiagmenyi"
+              width="408"
+              height="612"
+              draggable="false"
+              decoding="async"
+            />
           </div>
         </div>
-
-        <!-- Bottom bar -->
-        <div class="relative z-20 flex w-full items-end justify-between gap-6 pb-8">
-          <p
-            class="max-w-[260px] font-light uppercase tracking-wide text-[#D7E2EA]"
-            style="font-size: clamp(0.75rem, 1.4vw, 1.5rem)"
-          >
-            a software engineering student, full-stack &amp; applied ai engineer shipping complete products end to end
-          </p>
-
-          <a
-            href="#contact"
-            class="nav-link cta-gradient inline-flex shrink-0 items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white transition-transform duration-200 hover:scale-105 sm:text-base"
-          >
-            Contact Me
-            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-          </a>
-        </div>
       </section>
 
-      <!-- ============================ MARQUEE ============================ -->
-      <section class="w-full bg-[#0C0C0C] pt-24 pb-10">
-        <div class="w-full overflow-hidden">
-          <div class="marquee-row marquee-row--right" data-marquee="right"></div>
-        </div>
-        <div class="mt-6 w-full overflow-hidden">
-          <div class="marquee-row marquee-row--left" data-marquee="left"></div>
-        </div>
-      </section>
+      <!-- ============================ TICKER ============================= -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__row" id="ticker-row"></div>
+      </div>
+
+      <div class="wedge" style="--from: #0D0D12; --to: #F4EFE3" aria-hidden="true">
+        <span class="wedge__to"></span>
+        <span class="wedge__node"></span>
+      </div>
 
       <!-- ============================= ABOUT ============================= -->
-      <section
-        id="about"
-        class="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0C0C0C] px-6 py-24 sm:px-10"
-      >
-        <!-- Corner graphics -->
-        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-          <span class="float-icon absolute left-8 top-16 text-[#D7E2EA]/25 sm:left-16 sm:top-24">
-            <i data-lucide="box" class="h-12 w-12 sm:h-20 sm:w-20"></i>
-          </span>
-          <span class="float-icon absolute right-8 top-24 text-[#D7E2EA]/25 sm:right-20" style="animation-delay: 1.4s">
-            <i data-lucide="pyramid" class="h-12 w-12 sm:h-20 sm:w-20"></i>
-          </span>
-          <span class="float-icon absolute bottom-24 left-10 text-[#D7E2EA]/25 sm:left-24" style="animation-delay: 2.6s">
-            <i data-lucide="orbit" class="h-12 w-12 sm:h-20 sm:w-20"></i>
-          </span>
-          <span class="float-icon absolute bottom-16 right-10 text-[#D7E2EA]/25 sm:right-24" style="animation-delay: 3.6s">
-            <i data-lucide="diamond" class="h-12 w-12 sm:h-20 sm:w-20"></i>
-          </span>
-        </div>
+      <section id="about" class="section section--paper dotgrid--light">
+        <div class="wrap about__grid">
+          <div class="reveal">
+            <p class="eyebrow eyebrow--muted">About me</p>
+            <h2 class="h-section" style="margin-top: 1rem">Engineer,<br />end to end</h2>
+            <ul class="about__aside" style="margin-top: 2.5rem">
+              <li>
+                <dl>
+                  <dt>Studying</dt>
+                  <dd>Computer Engineering, University of Buea</dd>
+                </dl>
+              </li>
+              <li>
+                <dl>
+                  <dt>Based in</dt>
+                  <dd>Buea, Cameroon</dd>
+                </dl>
+              </li>
+              <li>
+                <dl>
+                  <dt>Working with</dt>
+                  <dd>Startups, teams &amp; student builders</dd>
+                </dl>
+              </li>
+            </ul>
+          </div>
 
-        <div class="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center">
-          <h2
-            class="hero-heading text-center font-black uppercase leading-none tracking-tight"
-            style="font-size: clamp(3rem, 12vw, 160px)"
-          >
-            About me
-          </h2>
-          <p
-            id="bio"
-            class="mt-10 max-w-3xl text-center text-base font-light leading-relaxed text-[#D7E2EA] sm:text-xl md:text-2xl"
-          >
-            I am a Computer Engineering student at the University of Buea and a full-stack &amp;
-            applied AI engineer who ships complete products end to end. With experience spanning
-            Python, TypeScript, React, Next.js, Flutter, and on-device voice/vision pipelines, I
-            specialise in turning ideas into production-ready MVPs under tight deadlines. I care
-            deeply about graceful degradation, offline-first paths, and interfaces a first-time user
-            understands without a manual. Let's build something incredible together!
-          </p>
-
-          <a
-            href="https://github.com/dontman-tech"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-12 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/40 px-7 py-3 text-sm font-medium uppercase tracking-wider text-[#D7E2EA] transition-colors duration-200 hover:border-[#D7E2EA] hover:bg-[#D7E2EA]/10"
-          >
-            More about me
-            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-          </a>
-
-          <a
-            href="resume.pdf"
-            download
-            class="mt-4 inline-flex items-center gap-2 rounded-full border border-[#D7E2EA]/40 px-7 py-3 text-sm font-medium uppercase tracking-wider text-[#D7E2EA] transition-colors duration-200 hover:border-[#D7E2EA] hover:bg-[#D7E2EA]/10"
-          >
-            Download résumé
-            <i data-lucide="file-down" class="h-4 w-4"></i>
-          </a>
-        </div>
-      </section>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <!-- ============================ SERVICES =========================== -->
-      <div class="section-seam" aria-hidden="true"></div>
-
-      <section
-        id="services"
-        class="relative w-full rounded-t-[50px] bg-[#FFFFFF] px-8 py-24 text-[#0C0C0C]"
-      >
-        <h2
-          class="text-center font-black uppercase leading-none tracking-tight"
-          style="font-size: clamp(3rem, 12vw, 160px)"
-        >
-          Services
-        </h2>
-
-        <ul class="glass mx-auto mt-16 max-w-5xl divide-y divide-[#0C0C0C]/15 border-y border-[#0C0C0C]/15 rounded-[28px] px-6 sm:px-10" style="background: rgba(255,255,255,0.55)">
-          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">01</span>
-            <div>
-              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
-                Full-Stack Web &amp; Mobile Development
-              </h3>
-              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
-                Building responsive frontends with React 19, Next.js 16, and Tailwind 4, alongside
-                cross-platform mobile applications using React Native, Expo, and Flutter.
-              </p>
-            </div>
-          </li>
-          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">02</span>
-            <div>
-              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
-                Applied AI &amp; Computer Vision Integration
-              </h3>
-              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
-                Architecting voice/vision pipelines, prompt engineering, and integrating DeepSeek
-                API, OpenAI, Claude, MediaPipe, and OpenCV into production systems.
-              </p>
-            </div>
-          </li>
-          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">03</span>
-            <div>
-              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
-                Backend &amp; API Engineering
-              </h3>
-              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
-                Designing robust server-side logic, custom APIs, and microservices using Python
-                (Flask, FastAPI), Node.js, Supabase, and Firebase (Auth/Firestore/FCM).
-              </p>
-            </div>
-          </li>
-          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">04</span>
-            <div>
-              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
-                Resilient &amp; Offline-First System Design
-              </h3>
-              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
-                Engineering applications with graceful degradation, offline-first fallback modes,
-                and native Android bridges for hardware interaction.
-              </p>
-            </div>
-          </li>
-          <li class="grid gap-4 py-10 md:grid-cols-[220px_1fr] md:gap-10">
-            <span class="font-black leading-none text-[#0C0C0C]/60" style="font-size: clamp(2rem, 5vw, 3.5rem)">05</span>
-            <div>
-              <h3 class="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
-                Rapid MVP Development &amp; Prototyping
-              </h3>
-              <p class="mt-3 text-base font-light leading-relaxed text-[#0C0C0C]/75 sm:text-lg">
-                Taking ideas from a blank repository to fully functional MVPs under tight timelines,
-                backed by hackathon award-winning execution.
-              </p>
-            </div>
-          </li>
-        </ul>
-      </section>
-
-      <div class="section-seam" aria-hidden="true" style="background: linear-gradient(180deg, rgba(215,226,234,0.06), transparent 80%)"></div>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <!-- ============================ PROJECTS =========================== -->
-      <section
-        id="projects"
-        class="relative z-10 -mt-12 w-full rounded-t-[50px] bg-[#0C0C0C] px-6 pb-40 pt-24 sm:px-10"
-        style="overflow-x: clip"
-      >
-        <h2
-          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
-          style="font-size: clamp(3rem, 12vw, 160px)"
-        >
-          Projects
-        </h2>
-
-        <div class="glass glass-card reveal relative mx-auto mt-10 max-w-4xl px-8 py-6 sm:px-10">
-          <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Currently building</p>
-          <p class="mt-3 text-base font-light leading-relaxed text-[#D7E2EA] sm:text-lg">
-            <span class="font-semibold">Euthora</span> — a student–mentorship platform connecting
-            students with verified professionals: rule-based mentor matching, mentorship requests,
-            shared goal/task workspaces, session scheduling, and a full admin verification queue.
-            Built on Next.js + Supabase, shipped as a working MVP.
-            <a href="https://github.com/dontman-tech/euthora" target="_blank" rel="noopener noreferrer" class="underline decoration-[#b600a8] underline-offset-4 hover:opacity-80">Follow along →</a>
-          </p>
-        </div>
-
-        <div class="mx-auto mt-20 max-w-4xl" data-stack>
-          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI / Voice Assistant · Flagship</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">ARIA — Voice AI Assistant</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              The problem: voice assistants stop working the moment the internet does — useless on a
-              student budget in Cameroon. I built ARIA around a skill router that answers locally
-              when offline and escalates to the cloud only when it must: an Android bridge server
-              drives Wi-Fi, flashlight, alarms and screenshots natively, a PWA control panel stays
-              usable on any device, and DeepSeek integration is a pluggable upgrade, not a
-              dependency. Outcome: an assistant that keeps its core skills in airplane mode.
+          <div class="reveal">
+            <p class="about__body">
+              I'm a Computer Engineering student at the University of Buea and a full-stack
+              &amp; applied AI engineer who ships complete products end to end. My experience spans
+              <strong>Python, TypeScript, React, Next.js, Flutter</strong> and on-device
+              voice/vision pipelines, and I specialise in turning ideas into production-ready MVPs
+              under tight deadlines.
             </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Kotlin</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">PWA</span>
-            </div>
-            <a href="https://github.com/dontman-tech/aria-ai" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Marketplace</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Re-kollect — Waste Collection Marketplace</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              The problem: in many Cameroonian neighbourhoods, waste collection is a cash and
-              coordination mess — generators can't find collectors, collectors can't find work. I
-              shipped the Flutter marketplace connecting the two sides: role-based auth, a
-              Firestore request lifecycle, live map pinning via Nominatim geocoding, and FCM
-              fan-out so a posted pickup reaches nearby collectors in seconds. Built as the
-              capstone of a team hackathon cycle — my slice was the backend flows and geo layer.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flutter</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Dart</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Firebase</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OSM</span>
-            </div>
-            <a href="https://github.com/dontman-tech/rekollect" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Applied AI Platform</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Lumina AI-Driven Platform</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              A 15-hour hackathon build with a real lesson in scoping: instead of chasing a broad AI
-              demo, we wired Supabase and the DeepSeek API into one pipeline that routes dynamic
-              user requests to the right handler and degrades gracefully when rate limits hit.
-              We placed in the challenge, and the architecture survived being handed to the next
-              team intact — the metric I care about most in sprint code.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Supabase</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">DeepSeek API</span>
-            </div>
-            <a href="https://github.com/dontman-tech/lumina-cameroon1" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Computer Vision / Gesture Control</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Air Canvas Gesture Drawing</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              A computer-vision take on "no mouse, no problem". MediaPipe hand landmarks drive a
-              five-gesture mode machine — draw, hover, erase, palette, clear — where the hard part
-              wasn't tracking, it was gesture stability: filtering pinch jitter so a trembling
-              hand doesn't spray dots across the canvas. Tuning the temporal smoothing against
-              real webcam footage at 15fps was the whole project.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">MediaPipe</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">OpenCV</span>
-            </div>
-            <a href="https://github.com/dontman-tech/air-canvas" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="stack-card sticky top-24 mb-10"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Web Security / Utility</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">NESAC Password Strength Checker</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              Most strength checkers give a color bar and a shrug. NESAC scores password resilience
-              and then explains the verdict in plain language — which pattern leaked it, why it
-              falls, how long a brute-force would take — and generates secure passphrases on the
-              spot. Flask backend, no data ever leaves the page. Built as a public-facing security
-              utility for non-technical users.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Python</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Flask</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">JavaScript</span>
-            </div>
-            <a href="https://github.com/dontman-tech/NESAC-Password-Strength-Checker" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="stack-card sticky top-24"><article class="reveal rounded-[24px] border border-white/40 bg-white/85 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-md transition-shadow duration-200 hover:shadow-[0_14px_44px_rgba(0,0,0,0.25)] sm:p-10">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#0C0C0C]/60">Mobile App / Health</p>
-            <h3 class="mt-4 text-2xl font-semibold text-[#0C0C0C] sm:text-4xl">Pulse Fit — Fitness Tracker</h3>
-            <p class="mt-5 max-w-2xl text-base font-light leading-relaxed text-[#0C0C0C]/80 sm:text-lg">
-              A cross-platform tracker built on React Native and Expo: custom workout plans, animated
-              progress rings, and bidirectional HealthKit/Google Fit sync. The design decision I'm
-              proudest of is the simulated-data fallback — when permissions are denied or sensors
-              are missing, the app stays fully demonstrable instead of blank. Graceful degradation
-              as a feature, not an apology.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">React Native</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">Expo</span>
-              <span class="rounded-full border border-[#0C0C0C]/20 px-3 py-1 text-xs uppercase tracking-wide text-[#0C0C0C]/70">HealthKit</span>
-            </div>
-            <a href="https://github.com/dontman-tech/Pulse-fit" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full border border-[#0C0C0C]/30 px-5 py-2 text-sm text-[#0C0C0C] transition-opacity duration-200 hover:opacity-70">
-              View project <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-          </div>
-
-          <div class="reveal mt-20 flex flex-col items-center gap-4">
-            <a href="https://github.com/dontman-tech?tab=repositories" target="_blank" rel="noopener noreferrer"
-               class="cta-gradient inline-flex items-center gap-3 rounded-full px-10 py-5 text-base font-semibold uppercase tracking-widest text-white shadow-[0_14px_40px_rgba(182,0,168,0.45)] transition-transform duration-200 hover:scale-[1.06] sm:text-lg">
-              See more projects
-              <i data-lucide="arrow-up-right" class="h-5 w-5"></i>
-            </a>
-            <span class="text-xs uppercase tracking-[0.25em] text-[#0C0C0C]/60">Full archive on GitHub</span>
-          </div>
-        </div>
-      </section>>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <!-- ============================= NOTES ============================= -->
-      <section id="notes" class="relative w-full px-6 pb-28 pt-4 sm:px-10">
-        <h2
-          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
-          style="font-size: clamp(2.5rem, 10vw, 140px)"
-        >
-          Notes
-        </h2>
-        <p class="mx-auto mt-6 max-w-2xl text-center text-base font-light text-[#D7E2EA]/80 sm:text-lg">
-          Short write-ups on how I think and build — decisions I'd defend, and a few I'd reverse.
-        </p>
-
-        <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
-          <article class="glass glass-card reveal p-8">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Engineering</p>
-            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Graceful degradation is a feature, not an apology</h3>
-            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
-              Building for Cameroon taught me that "no internet" is a normal state, not an error
-              state. Every product I ship now has an offline path that stays genuinely useful —
-              from ARIA's local skill router to Pulse Fit's simulated data. If the demo dies when
+            <p class="about__body" style="margin-top: 1.25rem">
+              Building for Cameroon taught me to treat <strong>"no internet" as a normal state,
+              not an error state</strong>. I care about graceful degradation, offline-first paths,
+              and interfaces a first-time user understands without a manual. If the demo dies when
               the Wi-Fi does, it was never finished.
             </p>
-          </article>
-          <article class="glass glass-card reveal p-8">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Process</p>
-            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Ship the boring parts first</h3>
-            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
-              Hackathons reward the demo; production rewards the recovery. I now build error
-              states, empty states, and the onboarding path before the shiny flow. The lesson came
-              from Re-kollect: the features everyone remembered were the ones that worked when
-              something upstream failed.
-            </p>
-          </article>
-          <article class="glass glass-card reveal p-8 sm:col-span-2">
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-[#D7E2EA]/60">Building in public</p>
-            <h3 class="mt-3 text-xl font-semibold text-[#D7E2EA]">Phoney: what pairing over TLS actually taught me</h3>
-            <p class="mt-4 text-base font-light leading-relaxed text-[#D7E2EA]/75">
-              Reimplementing the KDE Connect protocol taught me more than any tutorial: identity
-              exchange before TLS, why both sides waiting on each other deadlocks a handshake, and
-              how a single <code class="rounded bg-white/10 px-1.5 py-0.5 font-mono text-sm">recv</code>
-              on the wrong socket survives every unit test and fails in the wild. I'm writing up
-              the full protocol walkthrough as I go — the loopback test rig alone is worth a post.
-            </p>
-          </article>
+
+            <div class="about__actions">
+              <a class="btn btn--primary" href="#contact">
+                Hire me
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="resume.pdf" download>
+                Download résumé
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer">
+                GitHub
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div class="section-divider" aria-hidden="true"></div>
+      <!-- ============================ SERVICES =========================== -->
+      <section id="services" class="section section--paper" style="padding-top: 0">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow eyebrow--muted">What I do</p>
+            <h2 class="h-section">Services</h2>
+            <p class="lead">
+              Five things I get hired for most — from a first prototype to the recovery paths a
+              product needs before it can be called finished.
+            </p>
+          </div>
+
+          <ul class="services reveal">
+            <li class="service">
+              <span class="service__num">01</span>
+              <h3 class="service__title">Full-Stack Web &amp; Mobile</h3>
+              <div class="service__body">
+                <p>
+                  Responsive frontends with React 19, Next.js 16 and Tailwind 4, alongside
+                  cross-platform mobile apps in React Native, Expo and Flutter.
+                </p>
+                <ul class="chips">
+                  <li class="chip">React</li>
+                  <li class="chip">Next.js</li>
+                  <li class="chip">React Native</li>
+                  <li class="chip">Flutter</li>
+                </ul>
+              </div>
+            </li>
+            <li class="service">
+              <span class="service__num">02</span>
+              <h3 class="service__title">Applied AI &amp; Computer Vision</h3>
+              <div class="service__body">
+                <p>
+                  Voice and vision pipelines, prompt engineering, and integrations with DeepSeek,
+                  OpenAI, Claude, MediaPipe and OpenCV wired into production systems.
+                </p>
+                <ul class="chips">
+                  <li class="chip">DeepSeek</li>
+                  <li class="chip">OpenAI</li>
+                  <li class="chip">MediaPipe</li>
+                  <li class="chip">OpenCV</li>
+                </ul>
+              </div>
+            </li>
+            <li class="service">
+              <span class="service__num">03</span>
+              <h3 class="service__title">Backend &amp; API Engineering</h3>
+              <div class="service__body">
+                <p>
+                  Server-side logic, custom APIs and services in Python (Flask, FastAPI) and
+                  Node.js, backed by Supabase and Firebase Auth, Firestore and Cloud Messaging.
+                </p>
+                <ul class="chips">
+                  <li class="chip">Python</li>
+                  <li class="chip">FastAPI</li>
+                  <li class="chip">Node.js</li>
+                  <li class="chip">Supabase</li>
+                </ul>
+              </div>
+            </li>
+            <li class="service">
+              <span class="service__num">04</span>
+              <h3 class="service__title">Resilient, Offline-First Design</h3>
+              <div class="service__body">
+                <p>
+                  Applications built with graceful degradation, offline-first fallback modes and
+                  native Android bridges for hardware interaction.
+                </p>
+                <ul class="chips">
+                  <li class="chip">Offline-first</li>
+                  <li class="chip">Android bridge</li>
+                  <li class="chip">PWA</li>
+                </ul>
+              </div>
+            </li>
+            <li class="service">
+              <span class="service__num">05</span>
+              <h3 class="service__title">Rapid MVP Development</h3>
+              <div class="service__body">
+                <p>
+                  Taking ideas from a blank repository to a fully functional MVP under tight
+                  timelines — the habit built by shipping under hackathon clocks.
+                </p>
+                <ul class="chips">
+                  <li class="chip">MVP</li>
+                  <li class="chip">Prototyping</li>
+                  <li class="chip">Hackathons</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="wedge" style="--from: #F4EFE3; --to: #0D0D12" aria-hidden="true">
+        <span class="wedge__to"></span>
+        <span class="wedge__node"></span>
+      </div>
+
+
+      <!-- ============================ PROJECTS =========================== -->
+      <section id="projects" class="section section--ink dotgrid">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow">Selected work</p>
+            <h2 class="h-section" style="color: var(--cream)">Projects</h2>
+            <p class="lead">
+              Seven shipped builds I'd happily walk you through, plus what I'm building right now.
+              Each links to its source, and the "how it works" note has the engineering detail.
+            </p>
+          </div>
+
+          <div class="feature reveal">
+            <p class="feature__tag">Currently building</p>
+            <h3 class="feature__title">Euthora — Mentorship Platform</h3>
+            <p>
+              Connecting students with verified professionals: rule-based mentor matching,
+              mentorship requests, shared goal and task workspaces, session scheduling, and an
+              admin verification queue. Shipped as a working MVP on Next.js + Supabase.
+            </p>
+            <div class="proj__links">
+              <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/euthora" target="_blank" rel="noopener noreferrer">
+                View project
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <ul class="chips">
+                <li class="chip">Next.js</li>
+                <li class="chip">Supabase</li>
+                <li class="chip">TypeScript</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proj-list">
+            <!-- 1. ARIA -->
+            <article class="proj reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="Sound-wave bars and a voice ring, the ARIA assistant motif">
+                  <rect width="800" height="520" fill="#15151F" />
+                  <circle cx="560" cy="260" r="150" fill="none" stroke="#FF6A3D" stroke-width="2" opacity="0.5" />
+                  <circle cx="560" cy="260" r="105" fill="none" stroke="#FF6A3D" stroke-width="2" opacity="0.75" />
+                  <circle cx="560" cy="260" r="58" fill="#FF6A3D" />
+                  <path d="M545 260v-24m15 24v-42m15 42v-18m15 18v-30" stroke="#0D0D12" stroke-width="7" stroke-linecap="round" />
+                  <g stroke="#C9C9D6" stroke-width="4" stroke-linecap="round" opacity="0.9">
+                    <path d="M90 200v120" /><path d="M120 230v60" /><path d="M150 170v180" />
+                    <path d="M180 210v100" /><path d="M210 150v220" /><path d="M240 190v140" />
+                    <path d="M270 240v40" /><path d="M300 205v110" /><path d="M330 175v170" />
+                  </g>
+                  <text x="90" y="420" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">OFFLINE → CLOUD</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Applied AI · Voice assistant · Flagship</p>
+                <h3 class="proj__title">ARIA</h3>
+                <p class="proj__summary">
+                  A voice assistant that keeps working when the internet doesn't. Answers locally
+                  offline and escalates to the cloud only when it has to.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    Voice assistants stop working the moment the internet does — useless on a
+                    student budget in Cameroon. ARIA is built around a skill router that answers
+                    locally when offline and escalates to the cloud only when it must: an Android
+                    bridge server drives Wi-Fi, flashlight, alarms and screenshots natively, a PWA
+                    control panel stays usable on any device, and DeepSeek is a pluggable upgrade,
+                    not a dependency. The result is an assistant that keeps its core skills in
+                    airplane mode.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">Python</li>
+                  <li class="chip">Kotlin</li>
+                  <li class="chip">Flask</li>
+                  <li class="chip">DeepSeek</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/aria-ai" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2. Phoney -->
+            <article class="proj proj--flip reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="A phone and a laptop exchanging files over a paired link, the Phoney motif">
+                  <rect width="800" height="520" fill="#101018" />
+                  <rect x="120" y="90" width="170" height="320" rx="26" fill="none" stroke="#8E9BFF" stroke-width="3" />
+                  <rect x="150" y="130" width="110" height="200" rx="8" fill="#8E9BFF" opacity="0.18" />
+                  <path d="M205 375h4" stroke="#8E9BFF" stroke-width="6" stroke-linecap="round" />
+                  <rect x="470" y="150" width="250" height="170" rx="12" fill="none" stroke="#C9F24E" stroke-width="3" />
+                  <path d="M450 340h290l-20 26H470z" fill="#C9F24E" opacity="0.85" />
+                  <g stroke="#C9F24E" stroke-width="4" stroke-linecap="round">
+                    <path d="M330 210h100m-100 60h100" />
+                    <path d="M415 190l20 20-20 20M415 250l20 20-20 20" />
+                  </g>
+                  <text x="120" y="470" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">PAIR · SEND · SYNC</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Systems · Protocol engineering</p>
+                <h3 class="proj__title">Phoney</h3>
+                <p class="proj__summary">
+                  Phone Link for Linux — notifications, file transfer and clipboard sync with your
+                  Android phone over the paired KDE Connect protocol.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    The Android side ships as the stock KDE Connect app, so you never install an
+                    unknown APK. Phoney speaks the same protocol: UDP discovery on port 1716, TLS
+                    with self-signed certificates on both ends, then a certificate exchange that
+                    stores the PEM of every device you accept. Reimplementing the handshake taught
+                    me why both sides waiting on each other deadlocks a connection — and how one
+                    <code>recv</code> on the wrong socket survives every unit test and fails in the
+                    wild.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">Python</li>
+                  <li class="chip">TLS</li>
+                  <li class="chip">KDE Connect</li>
+                  <li class="chip">Linux</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/phoney" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 3. Re-kollect -->
+            <article class="proj reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="Map pins joined by a pickup route, the Re-kollect motif">
+                  <rect width="800" height="520" fill="#0F1410" />
+                  <g stroke="#2C3A2E" stroke-width="2">
+                    <path d="M0 120h800M0 260h800M0 400h800M180 0v520M400 0v520M620 0v520" />
+                  </g>
+                  <path d="M150 380C250 300 330 340 400 250s210-90 270-140" fill="none" stroke="#C9F24E" stroke-width="5" stroke-dasharray="14 12" />
+                  <g fill="#C9F24E">
+                    <path d="M150 380a20 20 0 1 1 0-40 20 20 0 0 1 0 40z" />
+                    <path d="M400 250a20 20 0 1 1 0-40 20 20 0 0 1 0 40z" />
+                  </g>
+                  <g fill="#FF6A3D">
+                    <path d="M670 240c22 0 40-18 40-40s-18-40-40-40-40 18-40 40 18 40 40 40z" />
+                    <path d="M670 240v70" stroke="#FF6A3D" stroke-width="8" stroke-linecap="round" />
+                  </g>
+                  <text x="90" y="470" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">CLAIM · COLLECT · VERIFY</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Mobile · Marketplace · Flutter</p>
+                <h3 class="proj__title">Re-kollect</h3>
+                <p class="proj__summary">
+                  A waste-collection marketplace connecting generators with collectors: role-based
+                  auth, live map pinning, and push fan-out to nearby collectors.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    In many Cameroonian neighbourhoods waste collection is a cash and coordination
+                    mess — generators can't find collectors, collectors can't find work. The Flutter
+                    marketplace connects the two sides: role-based auth, a Firestore request
+                    lifecycle, live map pinning via OpenStreetMap and Nominatim geocoding, and FCM
+                    fan-out so a posted pickup reaches nearby collectors in seconds. Completion is
+                    only accepted within 50 m of the job location, and every position write lands in
+                    an append-only log as evidence.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">Flutter</li>
+                  <li class="chip">Dart</li>
+                  <li class="chip">Firebase</li>
+                  <li class="chip">OpenStreetMap</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/rekollect" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 4. Pulse Fit -->
+            <article class="proj proj--flip reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="Activity rings and a weekly bar chart, the Pulse Fit motif">
+                  <rect width="800" height="520" fill="#14100E" />
+                  <g fill="none" stroke-width="22" stroke-linecap="round">
+                    <circle cx="270" cy="250" r="120" stroke="#2A2422" />
+                    <circle cx="270" cy="250" r="120" stroke="#FF6A3D" stroke-dasharray="560 754" transform="rotate(-90 270 250)" />
+                    <circle cx="270" cy="250" r="82" stroke="#2A2422" />
+                    <circle cx="270" cy="250" r="82" stroke="#C9F24E" stroke-dasharray="360 515" transform="rotate(-90 270 250)" />
+                  </g>
+                  <g fill="#FF6A3D">
+                    <rect x="470" y="300" width="34" height="110" rx="6" />
+                    <rect x="520" y="250" width="34" height="160" rx="6" />
+                    <rect x="570" y="200" width="34" height="210" rx="6" opacity="0.75" />
+                    <rect x="620" y="330" width="34" height="80" rx="6" opacity="0.5" />
+                  </g>
+                  <text x="470" y="470" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">MOVE · EXERCISE · SYNC</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Mobile · Health · React Native</p>
+                <h3 class="proj__title">Pulse Fit</h3>
+                <p class="proj__summary">
+                  A fitness tracker with guided workout plans, animated activity rings, and
+                  two-way HealthKit / Google Fit sync.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    Five curated plans span strength, cardio, core and flexibility, each with
+                    per-exercise sets, rest periods and target muscles, plus a live guided session
+                    with countdown timers. Progress comes alive through Reanimated activity rings,
+                    count-up charts and streak counters. Health data syncs bidirectionally with
+                    Apple HealthKit and Google Fit — and falls back to simulated data when no native
+                    module is present, so the UI stays fully usable in Expo Go.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">React Native</li>
+                  <li class="chip">Expo</li>
+                  <li class="chip">HealthKit</li>
+                  <li class="chip">Reanimated</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/Pulse-fit" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 5. Air Canvas -->
+            <article class="proj reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="A hand-landmark skeleton drawing a stroke, the Air Canvas motif">
+                  <rect width="800" height="520" fill="#0E0F16" />
+                  <g stroke="#8E9BFF" stroke-width="4" stroke-linecap="round" fill="none">
+                    <path d="M300 400V250M300 250l-40-90M300 250l-5-110M300 250l35-105M300 250l70-70" />
+                    <path d="M260 160l-35-40M295 140l-5-55M335 145l25-50M370 180l55-35" />
+                  </g>
+                  <g fill="#8E9BFF">
+                    <circle cx="300" cy="400" r="12" /><circle cx="260" cy="160" r="10" />
+                    <circle cx="295" cy="140" r="10" /><circle cx="335" cy="145" r="10" />
+                    <circle cx="370" cy="180" r="10" /><circle cx="225" cy="120" r="8" />
+                    <circle cx="290" cy="85" r="8" /><circle cx="360" cy="95" r="8" />
+                    <circle cx="425" cy="145" r="8" />
+                  </g>
+                  <path d="M420 320c80-20 150 40 230 0" fill="none" stroke="#FF6A3D" stroke-width="10" stroke-linecap="round" />
+                  <path d="M430 400c90-10 160 30 240 10" fill="none" stroke="#C9F24E" stroke-width="10" stroke-linecap="round" opacity="0.8" />
+                  <text x="90" y="470" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">TRACK · SMOOTH · DRAW</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Computer vision · Gesture control</p>
+                <h3 class="proj__title">Air Canvas</h3>
+                <p class="proj__summary">
+                  Draw in the air with hand gestures. A five-gesture mode machine driven by
+                  MediaPipe hand landmarks — no mouse required.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    MediaPipe hand landmarks drive a five-gesture mode machine — draw, hover, erase,
+                    palette, clear — where the hard part wasn't tracking, it was gesture stability:
+                    filtering pinch jitter so a trembling hand doesn't spray dots across the canvas.
+                    Tuning the temporal smoothing against real webcam footage at 15fps was the whole
+                    project.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">Python</li>
+                  <li class="chip">MediaPipe</li>
+                  <li class="chip">OpenCV</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/air-canvas" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 6. Who Is Most Likely To -->
+            <article class="proj proj--flip reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="Secret vote bars and a room code, the Who Is Most Likely To motif">
+                  <rect width="800" height="520" fill="#16121A" />
+                  <g fill="#FF6A3D" opacity="0.9">
+                    <rect x="120" y="150" width="60" height="220" rx="8" />
+                    <rect x="200" y="220" width="60" height="150" rx="8" opacity="0.7" />
+                    <rect x="280" y="180" width="60" height="190" rx="8" opacity="0.85" />
+                    <rect x="360" y="280" width="60" height="90" rx="8" opacity="0.55" />
+                  </g>
+                  <rect x="500" y="140" width="220" height="240" rx="18" fill="none" stroke="#C9F24E" stroke-width="3" />
+                  <text x="530" y="290" fill="#C9F24E" font-family="monospace" font-size="76" letter-spacing="8">7Q4K</text>
+                  <text x="120" y="430" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">JOIN · VOTE · REVEAL</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Realtime web · Party game</p>
+                <h3 class="proj__title">Who Is Most Likely To</h3>
+                <p class="proj__summary">
+                  A party game for friends: everyone joins with a room code, one question lands on
+                  every screen, votes stay secret until the reveal.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    Room codes skip look-alike glyphs so they're easy to say out loud, and timed
+                    phases compute their countdown from the server clock so a phone with the wrong
+                    time still counts down correctly. Votes stay hidden until the reveal — including
+                    who skipped — and the full-screen "YOU" moment only appears on the winner's own
+                    device. It runs on Vercel with Upstash Redis and needs no card to deploy.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">React</li>
+                  <li class="chip">Vite</li>
+                  <li class="chip">TypeScript</li>
+                  <li class="chip">Upstash Redis</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/who-is-more-likely-to" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 7. Lumina -->
+            <article class="proj reveal">
+              <div class="proj__art">
+                <svg viewBox="0 0 800 520" role="img" aria-label="A request-routing pipeline diagram, the Lumina motif">
+                  <rect width="800" height="520" fill="#121019" />
+                  <g fill="none" stroke="#8E9BFF" stroke-width="3">
+                    <rect x="90" y="210" width="150" height="100" rx="12" />
+                    <rect x="330" y="120" width="150" height="100" rx="12" />
+                    <rect x="330" y="300" width="150" height="100" rx="12" />
+                    <rect x="580" y="210" width="150" height="100" rx="12" />
+                    <path d="M240 260h45V170h45M240 260h45v90h45M480 170h55v40h45M480 350h55v-40h45" />
+                  </g>
+                  <circle cx="615" cy="260" r="16" fill="#C9F24E" />
+                  <text x="120" y="470" fill="#9A9CAB" font-family="monospace" font-size="26" letter-spacing="4">ROUTE · DEGRADE · SERVE</text>
+                </svg>
+              </div>
+              <div>
+                <p class="proj__cat">Applied AI · Hackathon build</p>
+                <h3 class="proj__title">Lumina</h3>
+                <p class="proj__summary">
+                  A 15-hour hackathon build: Supabase and DeepSeek wired into one pipeline that
+                  routes requests and degrades gracefully under rate limits.
+                </p>
+                <details class="proj__detail">
+                  <summary>How it works</summary>
+                  <p>
+                    Instead of chasing a broad AI demo, the team scoped to one pipeline that routes
+                    dynamic user requests to the right handler and degrades gracefully when rate
+                    limits hit. We placed in the Prometheus AI Hackathon, and the architecture
+                    survived being handed to the next team intact — the metric I care about most in
+                    sprint code.
+                  </p>
+                </details>
+                <ul class="chips proj__chips">
+                  <li class="chip">JavaScript</li>
+                  <li class="chip">Supabase</li>
+                  <li class="chip">DeepSeek API</li>
+                </ul>
+                <div class="proj__links">
+                  <a class="btn btn--primary btn--sm" href="https://github.com/dontman-tech/lumina-cameroon1" target="_blank" rel="noopener noreferrer">
+                    View project
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Also shipped -->
+          <div class="also reveal">
+            <div class="section-head" style="margin-bottom: 1.5rem">
+              <p class="eyebrow">Also shipped</p>
+              <h3 class="h-section" style="font-size: clamp(1.5rem, 3.5vw, 2.25rem); color: var(--cream)">
+                Smaller builds, same care
+              </h3>
+            </div>
+            <ul class="also__list">
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/NESAC-Password-Strength-Checker" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">NESAC Password Checker</span>
+                  <span class="also__desc">Password scoring with plain-language verdicts</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/spark-ai-powered-browser" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">SPARK AI Browser</span>
+                  <span class="also__desc">One interface for search, Wikipedia, news &amp; weather</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/tamif-bot" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">Psycho Bot V2</span>
+                  <span class="also__desc">WhatsApp bot on Llama 3 &amp; Groq</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/XYBERCLAN/Xyro-Cli" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">XYRO CLI</span>
+                  <span class="also__desc">Terminal AI coding agent on free model tiers</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/pic-to-sketch" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">Pic to Sketch</span>
+                  <span class="also__desc">Desktop GUI that turns photos into pencil sketches</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/XYBERCLAN/XYBERSCAN" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">XYBERSCAN</span>
+                  <span class="also__desc">Web vulnerability scanner for African SMEs</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/CTaDI" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">CTaDI Onboarding</span>
+                  <span class="also__desc">Application portal with an admin review dashboard</span>
+                </a>
+              </li>
+              <li class="also__item">
+                <a href="https://github.com/dontman-tech/liquidOs26" target="_blank" rel="noopener noreferrer">
+                  <span class="also__name">LiquidOS Player</span>
+                  <span class="also__desc">Minimal desktop music player</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="proj__links" style="margin-top: 2rem">
+              <a class="btn btn--ghost" href="https://github.com/dontman-tech?tab=repositories" target="_blank" rel="noopener noreferrer">
+                See more on GitHub
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="wedge" style="--from: #0D0D12; --to: #F4EFE3" aria-hidden="true">
+        <span class="wedge__to"></span>
+        <span class="wedge__node"></span>
+      </div>
+
+      <!-- ============================= NOTES ============================= -->
+      <section id="notes" class="section section--paper dotgrid--light">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow eyebrow--muted">Notes</p>
+            <h2 class="h-section">How I think &amp; build</h2>
+            <p class="lead">
+              Short write-ups on decisions I'd defend, and a few I'd reverse.
+            </p>
+          </div>
+
+          <div class="notes">
+            <article class="note reveal">
+              <p class="note__topic">Engineering</p>
+              <h3>Graceful degradation is a feature, not an apology</h3>
+              <p>
+                Building for Cameroon taught me that "no internet" is a normal state, not an error
+                state. Every product I ship now has an offline path that stays genuinely useful —
+                from ARIA's local skill router to Pulse Fit's simulated data. If the demo dies when
+                the Wi-Fi does, it was never finished.
+              </p>
+            </article>
+            <article class="note reveal">
+              <p class="note__topic">Process</p>
+              <h3>Ship the boring parts first</h3>
+              <p>
+                Hackathons reward the demo; production rewards the recovery. I now build error
+                states, empty states, and the onboarding path before the shiny flow. The lesson came
+                from Re-kollect: the features everyone remembered were the ones that worked when
+                something upstream failed.
+              </p>
+            </article>
+            <article class="note reveal">
+              <p class="note__topic">Building in public</p>
+              <h3>What pairing over TLS actually taught me</h3>
+              <p>
+                Reimplementing the KDE Connect protocol taught me more than any tutorial: identity
+                exchange before TLS, why both sides waiting on each other deadlocks a handshake, and
+                how a single <code>recv</code> on the wrong socket survives every unit test and
+                fails in the wild. I'm writing up the full protocol walkthrough as I go.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ TOOLKIT =========================== -->
+      <section id="toolkit" class="section section--paper" style="padding-top: 0">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow eyebrow--muted">Toolkit</p>
+            <h2 class="h-section">What I build with</h2>
+          </div>
+
+          <div class="toolkit reveal">
+            <div class="toolgroup">
+              <h3>Languages &amp; web</h3>
+              <ul class="chips">
+                <li class="chip">Python</li>
+                <li class="chip">TypeScript</li>
+                <li class="chip">JavaScript</li>
+                <li class="chip">Dart</li>
+                <li class="chip">Kotlin</li>
+                <li class="chip">HTML &amp; CSS</li>
+              </ul>
+            </div>
+            <div class="toolgroup">
+              <h3>Frameworks &amp; platforms</h3>
+              <ul class="chips">
+                <li class="chip">React 19</li>
+                <li class="chip">Next.js</li>
+                <li class="chip">React Native</li>
+                <li class="chip">Expo</li>
+                <li class="chip">Flutter</li>
+                <li class="chip">Tailwind</li>
+                <li class="chip">Flask</li>
+                <li class="chip">FastAPI</li>
+                <li class="chip">Node.js</li>
+              </ul>
+            </div>
+            <div class="toolgroup">
+              <h3>AI, data &amp; tooling</h3>
+              <ul class="chips">
+                <li class="chip">DeepSeek</li>
+                <li class="chip">OpenAI</li>
+                <li class="chip">MediaPipe</li>
+                <li class="chip">OpenCV</li>
+                <li class="chip">Supabase</li>
+                <li class="chip">Firebase</li>
+                <li class="chip">SQLite</li>
+                <li class="chip">Docker</li>
+                <li class="chip">Git</li>
+                <li class="chip">REST APIs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="wedge" style="--from: #F4EFE3; --to: #0D0D12" aria-hidden="true">
+        <span class="wedge__to"></span>
+        <span class="wedge__node"></span>
+      </div>
 
       <!-- ============================ CONTACT ============================ -->
-      <section id="contact" class="relative w-full bg-[#0C0C0C] px-8 py-20">
-        <h2
-          class="hero-heading text-center font-black uppercase leading-none tracking-tight"
-          style="font-size: clamp(2.5rem, 10vw, 140px)"
-        >
-          Let's Work Together
-        </h2>
+      <section id="contact" class="section section--ink dotgrid">
+        <div class="wrap contact__grid">
+          <div class="reveal">
+            <p class="eyebrow">Let's work together</p>
+            <h2 class="h-section" style="color: var(--cream); margin-top: 1rem">
+              Got something<br />to build?
+            </h2>
+            <p class="lead" style="margin-top: 1.25rem">
+              I'm open to freelance work, internships and collaboration. Email is the fastest way
+              to reach me — I usually reply within a day.
+            </p>
 
-        <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
-          <a href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
-            <i data-lucide="map-pin" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
-            <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Location</span>
-              <span class="block text-base text-[#D7E2EA]">Buea, Cameroon</span>
-            </span>
-          </a>
+            <div class="contact__cta">
+              <a class="btn btn--primary" href="mailto:tabe7143@gmail.com">
+                Email me
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9 6 9-6" /><rect x="3" y="5" width="18" height="14" rx="2" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="https://wa.me/237680553744" target="_blank" rel="noopener noreferrer">
+                WhatsApp
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.3A8.5 8.5 0 1 1 21 11.5Z" /></svg>
+              </a>
+            </div>
+          </div>
 
-          <a href="mailto:tabe7143@gmail.com" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
-            <i data-lucide="mail" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
-            <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Email</span>
-              <span class="block text-base text-[#D7E2EA]">tabe7143@gmail.com</span>
-            </span>
-          </a>
-
-          <a href="tel:+237680553744" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
-            <i data-lucide="phone" class="h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
-            <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">Phone / WhatsApp</span>
-              <span class="block text-base text-[#D7E2EA]">(+237) 680-553-744</span>
-            </span>
-          </a>
-
-          <a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA]">
-            <i data-brand="github" class="brand-icon h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
-            <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">GitHub</span>
-              <span class="block text-base text-[#D7E2EA]">github.com/dontman-tech</span>
-            </span>
-          </a>
-
-          <a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer" class="glass glass-card reveal flex items-center gap-4 p-6 text-[#D7E2EA] sm:col-span-2">
-            <i data-brand="linkedin" class="brand-icon h-6 w-6 shrink-0 text-[#0C0C0C]/70"></i>
-            <span>
-              <span class="block text-xs uppercase tracking-[0.2em] text-[#0C0C0C]/70">LinkedIn</span>
-              <span class="block text-base text-[#D7E2EA]">linkedin.com/in/tabe-miracle-fiagmenyi</span>
-            </span>
-          </a>
+          <ul class="channels reveal">
+            <li>
+              <a class="channel" href="mailto:tabe7143@gmail.com">
+                <span class="channel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
+                </span>
+                <span>
+                  <span class="channel__label">Email</span>
+                  <span class="channel__value">tabe7143@gmail.com</span>
+                </span>
+                <span class="channel__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="channel" href="tel:+237680553744">
+                <span class="channel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" /></svg>
+                </span>
+                <span>
+                  <span class="channel__label">Phone / WhatsApp</span>
+                  <span class="channel__value">(+237) 680-553-744</span>
+                </span>
+                <span class="channel__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="channel" href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer">
+                <span class="channel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+                </span>
+                <span>
+                  <span class="channel__label">GitHub</span>
+                  <span class="channel__value">github.com/dontman-tech</span>
+                </span>
+                <span class="channel__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="channel" href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer">
+                <span class="channel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
+                </span>
+                <span>
+                  <span class="channel__label">LinkedIn</span>
+                  <span class="channel__value">linkedin.com/in/tabe-miracle-fiagmenyi</span>
+                </span>
+                <span class="channel__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="channel" href="https://maps.google.com/?q=Buea,Cameroon" target="_blank" rel="noopener noreferrer">
+                <span class="channel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                </span>
+                <span>
+                  <span class="channel__label">Location</span>
+                  <span class="channel__value">Buea, Cameroon</span>
+                </span>
+                <span class="channel__go" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </span>
+              </a>
+            </li>
+          </ul>
         </div>
-
-        <p class="mt-16 text-center text-xs uppercase tracking-[0.2em] text-[#D7E2EA]/60">
-          &copy; <span id="year">2026</span> Tabe Miracle Fiagmenyi — TAMIF
-        </p>
       </section>
-    </div>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer__inner">
+        <p>&copy; <span id="year">2026</span> Tabe Miracle Fiagmenyi — TAMIF</p>
+        <ul class="footer__links">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="resume.pdf" download>Résumé</a></li>
+          <li><a href="https://github.com/dontman-tech" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/tabe-miracle-fiagmenyi" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        </ul>
+      </div>
+    </footer>
 
     <script>
-      /* Elegant section transitions: reveal sections as they enter the viewport. */
+      /* Reveal sections as they scroll into view. */
       const revealTargets = document.querySelectorAll('.reveal');
       const revealObserver = new IntersectionObserver(
         (entries) => {
@@ -942,116 +1004,56 @@
       );
       revealTargets.forEach((el) => revealObserver.observe(el));
 
-      /* Brand marks keyed by simple-icons slug, inlined as path data. */
-      const BRAND = {
-python: 'M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z',
-javascript: 'M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z',
-react: 'M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z',
-nextdotjs: 'M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z',
-expo: 'M0 20.084c.043.53.23 1.063.718 1.778.58.849 1.576 1.315 2.303.567.49-.505 5.794-9.776 8.35-13.29a.761.761 0 011.248 0c2.556 3.514 7.86 12.785 8.35 13.29.727.748 1.723.282 2.303-.567.57-.835.728-1.42.728-2.046 0-.426-8.26-15.798-9.092-17.078-.8-1.23-1.044-1.498-2.397-1.542h-1.032c-1.353.044-1.597.311-2.398 1.542C8.267 3.991.33 18.758 0 19.77Z',
-tailwindcss: 'M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z',
-nodedotjs: 'M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z',
-flask: 'M10.773 2.878c-.013 1.434.322 4.624.445 5.734l-8.558 3.83c-.56-.959-.98-2.304-1.237-3.38l-.06.027c-.205.09-.406.053-.494-.088l-.011-.018-.82-1.506c-.058-.105-.05-.252.024-.392a.78.78 0 0 1 .358-.331l9.824-4.207c.146-.064.299-.063.4.004.106.062.127.128.13.327Zm.68 7c.523 1.97.675 2.412.832 2.818l-7.263 3.7a19.35 19.35 0 0 1-1.81-2.83l8.24-3.689Zm12.432 8.786h.003c.283.402-.047.657-.153.698l-.947.37c.037.125.035.319-.217.414l-.736.287c-.229.09-.398-.059-.42-.2l-.025-.125c-4.427 1.784-7.94 1.685-10.696.647-1.981-.745-3.576-1.983-4.846-3.379l6.948-3.54c.721 1.431 1.586 2.454 2.509 3.178 2.086 1.638 4.415 1.712 5.793 1.563l-.047-.233c-.015-.077.007-.135.086-.165l.734-.288a.302.302 0 0 1 .342.086l.748-.288a.306.306 0 0 1 .341.086l.583.89Z',
-fastapi: 'M12 .0387C5.3729.0384.0003 5.3931 0 11.9988c-.001 6.6066 5.372 11.9628 12 11.9625 6.628.0003 12.001-5.3559 12-11.9625-.0003-6.6057-5.3729-11.9604-12-11.96m-.829 5.4153h7.55l-7.5805 5.3284h5.1828L5.279 18.5436q2.9466-6.5444 5.892-13.0896',
-supabase: 'M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z',
-firebase: 'M19.455 8.369c-.538-.748-1.778-2.285-3.681-4.569-.826-.991-1.535-1.832-1.884-2.245a146 146 0 0 0-.488-.576l-.207-.245-.113-.133-.022-.032-.01-.005L12.57 0l-.609.488c-1.555 1.246-2.828 2.851-3.681 4.64-.523 1.064-.864 2.105-1.043 3.176-.047.241-.088.489-.121.738-.209-.017-.421-.028-.632-.033-.018-.001-.035-.002-.059-.003a7.46 7.46 0 0 0-2.28.274l-.317.089-.163.286c-.765 1.342-1.198 2.869-1.252 4.416-.07 2.01.477 3.954 1.583 5.625 1.082 1.633 2.61 2.882 4.42 3.611l.236.095.071.025.003-.001a9.59 9.59 0 0 0 2.941.568q.171.006.342.006c1.273 0 2.513-.249 3.69-.742l.008.004.313-.145a9.63 9.63 0 0 0 3.927-3.335c1.01-1.49 1.577-3.234 1.641-5.042.075-2.161-.643-4.304-2.133-6.371m-7.083 6.695c.328 1.244.264 2.44-.191 3.558-1.135-1.12-1.967-2.352-2.475-3.665-.543-1.404-.87-2.74-.974-3.975.48.157.922.366 1.315.622 1.132.737 1.914 1.902 2.325 3.461zm.207 6.022c.482.368.99.712 1.513 1.028-.771.21-1.565.302-2.369.273a8 8 0 0 1-.373-.022c.458-.394.869-.823 1.228-1.279zm1.347-6.431c-.516-1.957-1.527-3.437-3.002-4.398-.647-.421-1.385-.741-2.194-.95.011-.134.026-.268.043-.4.014-.113.03-.216.046-.313.133-.689.332-1.37.589-2.025.099-.25.206-.499.321-.74l.004-.008c.177-.358.376-.719.61-1.105l.092-.152-.003-.001c.544-.851 1.197-1.627 1.942-2.311l.288.341c.672.796 1.304 1.548 1.878 2.237 1.291 1.549 2.966 3.583 3.612 4.48 1.277 1.771 1.893 3.579 1.83 5.375-.049 1.395-.461 2.755-1.195 3.933-.694 1.116-1.661 2.05-2.8 2.708-.636-.318-1.559-.839-2.539-1.599.79-1.575.952-3.28.479-5.072zm-2.575 5.397c-.725.939-1.587 1.55-2.09 1.856-.081-.029-.163-.06-.243-.093l-.065-.026c-1.49-.616-2.747-1.656-3.635-3.01-.907-1.384-1.356-2.993-1.298-4.653.041-1.19.338-2.327.882-3.379.316-.07.638-.114.96-.131l.084-.002c.162-.003.324-.003.478 0 .227.011.454.035.677.07.073 1.513.445 3.145 1.105 4.852.637 1.644 1.694 3.162 3.144 4.515z',
-flutter: 'M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z',
-dart: 'M4.105 4.105S9.158 1.58 11.684.316a3.079 3.079 0 0 1 1.481-.315c.766.047 1.677.788 1.677.788L24 9.948v9.789h-4.263V24H9.789l-9-9C.303 14.5 0 13.795 0 13.105c0-.319.18-.818.316-1.105l3.789-7.895zm.679.679v11.787c.002.543.021 1.024.498 1.508L10.204 23h8.533v-4.263L4.784 4.784zm12.055-.678c-.899-.896-1.809-1.78-2.74-2.643-.302-.267-.567-.468-1.07-.462-.37.014-.87.195-.87.195L6.341 4.105l10.498.001z',
-opencv: 'M11.8992.8525C8.735.8525 6.17 3.4175 6.17 6.5817c0 2.102 1.1321 3.9398 2.8198 4.9366l1.6412-2.7849c.0411-.0699.0176-.1593-.0495-.2048-.6233-.4227-1.0328-1.137-1.0328-1.947 0-1.298 1.0524-2.3504 2.3505-2.3504 1.2981 0 2.3505 1.0524 2.3505 2.3505 0 .8098-.4095 1.5242-1.0328 1.947-.0671.0454-.0907.1348-.0495.2047l1.6414 2.785c1.6878-.9969 2.8199-2.8346 2.8199-4.9367 0-3.1642-2.5653-5.7292-5.7295-5.7292zm-6.17 10.8366C2.565 11.6891 0 14.2541 0 17.4183c0 3.1642 2.565 5.7292 5.7292 5.7292 3.1798 0 5.8074-2.6995 5.7275-5.8762H8.2313c-.0847 0-.1513.0717-.1519.1564-.0082 1.266-1.0644 2.3411-2.3502 2.3411-1.2981 0-2.3505-1.0524-2.3505-2.3505 0-1.2982 1.0524-2.3505 2.3505-2.3505.34 0 .663.0724.9547.2022.0713.0318.1566.0077.1962-.0595l1.6464-2.7935c-.8273-.4636-1.7815-.7279-2.7973-.7279zm15.4424.7614l-1.6366 2.7878c-.041.07-.0172.1594.05.2048.624.4217 1.0348 1.1354 1.0363 1.9452.0022 1.298-1.0483 2.352-2.3465 2.3542-1.298.0023-2.3523-1.0482-2.3545-2.3462-.0015-.8098.4068-1.5248 1.0294-1.9486.067-.0457.0905-.1353.0492-.2051l-1.6464-2.7818c-1.6859.9998-2.8146 2.8394-2.811 4.9415.0056 3.1641 2.575 5.7248 5.7393 5.7192 3.1641-.0054 5.7246-2.575 5.7192-5.7392-.0037-2.1022-1.139-3.938-2.8284-4.9318z',
-mediapipe: 'M2.182 0C1 0 .037.94.002 2.114L0 2.182v6.545a2.182 2.182 0 0 0 4.364 0V2.182A2.182 2.182 0 0 0 2.182 0Zm6.545 0c-1.182 0-2.145.94-2.18 2.114l-.002.068v13.09a2.182 2.182 0 0 0 4.364 0V2.183A2.182 2.182 0 0 0 8.727 0Zm6.546 0a2.182 2.182 0 0 0-2.182 2.182 2.182 2.182 0 0 0 2.182 2.182 2.182 2.182 0 0 0 2.182-2.182A2.182 2.182 0 0 0 15.273 0Zm6.545 0c-1.182 0-2.145.94-2.18 2.114l-.002.068v19.636a2.182 2.182 0 0 0 4.364 0V2.182A2.182 2.182 0 0 0 21.818 0Zm-6.545 6.545c-1.183 0-2.145.94-2.181 2.114l-.001.068v13.091a2.182 2.182 0 0 0 4.364 0V8.728a2.182 2.182 0 0 0-2.182-2.183zM2.182 13.091c-1.182 0-2.145.94-2.18 2.114L0 15.273v6.545a2.182 2.182 0 0 0 4.364 0v-6.545a2.182 2.182 0 0 0-2.182-2.182zm6.545 6.545a2.182 2.182 0 0 0-2.182 2.182A2.182 2.182 0 0 0 8.727 24a2.182 2.182 0 0 0 2.182-2.182 2.182 2.182 0 0 0-2.182-2.182Z',
-deepseek: 'M23.748 4.651c-.254-.124-.364.113-.512.233-.051.04-.094.09-.137.137-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.155-.708-.311-.955-.65-.172-.24-.219-.509-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.094.172.187.129.323-.082.28-.18.553-.266.833-.055.179-.137.218-.328.14a5.5 5.5 0 0 1-1.737-1.179c-.857-.828-1.631-1.743-2.597-2.46a12 12 0 0 0-.689-.47c-.985-.957.13-1.743.387-1.836.27-.098.094-.433-.778-.428-.872.003-1.67.295-2.687.685a3 3 0 0 1-.465.136 9.6 9.6 0 0 0-2.883-.101c-1.885.21-3.39 1.1-4.497 2.622C.082 8.776-.231 10.854.152 13.02c.403 2.284 1.568 4.175 3.36 5.653 1.857 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.132-.284 4.994-1.86.47.234.962.328 1.78.398.629.058 1.235-.031 1.705-.129.735-.155.684-.836.418-.961-2.155-1.004-1.682-.595-2.112-.926 1.095-1.295 2.768-3.598 3.284-6.733.05-.346.115-.834.108-1.114-.004-.171.035-.238.23-.257a4.2 4.2 0 0 0 1.545-.475c1.397-.763 1.96-2.016 2.093-3.517.02-.23-.004-.467-.247-.588M11.58 18.168c-2.088-1.642-3.101-2.183-3.52-2.16-.39.024-.32.472-.234.763.09.288.207.487.371.74.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.168-1.361-.801-2.5-1.86-3.301-3.306-.775-1.393-1.225-2.888-1.299-4.482-.02-.385.094-.522.477-.592a4.7 4.7 0 0 1 1.53-.038c2.131.311 3.946 1.264 5.467 2.774.868.86 1.525 1.887 2.202 2.89.72 1.066 1.494 2.082 2.48 2.915.348.291.626.513.892.677-.802.09-2.14.109-3.055-.615zm1.001-6.44a.306.306 0 0 1 .415-.287.3.3 0 0 1 .113.074.3.3 0 0 1 .086.214c0 .17-.136.307-.308.307a.303.303 0 0 1-.306-.307m3.11 1.596c-.2.081-.4.151-.591.16a1.25 1.25 0 0 1-.798-.254c-.274-.23-.47-.358-.551-.758a1.7 1.7 0 0 1 .015-.588c.07-.327-.007-.537-.238-.727-.188-.156-.426-.199-.689-.199a.6.6 0 0 1-.254-.078.253.253 0 0 1-.114-.358 1 1 0 0 1 .192-.21c.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.392.451.462.576.685.915.176.264.336.536.446.848.066.194-.02.353-.25.45',
-docker: 'M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z',
-git: 'M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z',
-sqlite: 'M21.678.521c-1.032-.92-2.28-.55-3.513.544a8.71 8.71 0 0 0-.547.535c-2.109 2.237-4.066 6.38-4.674 9.544.237.48.422 1.093.544 1.561a13.044 13.044 0 0 1 .164.703s-.019-.071-.096-.296l-.05-.146a1.689 1.689 0 0 0-.033-.08c-.138-.32-.518-.995-.686-1.289-.143.423-.27.818-.376 1.176.484.884.778 2.4.778 2.4s-.025-.099-.147-.442c-.107-.303-.644-1.244-.772-1.464-.217.804-.304 1.346-.226 1.478.152.256.296.698.422 1.186.286 1.1.485 2.44.485 2.44l.017.224a22.41 22.41 0 0 0 .056 2.748c.095 1.146.273 2.13.5 2.657l.155-.084c-.334-1.038-.47-2.399-.41-3.967.09-2.398.642-5.29 1.661-8.304 1.723-4.55 4.113-8.201 6.3-9.945-1.993 1.8-4.692 7.63-5.5 9.788-.904 2.416-1.545 4.684-1.931 6.857.666-2.037 2.821-2.912 2.821-2.912s1.057-1.304 2.292-3.166c-.74.169-1.955.458-2.362.629-.6.251-.762.337-.762.337s1.945-1.184 3.613-1.72C21.695 7.9 24.195 2.767 21.678.521m-18.573.543A1.842 1.842 0 0 0 1.27 2.9v16.608a1.84 1.84 0 0 0 1.835 1.834h9.418a22.953 22.953 0 0 1-.052-2.707c-.006-.062-.011-.141-.016-.2a27.01 27.01 0 0 0-.473-2.378c-.121-.47-.275-.898-.369-1.057-.116-.197-.098-.31-.097-.432 0-.12.015-.245.037-.386a9.98 9.98 0 0 1 .234-1.045l.217-.028c-.017-.035-.014-.065-.031-.097l-.041-.381a32.8 32.8 0 0 1 .382-1.194l.2-.019c-.008-.016-.01-.038-.018-.053l-.043-.316c.63-3.28 2.587-7.443 4.8-9.791.066-.069.133-.128.198-.194Z',
-github: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
-linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
-apple: 'M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701',
-      };
-
-      /* REST APIs has no brand mark, so it gets an inlined globe glyph with the
-         Lucide outline geometry. This map exists because Lucide dropped its brand
-         icons: data-lucide="github" and "linkedin" rendered nothing at all. */
-      const GENERIC = {
-        rest: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
-      };
-
-      const STACK = [
-        { title: 'Python', tag: 'Language', icon: 'python' },
-        { title: 'JavaScript', tag: 'Language', icon: 'javascript' },
-        { title: 'React 19', tag: 'Frontend', icon: 'react' },
-        { title: 'Next.js 16', tag: 'Framework', icon: 'nextdotjs' },
-        { title: 'React Native', tag: 'Mobile', icon: 'react' },
-        { title: 'Expo', tag: 'Mobile', icon: 'expo' },
-        { title: 'Tailwind 4', tag: 'Styling', icon: 'tailwindcss' },
-        { title: 'Node.js', tag: 'Backend', icon: 'nodedotjs' },
-        { title: 'Flask', tag: 'Backend', icon: 'flask' },
-        { title: 'FastAPI', tag: 'Backend', icon: 'fastapi' },
-        { title: 'Supabase', tag: 'Backend as a Service', icon: 'supabase' },
-      ];
-
-      const TOOLING = [
-        { title: 'Firebase', tag: 'Backend as a Service', icon: 'firebase' },
-        { title: 'Flutter', tag: 'Mobile', icon: 'flutter' },
-        { title: 'Dart', tag: 'Language', icon: 'dart' },
-        { title: 'OpenCV', tag: 'Computer Vision', icon: 'opencv' },
-        { title: 'MediaPipe', tag: 'Computer Vision', icon: 'mediapipe' },
-        { title: 'DeepSeek API', tag: 'Applied AI', icon: 'deepseek' },
-        { title: 'Docker', tag: 'DevOps', icon: 'docker' },
-        { title: 'Git', tag: 'Version Control', icon: 'git' },
-        { title: 'REST APIs', tag: 'Backend', icon: 'rest', generic: true },
-        { title: 'SQLite', tag: 'Database', icon: 'sqlite' },
-        { title: 'HealthKit', tag: 'Health', icon: 'apple' },
-      ];
-
-      function iconMarkup(spec) {
-        const path = spec.generic ? GENERIC[spec.icon] : BRAND[spec.icon];
-        if (!path) return '';
-        const inner = spec.generic ? path : '<path d="' + path + '"/>';
-        return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' + inner + '</svg>';
+      /* Portrait fallback: if the file is missing, swap in a placeholder frame.
+         Built here rather than in the markup so no placeholder copy ships in the
+         HTML that a crawler (or a visitor with JS off) would read. */
+      const portraitImg = document.getElementById('portrait-img');
+      if (portraitImg) {
+        const showPortraitFallback = () => {
+          const frame = document.createElement('div');
+          frame.className = 'portrait__frame';
+          frame.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /><path d="M19 8v6M16 11h6" /></svg>' +
+            '<span>Portrait unavailable</span>';
+          portraitImg.replaceWith(frame);
+        };
+        portraitImg.addEventListener('error', showPortraitFallback);
+        // The image may already have failed before this script ran.
+        if (portraitImg.complete && portraitImg.naturalWidth === 0) showPortraitFallback();
       }
 
-      function marqueeTile(item) {
-        const tile = document.createElement('div');
-        tile.className = 'card card--tile shrink-0';
-        // .content is 300% wide with two .word halves; the keyframe steps it by
-        // 33.33% each time, so the pair slides across and loops seamlessly.
-        tile.innerHTML =
-          '<span class="card__icon">' + iconMarkup(item) + '</span>' +
-          '<div class="content"><span class="word"></span><span class="word"></span></div>';
-        const [title, tag] = tile.querySelector('.content').children;
-        title.textContent = item.title;
-        tag.textContent = item.tag;
-        return tile;
-      }
-
-      /* Replace the Lucide brand icons, which no longer exist in the icon set. */
-      document.querySelectorAll('[data-brand]').forEach((node) => {
-        const path = BRAND[node.getAttribute('data-brand')];
-        if (!path) return;
-        node.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="' + path + '"/></svg>';
-        node.classList.add('brand-icon');
-      });
-
-      function fillMarquee(selector, items) {
-        const row = document.querySelector(selector);
-        if (!row) return;
-        // Two identical sets: the CSS keyframe translates exactly -50%, which is
-        // one full set, so the loop wraps seamlessly.
+      /* Ticker: two identical sets, so the -50% keyframe wraps seamlessly. */
+      const TICKER = [
+        'Python',
+        'TypeScript',
+        'React',
+        'Next.js',
+        'Flutter',
+        'React Native',
+        'Supabase',
+        'Firebase',
+        'DeepSeek',
+        'OpenCV',
+        'MediaPipe',
+        'FastAPI',
+        'Docker',
+        'Offline-first',
+      ];
+      const tickerRow = document.getElementById('ticker-row');
+      if (tickerRow) {
         for (let set = 0; set < 2; set++) {
-          items.forEach((item) => row.appendChild(marqueeTile(item)));
+          TICKER.forEach((label) => {
+            const item = document.createElement('span');
+            item.className = 'ticker__item';
+            item.textContent = label;
+            tickerRow.appendChild(item);
+          });
         }
-      }
-
-      fillMarquee('[data-marquee="right"]', STACK);
-      fillMarquee('[data-marquee="left"]', TOOLING);
-
-      if (window.lucide) {
-        window.lucide.createIcons();
       }
 
       document.getElementById('year').textContent = new Date().getFullYear();
 
-      /* Smooth scroll from nav links (also covers the CTA buttons). */
+      /* Smooth scroll for in-page links, keeping the URL hash in sync. */
       document.querySelectorAll('a[href^="#"]').forEach((link) => {
         link.addEventListener('click', (event) => {
           const target = document.querySelector(link.getAttribute('href'));
@@ -1061,74 +1063,8 @@ apple: 'M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.
           history.replaceState(null, '', link.getAttribute('href'));
         });
       });
-
-      /* Magnetic cursor on the hero portrait. */
-      const portrait = document.getElementById('portrait-magnet');
-      const magneticEnabled = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-      if (portrait && magneticEnabled) {
-        const strength = 0.18;
-        window.addEventListener('mousemove', (event) => {
-          const rect = portrait.getBoundingClientRect();
-          const dx = event.clientX - (rect.left + rect.width / 2);
-          const dy = event.clientY - (rect.top + rect.height / 2);
-          portrait.style.transform =
-            'translate3d(' + dx * strength + 'px,' + dy * strength + 'px,0)';
-        });
-      }
-
-      /* Scroll-driven bio reveal, word by word. */
-      const bio = document.getElementById('bio');
-      if (bio) {
-        const words = bio.textContent.trim().split(/\s+/);
-        bio.textContent = '';
-        const spans = words.map((word, index) => {
-          const span = document.createElement('span');
-          span.className = 'bio-word';
-          span.textContent = word;
-          bio.appendChild(span);
-          if (index < words.length - 1) bio.appendChild(document.createTextNode(' '));
-          return span;
-        });
-
-        const reveal = () => {
-          const rect = bio.getBoundingClientRect();
-          const start = window.innerHeight * 0.9;
-          const end = window.innerHeight * 0.35;
-          const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1);
-          const filled = progress * spans.length;
-          spans.forEach((span, index) => {
-            // Floor of 0.2 keeps every glyph legible; the reveal only adds contrast.
-            const local = Math.min(Math.max(filled - index, 0), 1);
-            span.style.opacity = (0.2 + local * 0.8).toFixed(3);
-          });
-        };
-
-        window.addEventListener('scroll', reveal, { passive: true });
-        window.addEventListener('resize', reveal);
-        reveal();
-      }
-
-      /* Project cards stack as they scroll past the sticky anchor. */
-      const stackCards = Array.from(document.querySelectorAll('.stack-card'));
-      const updateStack = () => {
-        stackCards.forEach((card, index) => {
-          const next = stackCards[index + 1];
-          if (!next) {
-            card.style.transform = 'scale(1)';
-            card.style.opacity = '1';
-            return;
-          }
-          const nextTop = next.getBoundingClientRect().top;
-          const travel = next.offsetHeight + 40;
-          const progress = Math.min(Math.max((travel - (nextTop - 96)) / travel, 0), 1);
-          card.style.transform = 'scale(' + (1 - progress * 0.05).toFixed(4) + ')';
-          card.style.opacity = (1 - progress * 0.35).toFixed(3);
-        });
-      };
-
-      window.addEventListener('scroll', updateStack, { passive: true });
-      window.addEventListener('resize', updateStack);
-      updateStack();
     </script>
   </body>
 </html>
+
+
